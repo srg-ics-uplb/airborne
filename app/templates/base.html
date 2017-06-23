@@ -11,9 +11,13 @@
 		<div>
 			Airborne:
 			<a href="/">Home</a>
-			<a href="/dashboard">Dashboard</a>
-			<a href="/login">Login</a>
+			{% if current_user.is_anonymous %}
+			<a href="/login">Login</a>		
 			<a href="/signup">Sign Up</a>
+			{% else %}				
+			<a href="/dashboard">Dashboard</a>
+			<a href="/logout">Logout</a>
+			{% endif %}
 			<a href="/about">About</a>
 		</div>
 		<hr>	

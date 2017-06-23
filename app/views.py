@@ -5,15 +5,20 @@ from flask_login import login_user, logout_user, current_user, login_required
 
 @app.route('/')
 def home():
-    return render_template('home.html', user=user)
+    return render_template('home.html')
+
+@app.route('/about')
+def about():
+    return render_template('about.html')
 
 @app.route('/dashboard')
+@login_required
 def dashboard():
     user = current_user
-    projects = models.Post.query.filter_by(user_id=user.id)
-    drones = models.Post.query.filter_by(user_id=user.id)
+    projects = models.Project.query.filter_by(user_id=user.id)
+    # drones = models.Drone.query.filter_by(user_id=user.id)
     # flights = models.Post.query.filter_by(user_id=user.id)
-    return render_template('dashboard.html',title='Dashboard', user=user, projects=projects, drones=drones)
+    return render_template('dashboard.html',title='Dashboard', user=user, projects=projects)
 
 @app.route('/login', methods=['GET','POST'])
 def login():
@@ -21,7 +26,7 @@ def login():
     if form.validate_on_submit():
         print form.username.data
         user = models.User.query.filter_by(username=form.username.data).first()
-        
+        print user
         
         if user:
             if bcrypt.check_password_hash(user.password, form.password.data):
@@ -43,9 +48,9 @@ def signup():
     if form.validate_on_submit():
 
         user = models.User(
-        form.first_name.data,
-        form.middle_name.data,
-        form.last_name.data,
+        form.firstname.data,
+        form.middlename.data,
+        form.lastname.data,
         form.email.data, 
         form.username.data, 
         bcrypt.generate_password_hash(form.password.data), 

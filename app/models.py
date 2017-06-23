@@ -3,17 +3,16 @@ from app import db
 class User(db.Model):
 	__tablename__ = 'user'
 	id = db.Column (db.Integer, primary_key=True)
-	first_name = db.Column(db.String(64), index=True)
-	middle_name = db.Column(db.String(64), index=True)
-	last_name = db.Column(db.String(64), index=True)
-	username = db.Column(db.String(64), index=True, unique=True)
-	email= db.Column(db.String(120), index=True, unique=True)
-	password = db.Column(db.String(256), index=True)
-	age = db.Column(db.Integer, index=True)
-	sex = db.Column(db.String(1), index=True)
+	first_name = db.Column(db.String(64), nullable=False)
+	middle_name = db.Column(db.String(64), nullable=False)
+	last_name = db.Column(db.String(64), nullable=False)
+	username = db.Column(db.String(64), nullable=False, unique=True)
+	email= db.Column(db.String(120), nullable=False, unique=True)
+	password = db.Column(db.String(256), nullable=False)
+	age = db.Column(db.Integer, nullable=False)
+	sex = db.Column(db.String(1), nullable=False)
 	authenticated = db.Column(db.Boolean, default=False)
-	posts = db.relationship('Post', backref='author', lazy='dynamic')
-
+	equipments = db.relationship('Equipment', backref='owner', lazy='dynamic')
 
 
 	def __init__(self, first_name, middle_name, last_name, email, username, password, age, sex):
@@ -52,12 +51,12 @@ class User(db.Model):
 class Equipment(db.Model):
 	__tablename__ = 'equipment'
 	id = db.Column (db.Integer, primary_key=True)
-	name = db.Column (db.String(140), index=True, unique=True)
-	weight = db.Column (db.Integer, index=True)
-	version_number = db.Column(db.String(20), index=True)
-	brand = db.Column (db.String(20), index=True)
-	model = db.Column (db.String(20), index=True)
-	notes = db.column (db.Text, index=True)
+	name = db.Column (db.String(140), nullable=False, unique=True)
+	weight = db.Column (db.Integer, nullable=False)
+	version_number = db.Column(db.String(20), nullable=False)
+	brand = db.Column (db.String(20), nullable=False)
+	model = db.Column (db.String(20), nullable=False)
+	notes = db.Column (db.Text)
 
 	user_id = db.Column (db.Integer, db.ForeignKey('user.id'))
 
@@ -78,21 +77,49 @@ class Drone(db.Model):
 	__tablename__ = 'drone'
 
 	# unique drone capabilities
-	max_payload_cap = db.Column (db.Integer, index=True)
-	max_speed = db.Column (db.Integer, index=True)
-	color = db.Column (db.String(20), index=True)
-	geometry = db.Column (db.String(20), index=True) 
+	max_payload_cap = db.Column (db.Integer, nullable=False)
+	max_speed = db.Column (db.Integer, nullable=False)
+	color = db.Column (db.String(20), nullable=False)
+	geometry = db.Column (db.String(20), nullable=False) 
 	
-	equipment_id = db.Column (db.Integer, db.ForeignKey('equipment.id'))
+	equipment_id = db.Column (db.Integer, db.ForeignKey('equipment.id'), primary_key=True)
 
-	def __init__(self, max_payload_cap, max_speed, color, geometry):
+	def __init__(self, max_payload_cap, max_speed, color, geometry, equipment_id):
 		self.max_payload_cap = max_payload_cap
 		self.max_speed = max_speed
 		self.color = color
 		self.geometry = geometry
+		self.equipment_id = equipment_id
 
-		
+
 	def __repr__(self):
 		return '<Post %r>' % (self.body)
 
 
+class Project(db.Model):
+	__tablename__ = 'project'
+
+	id = db.Column(db.Integer, primary_key=True)
+	name = db.Column(db.String(20), nullable=False)
+
+	user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+	flights = db.relationship('Flight', backref='project', lazy='dynamic')
+
+	def __init__(self, name, user_id):
+		self.name = name
+		self.user_id = user_id
+
+class Flight(db.Model):
+	__tablename__ = 'flight'
+	
+	id = db.Column(db.Integer, primary_key =True)
+	name = db.Column(db.String(20), nullable = False)
+
+	drone_id = db.Column(db.Integer, db.ForeignKey('drone.equipment_id'))
+	project_id = db.Column(db.Integer, db.ForeignKey('project.id'))
+
+	def __init__(self, name, drone_id, project_id):
+		self.name = name
+		self.drone_id = drone_id
+		self.project_id = project_id
