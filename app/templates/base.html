@@ -1,0 +1,22 @@
+<html>
+    <head>
+    {% if title %}
+        <title>{{title}} - Airborne</title>
+    {% else %}
+        <title>Welcome to Airborne</title>
+    {% endif %}
+    </head>
+    
+    <body>
+		<div>
+			Airborne:
+			<a href="/">Home</a>
+			<a href="/dashboard">Dashboard</a>
+			<a href="/login">Login</a>
+			<a href="/signup">Sign Up</a>
+			<a href="/about">About</a>
+		</div>
+		<hr>	
+		{% block content %}{% endblock %}
+    </body>
+</html>
