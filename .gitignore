@@ -1,0 +1,5 @@
+#Flask files
+flask/
+
+#Compile Python files
+*.pyc
