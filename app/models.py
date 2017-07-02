@@ -57,43 +57,59 @@ class Equipment(db.Model):
 	brand = db.Column (db.String(20), nullable=False)
 	model = db.Column (db.String(20), nullable=False)
 	notes = db.Column (db.Text)
+	equipment_type = db.Column(db.String(5), nullable=False)
 
 	user_id = db.Column (db.Integer, db.ForeignKey('user.id'))
 
-	def __init__(self, name, weight, version_number, brand, model, notes, user_id):
+	__mapper_args__ = {
+		'polymorphic_on': equipment_type,
+		'polymorphic_identity': 'equipment'
+	}
+	
+	def __init__(self, name, weight, version_number, brand, model, notes, equipment_type, user_id):
 		self.name = name
 		self.weight = weight
 		self.version_number = version_number
 		self.brand = brand
 		self.model = model
 		self.notes = notes
+		self.equipment_type = equipment_type
 		self.user_id = user_id
+	
 
 	def __repr__(self):
 		return '<Equipment %r>' % (self.name)
+	def get_id(self):
+		return unicode(self.id)
 
+	
 
-class Drone(db.Model):
+class Drone(Equipment):
 	__tablename__ = 'drone'
 
 	# unique drone capabilities
+	id = db.Column (db.Integer, db.ForeignKey('equipment.id'), primary_key=True)
 	max_payload_cap = db.Column (db.Integer, nullable=False)
 	max_speed = db.Column (db.Integer, nullable=False)
-	color = db.Column (db.String(20), nullable=False)
-	geometry = db.Column (db.String(20), nullable=False) 
+	# color = db.Column (db.String(20), nullable=False)
+	# geometry = db.Column (db.String(20), nullable=False) 
 	
-	equipment_id = db.Column (db.Integer, db.ForeignKey('equipment.id'), primary_key=True)
+	__mapper_args__ = {
+		'polymorphic_identity': 'drone',
+		'inherit_condition': (id==Equipment.id)
+	}
 
-	def __init__(self, max_payload_cap, max_speed, color, geometry, equipment_id):
+	def __init__(self, name, weight, version_number, brand, model, notes, equipment_type, user_id, max_payload_cap, max_speed):
+		super(Drone, self).__init__(name, weight, version_number, brand, model, notes, equipment_type, user_id)
 		self.max_payload_cap = max_payload_cap
 		self.max_speed = max_speed
-		self.color = color
-		self.geometry = geometry
-		self.equipment_id = equipment_id
+		# self.color = color
+		# self.geometry = geometry
+	
 
 
 	def __repr__(self):
-		return '<Post %r>' % (self.body)
+		return '<Drone (name=%s, weight=%s, version_number=%s, brand=%s, model=%s, max_payload_cap=%s, max_speed=%s)>' % (self.name, self.weight, self.version_number, self.brand, self.model, self.max_payload_cap, self.max_speed)
 
 
 class Project(db.Model):
@@ -116,7 +132,7 @@ class Flight(db.Model):
 	id = db.Column(db.Integer, primary_key =True)
 	name = db.Column(db.String(20), nullable = False)
 
-	drone_id = db.Column(db.Integer, db.ForeignKey('drone.equipment_id'))
+	drone_id = db.Column(db.Integer, db.ForeignKey('drone.id'))
 	project_id = db.Column(db.Integer, db.ForeignKey('project.id'))
 
 	def __init__(self, name, drone_id, project_id):

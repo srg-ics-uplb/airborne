@@ -1,5 +1,9 @@
 <html>
     <head>
+		<link href="/static/css/bootstrap.css" rel="stylesheet" media="screen">
+		
+		<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+		<script src="/static/js/bootstrap.min.js"></script>
     {% if title %}
         <title>{{title}} - Airborne</title>
     {% else %}
@@ -8,18 +12,27 @@
     </head>
     
     <body>
-		<div>
-			Airborne:
-			<a href="/">Home</a>
-			{% if current_user.is_anonymous %}
-			<a href="/login">Login</a>		
-			<a href="/signup">Sign Up</a>
-			{% else %}				
-			<a href="/dashboard">Dashboard</a>
-			<a href="/logout">Logout</a>
-			{% endif %}
-			<a href="/about">About</a>
-		</div>
+		
+			<div class="navbar navbar-inverse">
+			<div class="container-fluid">
+				<div class="navbar-inner">
+					
+					<ul class="nav navbar-nav">
+						<li><a href="/" class="navbar-brand">Airborne</a></li>
+						{% if current_user.is_anonymous %}
+							<li><a href="/login">Login</a></li>
+							<li><a href="/signup">Sign Up</a></li>
+						{% else %}
+							<li><a href="/dashboard">Dashboard</a></li>
+							<li><a href="/drones">Drones</a></li>
+							<li><a href="/flights">Flights</a></li>
+							<li><a href="/logout">Logout</a></li>
+						{% endif %}	
+						<li><a href="/about">About</a></li>
+					</ul>
+				</div>	
+			</div>
+		</div>	
 		<hr>	
 		{% block content %}{% endblock %}
     </body>
