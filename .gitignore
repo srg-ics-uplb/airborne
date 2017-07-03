@@ -3,3 +3,6 @@ flask/
 
 #Compile Python files
 *.pyc
+
+#Database Migrations
+migrations/

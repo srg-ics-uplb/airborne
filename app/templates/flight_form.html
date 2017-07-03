@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block content %}
+	<h1>{{ form_title }}</h1>
+	<form action="" method="post" name="{{name}}">
+		{{ form.hidden_tag() }}
+		<p>
+			
+			Flight Name:<br>
+			{{ form.name(size=64) }}<br>
+			Location:<br>
+			{{ form.location(size=10) }}<br>
+			Date:<br>
+			{{ form.date(size=10) }}<br>
+			Duration:<br>
+			{{ form.duration(size=64) }}<br>
+			Flight Type:<br>
+			{{ form.flight_type(size=64) }}<br>
+			Night Flight:<br>
+			{{ form.night_flight(size=10) }}<br>
+			Landing Count:<br>
+			{{ form.landing_count(size=10) }}<br>
+			Travelled Distance:<br>
+			{{ form.travelled_distance(size=10) }}<br>
+			Max AGL Altitude:<br>
+			{{ form.max_agl_altitude(size=10) }}<br>
+			Notes:<br>
+			{{ form.notes(size=50) }}<br>
+			Weather Description:<br>
+			{{ form.weather_description(size=10) }}
+		</p>
+		<p><input type="submit" value="{{ submit_value }}"></p>
+	</form>
+{% endblock %}

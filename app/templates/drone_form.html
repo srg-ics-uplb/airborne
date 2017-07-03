@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+	<h1>{{ form_title }}</h1>
+	<form action="" method="post" name="{{name}}">
+		{{ form.hidden_tag() }}
+		<p>
+			
+			Drone Name:<br>
+			{{ form.name(size=64) }}<br>
+			Weight:<br>
+			{{ form.weight(size=10) }}<br>
+			Version Number:<br>
+			{{ form.version_number(size=10) }}<br>
+			Brand:<br>
+			{{ form.brand(size=64) }}<br>
+			Model:<br>
+			{{ form.model(size=64) }}<br>
+			Notes:<br>
+			{{ form.notes(size=64) }}<br>
+			Maximum Payload Capacity:<br>
+			{{ form.max_payload_cap(size=10) }}<br>
+			Maximum Speed:<br>
+			{{ form.max_speed(size=10) }}<br>
+
+		</p>
+		<p><input type="submit" value="{{ submit_value }}"></p>
+	</form>
+{% endblock %}

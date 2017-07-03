@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+        <div class="jumbotron">
+                <span><h3>Flights  ({{flight_count}}) <a href="/project/add" class="btn btn-lg btn-default"> Add </a> </h3> </span>
+                <hr>
+                
+                <div class="container">                
+                <hr>
+                
+                
+                {% if flight_count!=0 %}
+                        {% for flight in flights %}
+                        <div class="row">
+                                <h3> {{flight.name}} </h3>
+
+                                <p> Description: {{flight.notes}} </p>
+                                <p> Drone Used: {{flight.drone.name}} </p>
+                                <a href="/flight/edit/{{flight.id}}" class="btn btn-sm btn-warning"> Edit </a>
+                                <a href="/flight/delete/{{flight.id}}" class="btn btn-sm btn-danger"> Delete </a>
+                        </div>
+                {% endfor %}
+                {% else %}
+                <div class="row">
+                        <h3> You have no flights. Click the Add button above to start! </h3>
+                        <p> Is this an error? Contact the administrator. </p>
+                </div>
+                {% endif %}
+                </div>
+        </div>
+{% endblock %}

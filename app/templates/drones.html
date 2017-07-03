@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+        <div class="jumbotron">
+                <span><h3>Drone List  ({{user.drones.count()}}) <a href="/drone/add" class="btn btn-lg btn-default"> Add </a> </h3> </span>
+                <hr>
+                
+                <div class="container">                
+                <hr>
+                
+                
+                {% if drones.count()!=0 %}
+                        {% for drone in drones %}
+                        <div class="row">
+                                <h3> {{drone.name}} </h3>
+
+                                <p> Version number: {{drone.version_number}} </p>
+                                <p> Weight: {{drone.weight}} </p>
+                                <p> Brand: {{drone.brand}} </p>
+                                <p> Model: {{drone.model}} </p>
+                                <p> Notes: {{drone.notes}} </p>
+                                <p> Max Payload Capacity: {{drone.max_payload_cap}} </p>
+                                <p> Max Speed: {{drone.max_speed}}</p>
+                                <a href="/drone/edit/{{drone.id}}" class="btn btn-sm btn-warning"> Edit </a>
+                                <a href="/drone/delete/{{drone.id}}" class="btn btn-sm btn-danger"> Delete </a>
+                        </div>
+                {% endfor %}
+                {% else %}
+                <div class="row">
+                        <h3> You have no drones. Click the Add button above to add one! </h3>
+                        <p> Is this an error? Contact the administrator. </p>
+
+                </div>
+                
+
+                {% endif %}
+
+                </div>
+        </div>
+{% endblock %}
