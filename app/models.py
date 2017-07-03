@@ -12,8 +12,9 @@ class User(db.Model):
 	age = db.Column(db.Integer, nullable=False)
 	sex = db.Column(db.String(1), nullable=False)
 	authenticated = db.Column(db.Boolean, default=False)
-	equipments = db.relationship('Equipment', backref='owner', lazy='dynamic')
-
+	# equipments = db.relationship('Equipment', backref='owner', lazy='dynamic')
+	projects = db.relationship('Project', backref='owner', lazy='dynamic')
+	drones = db.relationship('Drone', backref='owner', lazy='dynamic')
 
 	def __init__(self, first_name, middle_name, last_name, email, username, password, age, sex):
 		self.first_name = first_name
@@ -117,14 +118,16 @@ class Project(db.Model):
 
 	id = db.Column(db.Integer, primary_key=True)
 	name = db.Column(db.String(20), nullable=False)
-
+	description = db.Column(db.Text)
 	user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
 	flights = db.relationship('Flight', backref='project', lazy='dynamic')
 
-	def __init__(self, name, user_id):
+	def __init__(self, name, description,user_id):
 		self.name = name
+		self.description = description
 		self.user_id = user_id
+
 
 class Flight(db.Model):
 	__tablename__ = 'flight'

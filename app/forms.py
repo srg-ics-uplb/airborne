@@ -28,3 +28,7 @@ class DroneForm(FlaskForm):
 	notes = TextAreaField('notes', validators=[Optional()])
 	max_payload_cap = DecimalField('max_payload_cap', validators=[DataRequired()])
 	max_speed = DecimalField('max_speed', validators=[DataRequired()])
+
+class ProjectForm(FlaskForm):
+	name = StringField('name', validators=[DataRequired()])
+	description = TextAreaField('notes', validators=[Optional()])

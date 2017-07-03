@@ -1,6 +1,6 @@
 from app import app, login_manager, bcrypt, db, models
 from flask import render_template, flash, redirect, session, url_for, request, g
-from .forms import LoginForm, SignupForm, DroneForm
+from .forms import LoginForm, SignupForm, DroneForm, ProjectForm
 from flask_login import login_user, logout_user, current_user, login_required
 
 @app.route('/')
@@ -20,7 +20,7 @@ def dashboard():
     # flights = models.Post.query.filter_by(user_id=user.id)
     return render_template('dashboard.html',title='Dashboard', user=user, projects=projects, drones=drones)
 
-#####   DRONE MANAGEMENT ROUTES AND VIEWS   #####
+#####   DRONE MANAGEMENT ROUTES AND VIEWS  
 
 @app.route('/drones')
 @login_required
@@ -30,7 +30,6 @@ def view_drones():
     drones = models.Drone.query.filter_by(user_id=user.id)
     print drones
     return render_template('drones.html', title='List of drones', user=user, drones=drones)
-
 
 
 @app.route('/drone/add', methods=['GET','POST'])
@@ -91,7 +90,61 @@ def delete_drone(drone_id):
     return redirect(url_for('view_drones'))
 
 
-#####   USER MANAGEMENT ROUTES AND VIEWS    #####
+#####   PROJECT MANAGEMENT ROUTES AND VIEWS    
+
+@app.route('/projects')
+@login_required
+def view_projects():
+    user = current_user
+    projects = models.Project.query.filter_by(user_id=user.id)
+
+
+    return render_template('projects.html', title='Projects', user=user, projects=projects)
+
+@app.route('/project/add', methods=['GET','POST'])
+@login_required
+def add_project():
+    user = current_user
+    form = ProjectForm()
+    if form.validate_on_submit():
+        project = models.Project(form.name.data, form.description.data, user.get_id())
+        db.session.add(project)
+        db.session.commit()
+        return redirect(url_for('view_projects'))
+    
+    return render_template("project_form.html", form=form, form_title="Add a Project", submit_value="Add Project", name="add_project")
+
+@app.route('/project/edit/<project_id>', methods=['GET','POST'])
+@login_required
+def edit_project(project_id):
+    user = current_user
+    project = models.Project.query.get(project_id)
+    form = ProjectForm(obj=project)
+    if form.validate_on_submit():
+        project.name = form.name.data
+        project.description = form.description.data
+        db.session.commit()
+        return redirect(url_for('view_projects'))
+    return render_template("project_form.html", form=form, form_title="Edit Project Details", submit_value="Save Changes", name="edit_project")
+
+@app.route('/project/delete/<project_id>')
+@login_required
+def delete_project(project_id):
+    project = models.Project.query.get(project_id)
+    db.session.delete(project)
+    db.session.commit()
+
+    return redirect(url_for('view_projects'))
+
+#####   FLIGHT MANAGEMENT ROUTES AND VIEWS
+@app.route('/flights')
+@login_required
+def view_flights():
+    user = current_user
+    flights = model.Flight.query.filter_by(user_id=user.id)
+    return render_template("flights.html", title="Flights", user=user, flights=flights)
+
+#####   USER MANAGEMENT ROUTES AND VIEWS   
 
 @app.route('/login', methods=['GET','POST'])
 def login():
