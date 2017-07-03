@@ -1,6 +1,6 @@
 from app import app, login_manager, bcrypt, db, models
 from flask import render_template, flash, redirect, session, url_for, request, g
-from .forms import LoginForm, SignupForm, AddDroneForm
+from .forms import LoginForm, SignupForm, DroneForm
 from flask_login import login_user, logout_user, current_user, login_required
 
 @app.route('/')
@@ -16,9 +16,11 @@ def about():
 def dashboard():
     user = current_user
     projects = models.Project.query.filter_by(user_id=user.id)
-    # drones = models.Drone.query.filter_by(user_id=user.id)
+    drones = models.Drone.query.filter_by(user_id=user.id)
     # flights = models.Post.query.filter_by(user_id=user.id)
-    return render_template('dashboard.html',title='Dashboard', user=user, projects=projects)
+    return render_template('dashboard.html',title='Dashboard', user=user, projects=projects, drones=drones)
+
+#####   DRONE MANAGEMENT ROUTES AND VIEWS   #####
 
 @app.route('/drones')
 @login_required
@@ -35,7 +37,7 @@ def view_drones():
 @login_required
 def add_drone():
     user = current_user
-    form = AddDroneForm()
+    form = DroneForm()
     if form.validate_on_submit():
         equipment = models.Drone(
             form.name.data, 
@@ -46,7 +48,7 @@ def add_drone():
             form.notes.data,
             'drone',
             user.get_id(),
-            form.max_payload_capacity.data,
+            form.max_payload_cap.data,
             form.max_speed.data
         )
         
@@ -55,7 +57,41 @@ def add_drone():
 
         
         return redirect(url_for('view_drones'))   
-    return render_template('add_drone.html', form = form)
+    return render_template('drone_form.html', form = form, form_title="Add a Drone", name="add_drone", submit_value="Add Drone")
+
+@app.route('/drone/edit/<drone_id>', methods=['GET','POST', 'PUT'])
+@login_required
+def edit_drone(drone_id):
+    drone = models.Drone.query.get(drone_id)
+    form = DroneForm(obj=drone)
+    
+    if form.validate_on_submit():
+        drone.name = form.name.data
+        drone.weight = form.weight.data
+        drone.version_number = form.version_number.data
+        drone.brand = form.brand.data
+        drone.model = form.model.data
+        drone.notes = form.notes.data
+        drone.max_payload_cap = form.max_payload_cap.data
+        drone.max_speed = form.max_speed.data
+
+        print form.name.data
+        db.session.commit()
+
+        return redirect(url_for('view_drones'))
+
+    return render_template("drone_form.html", title="Edit Drone", form = form, form_title="Edit Drone Details", name="edit_drone", submit_value="Save Changes")
+
+@app.route('/drone/delete/<drone_id>')
+@login_required
+def delete_drone(drone_id):
+    drone = models.Drone.query.get(drone_id)
+    db.session.delete(drone)
+    db.session.commit()
+    return redirect(url_for('view_drones'))
+
+
+#####   USER MANAGEMENT ROUTES AND VIEWS    #####
 
 @app.route('/login', methods=['GET','POST'])
 def login():
@@ -76,6 +112,8 @@ def login():
 
        
     return render_template('login.html', title="Sign In", form=form)
+
+
 
 @app.route('/signup', methods=['GET','POST'])    
 def signup():

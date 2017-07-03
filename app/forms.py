@@ -19,12 +19,12 @@ class SignupForm(FlaskForm):
 	sex = SelectField('sex', choices=[('m', 'Male'), ('f','Female')])
 
 
-class AddDroneForm(FlaskForm):
+class DroneForm(FlaskForm):
 	name = StringField('name', validators=[DataRequired()])
 	weight = DecimalField('weight', validators=[DataRequired()])
 	version_number = StringField('version_num', validators=[DataRequired()])
 	brand = StringField('brand', validators=[DataRequired()])
 	model = StringField('model', validators=[DataRequired()])
 	notes = TextAreaField('notes', validators=[Optional()])
-	max_payload_capacity = DecimalField('max_payload_capacity', validators=[DataRequired()])
+	max_payload_cap = DecimalField('max_payload_cap', validators=[DataRequired()])
 	max_speed = DecimalField('max_speed', validators=[DataRequired()])

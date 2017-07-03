@@ -1,11 +1,10 @@
 {% extends "base.html" %}
 {% block content %}
         <div class="jumbotron">
-        <span class="row" style="display:inline;">
+        <span class="row">
                 <span><h3>Drone List  {{user.drone_count}}</h3></span>
                 <a href="/drone/add" class="btn btn-lg btn-default"> Add </a>
-                <a href="/drone/edit" class="btn btn-lg btn-default"> Edit </a>
-                <a href="/drone/delete" class="btn btn-lg btn-default"> Delete </a>
+                
         </span>
         <hr>
         
@@ -17,16 +16,17 @@
         {% if drones %}
                 {% for drone in drones %}
                 <div class="row">
-                        <h4> {{drone.name}} </h4>
+                        <h3> {{drone.name}} </h3>
 
                         <p> Version number: {{drone.version_number}} </p>
-                        <p> Weight: {{drone.version_number}} </p>
+                        <p> Weight: {{drone.weight}} </p>
                         <p> Brand: {{drone.brand}} </p>
                         <p> Model: {{drone.model}} </p>
                         <p> Notes: {{drone.notes}} </p>
                         <p> Max Payload Capacity: {{drone.max_payload_cap}} </p>
                         <p> Max Speed: {{drone.max_speed}}</p>
-
+                        <a href="/drone/edit/{{drone.id}}" class="btn btn-sm btn-warning"> Edit </a>
+                        <a href="/drone/delete/{{drone.id}}" class="btn btn-sm btn-danger"> Delete </a>
                 </div>
         {% endfor %}
         {% else %}
