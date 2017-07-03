@@ -134,11 +134,36 @@ class Flight(db.Model):
 	
 	id = db.Column(db.Integer, primary_key =True)
 	name = db.Column(db.String(20), nullable = False)
+	location = db.Column(db.String(255), nullable = False)
+	date = db.Column(db.Date, nullable = False)
+	duration = db.Column(db.Time, nullable = False)
+	flight_type = db.Column(db.String(20))
+	more_type_info = db.Column(db.String(20))
+	operation_type = db.Column(db.String(20))
+	night_flight = db.Column(db.Boolean, nullable = False)
+	landing_count = db.Column(db.Integer, nullable = False, default=0)
+	travelled_distance = db.Column(db.Float, nullable = False)
+	max_agl_altitude = db.Column(db.Float, nullable = False)
+	notes = db.Column(db.Text)
 
+	#Weather conditions data
+	#For now, only textual description is used
+	# cloud_cover = db.Column(db.Float, nullable = False)
+	# temperature = db.Column(db.Float, nullable = False)
+	# wind_speed = db.Column(db.Float, nullable = False)
+	# humidity = db.Column(db.Float, nullable = False)
+	weather_description = db.Column(db.Text)
+
+	#Reference to drone used during flight and project
 	drone_id = db.Column(db.Integer, db.ForeignKey('drone.id'))
 	project_id = db.Column(db.Integer, db.ForeignKey('project.id'))
 
-	def __init__(self, name, drone_id, project_id):
-		self.name = name
-		self.drone_id = drone_id
-		self.project_id = project_id
+	# def __init__(self, name, location, date, duration, flight_type,more_type_info, operation_type, night_flight, landing_count, travelled_distance, max_agl_altitude, notes, weather_description, drone_id, project_id):
+	# 	self.name = name
+	# 	self.location = location
+	# 	self.date = date
+	# 	self.duration = duration
+	# 	self.flight_type = flight_type
+	# 	self.more_type_info = more_type_info
+	# 	self.drone_id = drone_id
+	# 	self.project_id = project_id

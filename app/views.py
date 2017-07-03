@@ -16,9 +16,13 @@ def about():
 def dashboard():
     user = current_user
     projects = models.Project.query.filter_by(user_id=user.id)
-    drones = models.Drone.query.filter_by(user_id=user.id)
-    # flights = models.Post.query.filter_by(user_id=user.id)
-    return render_template('dashboard.html',title='Dashboard', user=user, projects=projects, drones=drones)
+    project_count = projects.count()
+    drone_count = models.Drone.query.filter_by(user_id=user.id).count()
+    flight_count = 0
+    for project in projects:
+        flight_count = flight_count + project.flights.count()
+    
+    return render_template('dashboard.html',title='Dashboard', user=user, project_count=project_count, drone_count=drone_count, flight_count= flight_count)
 
 #####   DRONE MANAGEMENT ROUTES AND VIEWS  
 
@@ -141,8 +145,10 @@ def delete_project(project_id):
 @login_required
 def view_flights():
     user = current_user
-    flights = model.Flight.query.filter_by(user_id=user.id)
-    return render_template("flights.html", title="Flights", user=user, flights=flights)
+    projects = db.session.query(models.Project.id).filter_by(user_id = user.id)
+    flights = models.Flight.query.filter(models.Flight.project_id.in_(projects)).all()
+    flight_count=len(flights)
+    return render_template("flights.html", title="Flights", user=user, flights=flights, flight_count = flight_count)
 
 #####   USER MANAGEMENT ROUTES AND VIEWS   
 

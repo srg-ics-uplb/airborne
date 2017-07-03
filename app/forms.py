@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, BooleanField, IntegerField, PasswordField, SelectField,  TextAreaField, DecimalField
+from wtforms import StringField, BooleanField, IntegerField, PasswordField, SelectField,  TextAreaField, DecimalField, DateField
 from wtforms.validators import DataRequired, Optional
+from wtforms_components import TimeField
 
 class LoginForm(FlaskForm):
 
@@ -32,3 +33,16 @@ class DroneForm(FlaskForm):
 class ProjectForm(FlaskForm):
 	name = StringField('name', validators=[DataRequired()])
 	description = TextAreaField('notes', validators=[Optional()])
+
+class FlightForm(FlaskForm):
+	name = StringField('name', validators=[DataRequired()])
+	location = StringField('location', validators=[DataRequired()])
+	date = DateField('date', validators=[DataRequired()])
+	duration = TimeField('duration', validators=[DataRequired()])
+	flight_type = SelectField('flight_type', choices=['Commercial', 'Emergency', 'Hobby', 'Maintenance', 'Science', 'Simulator', 'Test Flight', 'Training Flight'], validators=[DataRequired()])
+	night_flight = BooleanField('night_flight', validators=[DataRequired()])
+	landing_count = IntegerField('landing_count', validators=[DataRequired()])
+	travelled_distance = DecimalField('travelled_distance', validators=[DataRequired()])
+	max_agl_altitude = DecimalField('max_agl_altitude', validators=[DataRequired()])
+	notes = TextAreaField('notes', validators=[Optional()])
+	weather_description = TextAreaField('weather_description', validators=[Optional()])
