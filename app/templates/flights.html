@@ -11,11 +11,11 @@
                 {% if flight_count!=0 %}
                         {% for flight in flights %}
                         <div class="row">
-                                <h3> {{flight.name}} </h3>
+                                <h3> <a href="/flight/view/{{flight.id}}"> {{flight.name}} </a></h3>
 
                                 <p> Description: {{flight.notes}} </p>
-                                <p> From project: {{flight.project.name}} </p>
-                                <p> Drone Used: {{flight.drone.name}} </p>
+                                <p> From project: <a href="/project/view/{{flight.project.id}}">{{flight.project.name}} </a></p>
+                                <p> Drone Used: <a href="/drone/view/{{flight.project.id}}">{{flight.drone.name}} </a></p>
                                 <a href="/flight/edit/{{flight.id}}" class="btn btn-sm btn-warning"> Edit </a>
                                 <a href="/flight/delete/{{flight.id}}" class="btn btn-sm btn-danger"> Delete </a>
                         </div>

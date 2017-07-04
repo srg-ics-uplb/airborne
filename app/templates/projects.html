@@ -11,7 +11,7 @@
                 {% if projects.count()!=0 %}
                         {% for project in projects %}
                         <div class="row">
-                                <h3> {{project.name}} </h3>
+                                <h3> <a href="/project/view/{{project.id}}"> {{project.name}} </a></h3>
 
                                 <p> Description: {{project.description}} </p>
                                 <p> Number of flights: {{project.flights.count()}} </p>

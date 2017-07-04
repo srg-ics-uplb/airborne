@@ -11,15 +11,9 @@
                 {% if drones.count()!=0 %}
                         {% for drone in drones %}
                         <div class="row">
-                                <h3> {{drone.name}} </h3>
-
-                                <p> Version number: {{drone.version_number}} </p>
-                                <p> Weight: {{drone.weight}} </p>
-                                <p> Brand: {{drone.brand}} </p>
-                                <p> Model: {{drone.model}} </p>
+                                <a href="/drone/view/{{drone.id}}"><h3> {{drone.name}} ver. {{drone.version_number}}</h3></a>
+                                <p> Brand/Model: {{drone.brand}} ({{drone.model}}) </p>
                                 <p> Notes: {{drone.notes}} </p>
-                                <p> Max Payload Capacity: {{drone.max_payload_cap}} </p>
-                                <p> Max Speed: {{drone.max_speed}}</p>
                                 <a href="/drone/edit/{{drone.id}}" class="btn btn-sm btn-warning"> Edit </a>
                                 <a href="/drone/delete/{{drone.id}}" class="btn btn-sm btn-danger"> Delete </a>
                         </div>
