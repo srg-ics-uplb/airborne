@@ -1,7 +1,13 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, BooleanField, IntegerField, PasswordField, SelectField,  TextAreaField, DecimalField, DateField
-from wtforms.validators import DataRequired, Optional
-from wtforms_components import TimeField
+from wtforms import StringField, BooleanField, IntegerField, PasswordField, SelectField,  TextAreaField, DecimalField	
+from wtforms.validators import DataRequired, Optional, ValidationError
+# from wtforms.fields.html5 import DateField 
+from wtforms_components import DateField, TimeField
+
+
+def is_positive(FlaskForm, field):
+	if field.data < 0:
+		raise ValidationError(field.field_name+' must be positive.')
 
 class LoginForm(FlaskForm):
 
@@ -37,12 +43,41 @@ class ProjectForm(FlaskForm):
 class FlightForm(FlaskForm):
 	name = StringField('name', validators=[DataRequired()])
 	location = StringField('location', validators=[DataRequired()])
-	date = DateField('date', validators=[DataRequired()])
-	duration = TimeField('duration', validators=[DataRequired()])
-	flight_type = SelectField('flight_type', choices=['Commercial', 'Emergency', 'Hobby', 'Maintenance', 'Science', 'Simulator', 'Test Flight', 'Training Flight'], validators=[DataRequired()])
+	date = DateField('date', format='%Y-%m-%d', validators=[Optional()])
+	duration_hours = IntegerField('duration_hours', validators=[is_positive])
+	duration_mins = IntegerField('duration_mins', validators=[is_positive])
+	duration_secs = IntegerField('duration_secs', validators=[is_positive])
+	flight_types=[
+		('Commercial','Commercial'), 
+		('Emergency','Emergency'), 
+		('Hobby','Hobby'), 
+		('Maintenance','Maintenance'), 
+		('Science','Science'), 
+		('Simulator','Simulator'), 
+		('Test Flight','Test Flight'), 
+		('Training Flight','Training Flight')
+	]
+	flight_type = SelectField('flight_type', choices=flight_types, validators=[DataRequired()])
+	more_type_info = StringField('more_type_info', validators=[Optional()])
+	operation_types=[
+		('VLOS','VLOS'),
+		('EVLOS','EVLOS'),
+		('BVLOS/BLOS', 'BVLOS/BLOS'),
+		('Autonomous', 'Autonomous'),
+		('FPV','FPV')
+	]
+	operation_type= SelectField('operation_type', choices=operation_types, validators=[DataRequired()])
+
+	project = SelectField('project', coerce=int, validators=[DataRequired()])
+
+	drone = SelectField('drone', coerce=int,validators=[DataRequired()])
+
+
 	night_flight = BooleanField('night_flight', validators=[DataRequired()])
 	landing_count = IntegerField('landing_count', validators=[DataRequired()])
 	travelled_distance = DecimalField('travelled_distance', validators=[DataRequired()])
 	max_agl_altitude = DecimalField('max_agl_altitude', validators=[DataRequired()])
 	notes = TextAreaField('notes', validators=[Optional()])
 	weather_description = TextAreaField('weather_description', validators=[Optional()])
+
+	

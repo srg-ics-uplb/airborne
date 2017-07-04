@@ -136,7 +136,7 @@ class Flight(db.Model):
 	name = db.Column(db.String(20), nullable = False)
 	location = db.Column(db.String(255), nullable = False)
 	date = db.Column(db.Date, nullable = False)
-	duration = db.Column(db.Time, nullable = False)
+	duration = db.Column(db.Integer, nullable = False)
 	flight_type = db.Column(db.String(20))
 	more_type_info = db.Column(db.String(20))
 	operation_type = db.Column(db.String(20))
@@ -158,12 +158,20 @@ class Flight(db.Model):
 	drone_id = db.Column(db.Integer, db.ForeignKey('drone.id'))
 	project_id = db.Column(db.Integer, db.ForeignKey('project.id'))
 
-	# def __init__(self, name, location, date, duration, flight_type,more_type_info, operation_type, night_flight, landing_count, travelled_distance, max_agl_altitude, notes, weather_description, drone_id, project_id):
-	# 	self.name = name
-	# 	self.location = location
-	# 	self.date = date
-	# 	self.duration = duration
-	# 	self.flight_type = flight_type
-	# 	self.more_type_info = more_type_info
-	# 	self.drone_id = drone_id
-	# 	self.project_id = project_id
+	def __init__(self, name, location, date, duration, flight_type, more_type_info, operation_type, night_flight, landing_count, travelled_distance, max_agl_altitude, notes, weather_description, drone_id, project_id):
+		self.name = name
+		self.location = location
+		self.date = date
+		self.duration = duration
+		self.flight_type = flight_type
+		self.more_type_info = more_type_info
+		self.operation_type = operation_type
+		self.night_flight = night_flight
+		self.landing_count = landing_count
+		self.travelled_distance = travelled_distance
+		self.max_agl_altitude = max_agl_altitude
+		self.notes = notes
+		self.weather_description = weather_description
+		self.drone_id = drone_id
+		self.project_id = project_id
+		
