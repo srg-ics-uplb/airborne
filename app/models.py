@@ -158,6 +158,9 @@ class Flight(db.Model):
 	drone_id = db.Column(db.Integer, db.ForeignKey('drone.id'))
 	project_id = db.Column(db.Integer, db.ForeignKey('project.id'))
 
+	#Log files
+	logs = db.relationship('Log', backref="flight", lazy='dynamic')
+
 	def __init__(self, name, location, date, duration, flight_type, more_type_info, operation_type, night_flight, landing_count, travelled_distance, max_agl_altitude, notes, weather_description, drone_id, project_id):
 		self.name = name
 		self.location = location
@@ -174,4 +177,16 @@ class Flight(db.Model):
 		self.weather_description = weather_description
 		self.drone_id = drone_id
 		self.project_id = project_id
-		
+
+class Log(db.Model):
+	__tablename__ = 'log'
+
+	id = db.Column(db.Integer, primary_key=True)
+	filename = db.Column(db.String(255), nullable=False)
+	path = db.Column(db.String(255), nullable=False)
+
+	flight_id = db.Column(db.Integer, db.ForeignKey('flight.id'))
+
+	def __init__(self, filename, flight_id):
+		self.filename = filename
+		self.flight_id = flight_id
