@@ -62,6 +62,7 @@ class Equipment(db.Model):
 
 	user_id = db.Column (db.Integer, db.ForeignKey('user.id'))
 
+	
 	__mapper_args__ = {
 		'polymorphic_on': equipment_type,
 		'polymorphic_identity': 'equipment'
@@ -95,6 +96,8 @@ class Drone(Equipment):
 	# color = db.Column (db.String(20), nullable=False)
 	# geometry = db.Column (db.String(20), nullable=False) 
 	
+	flights = db.relationship('Flight', backref='equipment', lazy='dynamic')
+
 	__mapper_args__ = {
 		'polymorphic_identity': 'drone',
 		'inherit_condition': (id==Equipment.id)

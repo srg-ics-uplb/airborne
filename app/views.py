@@ -26,16 +26,26 @@ def dashboard():
 
 #####   DRONE MANAGEMENT ROUTES AND VIEWS  
 
+#   VIEW ALL DRONES
 @app.route('/drones')
 @login_required
-def view_drones():
+def view_all_drones():
     user = current_user
     
     drones = models.Drone.query.filter_by(user_id=user.id)
     print drones
     return render_template('drones.html', title='List of drones', user=user, drones=drones)
 
+#   VIEW DRONE DETAILS
+@app.route('/drone/view/<drone_id>')
+@login_required
+def view_drones(drone_id):
+    user = current_user
+    drone = models.Drone.query.get(drone_id)
 
+    return render_template("view_drone.html", title=drone.name, drone=drone)
+    
+#   ADD A DRONE    
 @app.route('/drone/add', methods=['GET','POST'])
 @login_required
 def add_drone():
@@ -59,9 +69,10 @@ def add_drone():
         db.session.commit()
 
         
-        return redirect(url_for('view_drones'))   
+        return redirect(url_for('view_all_drones'))   
     return render_template('drone_form.html', form = form, form_title="Add a Drone", name="add_drone", submit_value="Add Drone")
 
+#   EDIT DRONE DETAILS
 @app.route('/drone/edit/<drone_id>', methods=['GET','POST', 'PUT'])
 @login_required
 def edit_drone(drone_id):
@@ -81,30 +92,43 @@ def edit_drone(drone_id):
         print form.name.data
         db.session.commit()
 
-        return redirect(url_for('view_drones'))
+        return redirect(url_for('view_all_drones'))
 
     return render_template("drone_form.html", title="Edit Drone", form = form, form_title="Edit Drone Details", name="edit_drone", submit_value="Save Changes")
 
+#   DELETE A DRONE
 @app.route('/drone/delete/<drone_id>')
 @login_required
 def delete_drone(drone_id):
     drone = models.Drone.query.get(drone_id)
     db.session.delete(drone)
     db.session.commit()
-    return redirect(url_for('view_drones'))
+    return redirect(url_for('view_all_drones'))
 
 
 #####   PROJECT MANAGEMENT ROUTES AND VIEWS    
 
+
+#   VIEW ALL PROJECTS
 @app.route('/projects')
 @login_required
-def view_projects():
+def view_all_projects():
     user = current_user
     projects = models.Project.query.filter_by(user_id=user.id)
 
 
     return render_template('projects.html', title='Projects', user=user, projects=projects)
 
+#   VIEW A PROJECT
+@app.route('/project/view/<project_id>')
+@login_required
+def view_project(project_id):
+    user = current_user
+    project = models.Project.query.get(project_id)
+
+    return render_template("view_project.html", title=project.name, project=project)
+
+#   ADD A PROJECT
 @app.route('/project/add', methods=['GET','POST'])
 @login_required
 def add_project():
@@ -114,10 +138,11 @@ def add_project():
         project = models.Project(form.name.data, form.description.data, user.get_id())
         db.session.add(project)
         db.session.commit()
-        return redirect(url_for('view_projects'))
+        return redirect(url_for('view_all_projects'))
     
     return render_template("project_form.html", form=form, form_title="Add a Project", submit_value="Add Project", name="add_project")
 
+#   EDIT PROJECT DETAILS
 @app.route('/project/edit/<project_id>', methods=['GET','POST'])
 @login_required
 def edit_project(project_id):
@@ -128,9 +153,10 @@ def edit_project(project_id):
         project.name = form.name.data
         project.description = form.description.data
         db.session.commit()
-        return redirect(url_for('view_projects'))
+        return redirect(url_for('view_all_projects'))
     return render_template("project_form.html", form=form, form_title="Edit Project Details", submit_value="Save Changes", name="edit_project")
 
+#   DELETE A PROJECT
 @app.route('/project/delete/<project_id>')
 @login_required
 def delete_project(project_id):
@@ -138,12 +164,14 @@ def delete_project(project_id):
     db.session.delete(project)
     db.session.commit()
 
-    return redirect(url_for('view_projects'))
+    return redirect(url_for('view_all_projects'))
 
 #####   FLIGHT MANAGEMENT ROUTES AND VIEWS
+
+#   VIEW ALL FLIGHTS
 @app.route('/flights')
 @login_required
-def view_flights():
+def view_all_flights():
     user = current_user
     
     #get projects of user
@@ -163,6 +191,18 @@ def view_flights():
     flight_count=len(flights)
     return render_template("flights.html", title="Flights", user=user, flights=flights, flight_count = flight_count)
 
+#VIEW FLIGHT DETAILS
+@app.route('/flight/view/<flight_id>')
+@login_required
+def view_flight(flight_id):
+    user = current_user
+    flight = models.Flight.query.get(flight_id)
+    drone = models.Drone.query.get(flight.drone_id)
+    project = models.Project.query.get(flight.project_id)
+
+    return render_template('view_flight.html', title=flight.name,  flight=flight, drone=drone, project=project)
+
+#   ADD A FLIGHT
 @app.route('/flight/add', methods=['GET','POST'])
 @login_required
 def add_flight():
@@ -197,10 +237,11 @@ def add_flight():
 
         db.session.add(flight)
         db.session.commit()
-        return redirect(url_for("view_flights"))
+        return redirect(url_for("view_all_flights"))
 
     return render_template("flight_form.html", title="Add Flight", form_title="Add Flight", submit_value="Add Flight", name="add_flight", projects=projects, form=form)
 
+#   EDIT FLIGHT DETAILS
 @app.route('/flight/edit/<flight_id>', methods=['GET','POST'])
 @login_required
 def edit_flight(flight_id):
@@ -235,16 +276,17 @@ def edit_flight(flight_id):
         print flight
 
         db.session.commit()
-        return redirect(url_for("view_flights"))
+        return redirect(url_for("view_all_flights"))
     return render_template("flight_form.html", title="Edit Flight", form_title="Edit Flight Details", submit_value="Save Changes", name="edit_flight", projects=projects, form=form)
 
+#   DELETE A FLIGHT
 @app.route('/flight/delete/<flight_id>')
 @login_required
 def delete_flight(flight_id):
     flight = models.Flight.query.get(flight_id)
     db.session.delete(flight)
     db.session.commit()
-    return redirect(url_for("view_flights"))
+    return redirect(url_for("view_all_flights"))
 
 
 #####   USER MANAGEMENT ROUTES AND VIEWS   

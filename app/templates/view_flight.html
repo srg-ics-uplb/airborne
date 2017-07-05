@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+        <div class="jumbotron">
+			<h2> Flight Details </h2>
+            <span><h3>{{ flight.name }}  </h3> </span>
+            <p> Location: {{flight.location}} </p>
+			<p> Notes: {{flight.notes}}</p>
+			<p> Project: <a href="/project/view/{{project.id}}">{{project.name}} </a></p>
+			<p> Drone: <a href="/drone/view/{{drone.id}}">{{drone.name}} </a></p>
+			
+			<h3> Flight Type Details </h3>
+			<p> Flight Type: {{flight.flight_type}} </p>
+			<p> Operation Type: {{flight.operation_type}} </p>
+			<p> Additional notes on flight type: {{flight.more_type_info}} </p>
+			<p> Was during night: {{flight.night_flight}} </p>
+
+			<h3> Flight Statistics </h3>
+			<p> Duration: {{flight.duration/3600}} hours, {{ (flight.duration%3600)/60 }} minutes, {{ flight.duration%60 }} seconds </p>
+			<p> Number of landings: {{flight.landing_count}} </p>
+			<p> Distance travelled: {{flight.travelled_distance}} </p>
+			<p> Maximum AGL(above ground level) altitude: {{flight.max_agl_altitude}} </p>
+			
+			
+			<hr>
+            
+            <div class="container">                
+            <hr>
+                
+                
+            
+            </div>
+        </div>
+{% endblock %}
