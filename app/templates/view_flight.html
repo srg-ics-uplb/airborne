@@ -46,9 +46,11 @@
 						{% if flight.logs.count()!=0 %}
 							{% for log in flight.logs %}
 							<div class="row">
-								<p>Log # {{log.id}} </p>
-								<p>Log file "{{log.filename}}"</p>
-								<button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#delete-flight-log" ng-click="set_delete_flight({{log.id}})">Delete this log file</button>
+								<div class="col-sm-12">
+									<p>Log # {{log.id}} </p>
+									<p>Log file "{{log.filename}}"</p>
+									<button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#delete-flight-log" ng-click="set_delete_flight({{log.id}})">Delete this log file</button>
+								</div>
 							</div>
 							{% endfor %}
 						{% else %}
@@ -100,7 +102,7 @@
 				<p>Log file # {{log_id}} </p>
 			</div>
 			<div class="modal-footer">
-				<a href="/log/delete/{{log_id}}" class="btn btn-sm btn-danger" data-dismiss="modal">Delete </a>
+				<a href="/log/delete/{{log_id}}" class="btn btn-sm btn-danger" >Delete </a>
 				<button class="btn btn-sm btn-default" data-dismiss="modal">Cancel</button>
 				
 			</div>
