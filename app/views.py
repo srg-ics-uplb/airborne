@@ -1,11 +1,24 @@
 from app import app, login_manager, bcrypt, db, models
-from flask import render_template, flash, redirect, session, url_for, request, g
+from flask import render_template, flash, redirect, session, url_for, request, g, abort
 from .forms import *
 from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.utils import secure_filename
 from datetime import datetime
 
 import os
+
+
+
+
+def check_user(user_id, content_user_id):
+    if user_id != content_user_id:
+        abort(403)
+
+
+
+def check_if_none(entity):
+    if entity is not None:
+        abort(404)
 
 @app.route('/')
 def home():
@@ -37,17 +50,20 @@ def view_all_drones():
     user = current_user
     
     drones = models.Drone.query.filter_by(user_id=user.id)
-    print drones
     return render_template('drones.html', title='List of drones', user=user, drones=drones)
 
 #   VIEW DRONE DETAILS
 @app.route('/drone/view/<drone_id>')
 @login_required
 def view_drones(drone_id):
-    user = current_user
     drone = models.Drone.query.get(drone_id)
-
-    return render_template("view_drone.html", title=drone.name, drone=drone)
+    if drone is None:
+        abort(404)
+    elif current_user.id != drone.user_id:
+        abort(404)
+    
+    else:
+        return render_template("view_drone.html", title=drone.name, drone=drone)
     
 #   ADD A DRONE    
 @app.route('/drone/add', methods=['GET','POST'])
@@ -81,33 +97,45 @@ def add_drone():
 @login_required
 def edit_drone(drone_id):
     drone = models.Drone.query.get(drone_id)
-    form = DroneForm(obj=drone)
+    if drone is None:
+        abort(404)
+    elif current_user.id != drone.user_id:
+        abort(404)
     
-    if form.validate_on_submit():
-        drone.name = form.name.data
-        drone.weight = form.weight.data
-        drone.version_number = form.version_number.data
-        drone.brand = form.brand.data
-        drone.model = form.model.data
-        drone.notes = form.notes.data
-        drone.max_payload_cap = form.max_payload_cap.data
-        drone.max_speed = form.max_speed.data
+    else:    
+        form = DroneForm(obj=drone)
+        
+        if form.validate_on_submit():
+            drone.name = form.name.data
+            drone.weight = form.weight.data
+            drone.version_number = form.version_number.data
+            drone.brand = form.brand.data
+            drone.model = form.model.data
+            drone.notes = form.notes.data
+            drone.max_payload_cap = form.max_payload_cap.data
+            drone.max_speed = form.max_speed.data
 
-        print form.name.data
-        db.session.commit()
+            print form.name.data
+            db.session.commit()
 
-        return redirect(url_for('view_all_drones'))
+            return redirect(url_for('view_all_drones'))
 
-    return render_template("drone_form.html", title="Edit Drone", form = form, form_title="Edit Drone Details", name="edit_drone", submit_value="Save Changes")
+        return render_template("drone_form.html", title="Edit Drone", form = form, form_title="Edit Drone Details", name="edit_drone", submit_value="Save Changes")
 
 #   DELETE A DRONE
 @app.route('/drone/delete/<drone_id>')
 @login_required
 def delete_drone(drone_id):
     drone = models.Drone.query.get(drone_id)
-    db.session.delete(drone)
-    db.session.commit()
-    return redirect(url_for('view_all_drones'))
+    if drone is None:
+        abort(404)
+    elif current_user.id != drone.user_id:
+        abort(404)
+    
+    else:
+        db.session.delete(drone)
+        db.session.commit()
+        return redirect(url_for('view_all_drones'))
 
 
 #####   PROJECT MANAGEMENT ROUTES AND VIEWS    
@@ -129,8 +157,13 @@ def view_all_projects():
 def view_project(project_id):
     user = current_user
     project = models.Project.query.get(project_id)
-
-    return render_template("view_project.html", title=project.name, project=project)
+    if project is None:
+        abort(404)
+    elif current_user.id != project.user_id:
+        abort(404)
+    
+    else:
+        return render_template("view_project.html", title=project.name, project=project)
 
 #   ADD A PROJECT
 @app.route('/project/add', methods=['GET','POST'])
@@ -152,23 +185,35 @@ def add_project():
 def edit_project(project_id):
     user = current_user
     project = models.Project.query.get(project_id)
-    form = ProjectForm(obj=project)
-    if form.validate_on_submit():
-        project.name = form.name.data
-        project.description = form.description.data
-        db.session.commit()
-        return redirect(url_for('view_all_projects'))
-    return render_template("project_form.html", form=form, form_title="Edit Project Details", submit_value="Save Changes", name="edit_project")
+    
+    if project is None:
+        abort(404)
+    elif current_user.id != project.user_id:
+        abort(404)
+    
+    else:
+        form = ProjectForm(obj=project)
+        if form.validate_on_submit():
+            project.name = form.name.data
+            project.description = form.description.data
+            db.session.commit()
+            return redirect(url_for('view_all_projects'))
+        return render_template("project_form.html", form=form, form_title="Edit Project Details", submit_value="Save Changes", name="edit_project")
 
 #   DELETE A PROJECT
 @app.route('/project/delete/<project_id>')
 @login_required
 def delete_project(project_id):
     project = models.Project.query.get(project_id)
-    db.session.delete(project)
-    db.session.commit()
-
-    return redirect(url_for('view_all_projects'))
+    if project is None:
+        abort(404)
+    elif current_user.id != project.user_id:
+        abort(404)
+    
+    else:
+        db.session.delete(project)
+        db.session.commit()
+        return redirect(url_for('view_all_projects'))
 
 #####   FLIGHT MANAGEMENT ROUTES AND VIEWS
 
@@ -201,24 +246,33 @@ def view_all_flights():
 def view_flight(flight_id):
     user = current_user
     flight = models.Flight.query.get(flight_id)
-    drone = models.Drone.query.get(flight.drone_id)
+    if flight is None:
+        abort(404)
+    
     project = models.Project.query.get(flight.project_id)
-    form = LogForm()
-    print form.validate_on_submit()
-    if form.validate_on_submit():
-        f = form.log_file.data
-        filename = secure_filename(user.username + ' - ' + str(datetime.now()) +' - '+ f.filename )
+    
+    if current_user.id != project.user_id:
+        abort(404)
+    
+    else:
+        drone = models.Drone.query.get(flight.drone_id)
         
-        f.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        log = models.Log(filename, flight_id)
-        
-        db.session.add(log)
-        db.session.commit()
+        form = LogForm()
+        print form.validate_on_submit()
+        if form.validate_on_submit():
+            f = form.log_file.data
+            filename = secure_filename(user.username + ' - ' + str(datetime.now()) +' - '+ f.filename )
+            
+            f.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            log = models.Log(filename, flight_id)
+            
+            db.session.add(log)
+            db.session.commit()
 
-        print 'Upload Successful for file: ' + filename
-        redirect(url_for('view_flight', flight_id=flight_id))
+            print 'Upload Successful for file: ' + filename
+            redirect(url_for('view_flight', flight_id=flight_id))
 
-    return render_template('view_flight.html', title=flight.name,  flight=flight, drone=drone, project=project, form=form)
+        return render_template('view_flight.html', title=flight.name,  flight=flight, drone=drone, project=project, form=form)
 
 #   ADD A FLIGHT
 @app.route('/flight/add', methods=['GET','POST'])
@@ -264,53 +318,71 @@ def add_flight():
 @login_required
 def edit_flight(flight_id):
     user = current_user
-    projects = db.session.query(models.Project.id, models.Project.name).filter_by(user_id = user.id)
-    drones = db.session.query(models.Drone.id, models.Drone.name).filter_by(user_id = user.id)
     flight = models.Flight.query.get(flight_id)
-    form= FlightForm(obj=flight)
-    form.duration_hours.data = flight.duration/ 3600
-    form.duration_mins.data = (flight.duration % 3600) / 60
-    form.duration_secs.data = flight.duration % 60
-    form.project.choices= projects
-    form.drone.choices = drones
-    
-    if form.validate_on_submit():
-        duration = (form.duration_hours.data*60*60)+(form.duration_mins.data*60)+(form.duration_secs.data)
-        flight.name = form.name.data
-        flight.location = form.location.data
-        flight.date = form.date.data
-        flight.duration = duration
-        flight.more_type_info = form.more_type_info.data
-        flight.operation_type = form.operation_type.data
-        flight.night_flight = form.night_flight.data
-        flight.landing_count = form.landing_count.data
-        flight.travelled_distance = form.travelled_distance.data
-        flight.max_agl_altitude = form.max_agl_altitude.data
-        flight.notes = form.notes.data
-        flight.weather_description = form.weather_description.data
-        flight.drone_id = form.drone.data
-        flight.project_id =  form.project.data
-        
-        print flight
+    if flight is None:
+        abort(404)
 
-        db.session.commit()
-        return redirect(url_for("view_all_flights"))
-    return render_template("flight_form.html", title="Edit Flight", form_title="Edit Flight Details", submit_value="Save Changes", name="edit_flight", projects=projects, form=form)
+    project = models.Project.query.get(flight.project_id)
+    
+    if current_user.id != project.user_id:
+        abort(404)
+    
+    else:
+        projects = db.session.query(models.Project.id, models.Project.name).filter_by(user_id = user.id)
+        drones = db.session.query(models.Drone.id, models.Drone.name).filter_by(user_id = user.id)
+        form= FlightForm(obj=flight)
+        form.duration_hours.data = flight.duration/ 3600
+        form.duration_mins.data = (flight.duration % 3600) / 60
+        form.duration_secs.data = flight.duration % 60
+        form.project.choices= projects
+        form.drone.choices = drones
+        
+        if form.validate_on_submit():
+            duration = (form.duration_hours.data*60*60)+(form.duration_mins.data*60)+(form.duration_secs.data)
+            flight.name = form.name.data
+            flight.location = form.location.data
+            flight.date = form.date.data
+            flight.duration = duration
+            flight.more_type_info = form.more_type_info.data
+            flight.operation_type = form.operation_type.data
+            flight.night_flight = form.night_flight.data
+            flight.landing_count = form.landing_count.data
+            flight.travelled_distance = form.travelled_distance.data
+            flight.max_agl_altitude = form.max_agl_altitude.data
+            flight.notes = form.notes.data
+            flight.weather_description = form.weather_description.data
+            flight.drone_id = form.drone.data
+            flight.project_id =  form.project.data
+            
+            print flight
+
+            db.session.commit()
+            return redirect(url_for("view_all_flights"))
+        return render_template("flight_form.html", title="Edit Flight", form_title="Edit Flight Details", submit_value="Save Changes", name="edit_flight", projects=projects, form=form)
 
 #   DELETE A FLIGHT
 @app.route('/flight/delete/<flight_id>')
 @login_required
 def delete_flight(flight_id):
     flight = models.Flight.query.get(flight_id)
-    db.session.delete(flight)
-    db.session.commit()
-    return redirect(url_for("view_all_flights"))
+    if flight is None:
+        abort(404)
+    
+    project = models.Project.query.get(flight.project_id)
+    
+    if current_user.id != project.user_id:
+        abort(404)
+    
+    else:
+        db.session.delete(flight)
+        db.session.commit()
+        return redirect(url_for("view_all_flights"))
 
 
 ##### LOG MANAGEMENT ROUTES AND VIEWS
 
 
-#### SUPPOSEDLY LOG UPLOAD ROUTE BUT DOESN'T WORK
+#   SUPPOSEDLY LOG UPLOAD ROUTE BUT DOESN'T WORK
 @app.route('/upload', methods=['POST'])
 @login_required
 def upload_log(f,flight):
@@ -324,16 +396,29 @@ def upload_log(f,flight):
 @login_required
 def delete_log(log_id):
     log = models.Log.query.get(log_id)
+    if log is None:
+        abort(404)
+
     flight_id = log.flight_id
-    os.remove(os.path.join(app.config['UPLOAD_FOLDER'], log.filename))
-    db.session.delete(log)
-    db.session.commit()
+    flight = models.Flight.query.get(flight_id = flight_id)
+    project = models.Project.query.get(flight.project_id)
     
-    return redirect(url_for('view_flight', flight_id=flight_id))
+    
+    if current_user.id != project.user_id:
+        abort(404)
+    else:
+        os.remove(os.path.join(app.config['UPLOAD_FOLDER'], log.filename))
+        db.session.delete(log)
+        db.session.commit()
+        
+        return redirect(url_for('view_flight', flight_id=flight_id))
 #####   USER MANAGEMENT ROUTES AND VIEWS   
 
 @app.route('/login', methods=['GET','POST'])
 def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('dashboard'))
+
     form = LoginForm()
     if form.validate_on_submit():
         print form.username.data
@@ -356,7 +441,9 @@ def login():
 
 @app.route('/signup', methods=['GET','POST'])    
 def signup():
-    
+    if current_user.is_authenticated:
+        return redirect(url_for('dashboard'))
+
     form = SignupForm()
 
     if form.validate_on_submit():
@@ -391,3 +478,20 @@ def logout():
 @login_manager.user_loader
 def load_user(id):
     return models.User.query.get(id)
+
+#####   ERROR HANDLERS
+
+@app.errorhandler(403)
+def error_403(e):
+    return render_template("error_403.html")
+
+
+@app.errorhandler(404)
+def error_404(e):
+    return render_template("error_404.html")
+
+@app.errorhandler(401)
+def error_401(e):
+    return render_template("error_401.html")
+
+
