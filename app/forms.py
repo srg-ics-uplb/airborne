@@ -1,4 +1,5 @@
 from flask_wtf import FlaskForm
+from flask_wtf.file import FileField, FileRequired
 from wtforms import StringField, BooleanField, IntegerField, PasswordField, SelectField,  TextAreaField, DecimalField	
 from wtforms.validators import DataRequired, Optional, ValidationError
 # from wtforms.fields.html5 import DateField 
@@ -80,4 +81,5 @@ class FlightForm(FlaskForm):
 	notes = TextAreaField('notes', validators=[Optional()])
 	weather_description = TextAreaField('weather_description', validators=[Optional()])
 
-	
+class LogForm(FlaskForm):
+	log_file = FileField('log_file', validators=[FileRequired()])

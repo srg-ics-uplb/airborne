@@ -6,3 +6,6 @@ flask/
 
 #Database Migrations
 migrations/
+
+#Upload Folder for logs
+app/uploads/

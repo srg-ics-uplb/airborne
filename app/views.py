@@ -2,6 +2,10 @@ from app import app, login_manager, bcrypt, db, models
 from flask import render_template, flash, redirect, session, url_for, request, g
 from .forms import *
 from flask_login import login_user, logout_user, current_user, login_required
+from werkzeug.utils import secure_filename
+from datetime import datetime
+
+import os
 
 @app.route('/')
 def home():
@@ -192,15 +196,29 @@ def view_all_flights():
     return render_template("flights.html", title="Flights", user=user, flights=flights, flight_count = flight_count)
 
 #VIEW FLIGHT DETAILS
-@app.route('/flight/view/<flight_id>')
+@app.route('/flight/view/<flight_id>', methods=['GET','POST'])
 @login_required
 def view_flight(flight_id):
     user = current_user
     flight = models.Flight.query.get(flight_id)
     drone = models.Drone.query.get(flight.drone_id)
     project = models.Project.query.get(flight.project_id)
+    form = LogForm()
+    print form.validate_on_submit()
+    if form.validate_on_submit():
+        f = form.log_file.data
+        filename = secure_filename(user.username + ' - ' + str(datetime.now()) +' - '+ f.filename )
+        
+        f.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        log = models.Log(filename, flight_id)
+        
+        db.session.add(log)
+        db.session.commit()
 
-    return render_template('view_flight.html', title=flight.name,  flight=flight, drone=drone, project=project)
+        print 'Upload Successful for file: ' + filename
+        redirect(url_for('view_flight', flight_id=flight_id))
+
+    return render_template('view_flight.html', title=flight.name,  flight=flight, drone=drone, project=project, form=form)
 
 #   ADD A FLIGHT
 @app.route('/flight/add', methods=['GET','POST'])
@@ -289,6 +307,29 @@ def delete_flight(flight_id):
     return redirect(url_for("view_all_flights"))
 
 
+##### LOG MANAGEMENT ROUTES AND VIEWS
+
+
+#### SUPPOSEDLY LOG UPLOAD ROUTE BUT DOESN'T WORK
+@app.route('/upload', methods=['POST'])
+@login_required
+def upload_log(f,flight):
+    filename = secure_filename(user.username + f.filename)
+        
+    f.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+    
+    return redirect(url_for('view_flight', flight_id=flight.flight_id))
+
+@app.route('/log/delete/<log_id>', methods=['GET','DELETE'])
+@login_required
+def delete_log(log_id):
+    log = models.Log.query.get(log_id)
+    flight_id = log.flight_id
+    os.remove(os.path.join(app.config['UPLOAD_FOLDER'], log.filename))
+    db.session.delete(log)
+    db.session.commit()
+    
+    return redirect(url_for('view_flight', flight_id=flight_id))
 #####   USER MANAGEMENT ROUTES AND VIEWS   
 
 @app.route('/login', methods=['GET','POST'])

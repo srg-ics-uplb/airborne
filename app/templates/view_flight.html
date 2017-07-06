@@ -1,33 +1,129 @@
 {% extends "base.html" %}
-{% block content %}
-        <div class="jumbotron">
-			<h2> Flight Details </h2>
-            <span><h3>{{ flight.name }}  </h3> </span>
-            <p> Location: {{flight.location}} </p>
-			<p> Notes: {{flight.notes}}</p>
-			<p> Project: <a href="/project/view/{{project.id}}">{{project.name}} </a></p>
-			<p> Drone: <a href="/drone/view/{{drone.id}}">{{drone.name}} </a></p>
-			
-			<h3> Flight Type Details </h3>
-			<p> Flight Type: {{flight.flight_type}} </p>
-			<p> Operation Type: {{flight.operation_type}} </p>
-			<p> Additional notes on flight type: {{flight.more_type_info}} </p>
-			<p> Was during night: {{flight.night_flight}} </p>
 
-			<h3> Flight Statistics </h3>
-			<p> Duration: {{flight.duration/3600}} hours, {{ (flight.duration%3600)/60 }} minutes, {{ flight.duration%60 }} seconds </p>
-			<p> Number of landings: {{flight.landing_count}} </p>
-			<p> Distance travelled: {{flight.travelled_distance}} </p>
-			<p> Maximum AGL(above ground level) altitude: {{flight.max_agl_altitude}} </p>
-			
-			
-			<hr>
-            
-            <div class="container">                
-            <hr>
-                
-                
-            
+{% block content %}
+<div ng-app="flightApp">
+<div ng-controller="LogController">
+        <div class="jumbotron center">
+			<div class="container">
+				<h1>{{ flight.name }}</h1>
+			</div>
+        </div>
+		<div class="jumbotron">	
+			<div class="container">                
+				<hr>
+				<div class="row">
+					<div class="col-sm-4">
+						<h2> General Details </h2>
+						
+						<p> Location: {{flight.location}} </p>
+						<p> Notes: {{flight.notes}}</p>
+						<p> Project: <a href="/project/view/{{project.id}}">{{project.name}} </a></p>
+						<p> Drone: <a href="/drone/view/{{drone.id}}">{{drone.name}} </a></p>
+					</div>
+					<div class="col-sm-4">
+						<h2> Flight Type Details </h2>
+						<p> Flight Type: {{flight.flight_type}} </p>
+						<p> Operation Type: {{flight.operation_type}} </p>
+						<p> Additional notes on flight type: {{flight.more_type_info}} </p>
+						<p> Was during night: {{flight.night_flight}} </p>
+					</div>
+					<div class="col-sm-4">
+						<h2> Flight Statistics </h2>
+						<p> Duration: {{flight.duration/3600}} hours, {{ (flight.duration%3600)/60 }} minutes, {{ flight.duration%60 }} seconds </p>
+						<p> Number of landings: {{flight.landing_count}} </p>
+						<p> Distance travelled: {{flight.travelled_distance}} </p>
+						<p> Maximum AGL(above ground level) altitude: {{flight.max_agl_altitude}} </p>
+					</div>	
+				</div>
+				<div class="row" >
+					<div class="col-sm-12">
+					<h2> 
+						Log Statistics 
+						<button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#add-flight-log">Add Flight Log</button>
+						
+					</h2>
+					
+						{% if flight.logs.count()!=0 %}
+							{% for log in flight.logs %}
+							<div class="row">
+								<p>Log # {{log.id}} </p>
+								<p>Log file "{{log.filename}}"</p>
+								<button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#delete-flight-log" ng-click="set_delete_flight({{log.id}})">Delete this log file</button>
+							</div>
+							{% endfor %}
+						{% else %}
+
+								<p>No logs yet!</p>
+	
+						{% endif %}
+					</div>	
+				</div>
+
             </div>
         </div>
+
+<!-- ng-non-bindable so that it doesn't interfere with WTForm -->
+<div class="modal fade" id="add-flight-log" ng-non-bindable>
+	<div class="modal-dialog">
+		
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3 class="modal-title"> Add Flight Log </h3>
+			</div>
+			<div class="modal-body">
+				<form method="post" enctype="multipart/form-data" name="add_flight_log">
+					{{ form.csrf_token }}
+					{{ form.log_file }}
+
+					{% for error in form.errors %}
+						<span style="color:red;"> {{error}}</span>
+					{% endfor %}
+					
+					<input type="submit" value="Upload Log"/>
+				</form>
+			</div>
+		</div>	
+	</div>
+</div>	
+
+
+<!-- Allow AngularJS to interfere here in order to pass log_id to delete properly -->
+{% raw %}
+<div class="modal fade" id="delete-flight-log">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3 class="modal-title">Confirm Delete Flight Log</h3>
+			</div>
+			<div class="modal-body">
+				<p>Are you sure you want to delete this log file?</p>
+				<p>Log file # {{log_id}} </p>
+			</div>
+			<div class="modal-footer">
+				<a href="/log/delete/{{log_id}}" class="btn btn-sm btn-danger" data-dismiss="modal">Delete </a>
+				<button class="btn btn-sm btn-default" data-dismiss="modal">Cancel</button>
+				
+			</div>
+		</div>
+	</div>
+</div>
+{% endraw %}
+</div>
+</div>
+
+
+<!-- Mini script code just for log delete -->
+<script type="text/javascript">
+	angular.module('flightApp', [])
+	.controller('LogController', ['$scope', function($scope){
+		$scope.log_id = undefined;
+		$scope.set_delete_flight = function(id){
+			console.log("why hello there "+ id);
+
+			$scope.log_id = id;
+			console.log($scope.log_id)
+		};
+	
+}]);
+</script> 
 {% endblock %}

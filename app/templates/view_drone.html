@@ -1,23 +1,26 @@
 {% extends "base.html" %}
 {% block content %}
+	<h1>{{drone.name}} </h1>
     <div class="jumbotron">
-        <span><h2>{{drone.name}} </h2> </span>
-		<p>Brand:{{drone.brand}} </p>
-		<p>Model: {{drone.model}} </p>
-		<p>Version Number: {{drone.version_number}}</p>
-		<p>Weight: {{drone.weight}}</p>
-		<p>Maximum Payload Capacity: {{drone.max_payload_cap}} </p>
-		<p>Maximum Speed: {{drone.max_speed}}</p>
-		<a href="/drone/edit/{{drone.id}}" class="btn btn-sm btn-warning"> Edit </a>
-		<a href="/drone/delete/{{drone.id}}" class="btn btn-sm btn-danger"> Delete </a>
-        <hr>
-        
+		<div class="container">
+			<h2>Specifications</h2>
+			<p>Brand:{{drone.brand}} </p>
+			<p>Model: {{drone.model}} </p>
+			<p>Version Number: {{drone.version_number}}</p>
+			<p>Weight: {{drone.weight}}</p>
+			<p>Maximum Payload Capacity: {{drone.max_payload_cap}} </p>
+			<p>Maximum Speed: {{drone.max_speed}}</p>
+			<a href="/drone/edit/{{drone.id}}" class="btn btn-sm btn-warning"> Edit </a>
+			<a href="/drone/delete/{{drone.id}}" class="btn btn-sm btn-danger"> Delete </a>
+		</div>
+    </div>	
+	<div class="jumbotron"> 
         <div class="container">                
-            <hr>
-			<h2> Flight Involvement </h2>
+			<h2>Flight Involvement</h2>
             {% if drone.flights.count()!=0 %}
-               {% for flight in drone.flights %}
-					<div class="row">
+				<div class="row">
+    			{% for flight in drone.flights %}
+					<div class="col-sm-4">
 						<h3> <a href="/flight/view/{{flight.id}}"> {{flight.name}} </a></h3>
 						<p> {{ flight.date}} at {{ flight.location }} </p>
 						<p> Description: {{flight.notes}} </p>
