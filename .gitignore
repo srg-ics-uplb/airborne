@@ -8,4 +8,4 @@ flask/
 migrations/
 
 #Upload Folder for logs
-app/uploads/
+app/uploads/*
