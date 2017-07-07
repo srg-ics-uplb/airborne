@@ -6,3 +6,6 @@ flask/
 
 #Database Migrations
 migrations/
+
+#Upload Folder for logs. Keep actual logs out, but retain the directory
+app/uploads/logs/*.bin

@@ -4,20 +4,72 @@
 	<h1>{{ form_title }}</h1>
 	<form action="" method="post" name="{{name}}">
 		{{ form.hidden_tag() }}
+		{% if form.errors %}
+			<ul class="errors">
+				{% for field_name, field_errors in form.errors|dictsort if field_errors %}
+					{% for error in field_errors %}
+						<li>{{ form[field_name].label }}: {{ error }}</li>
+					{% endfor %}
+				{% endfor %}
+			</ul>
+		{% endif %}
 		<p>
 			
 			Flight Name:<br>
-			{{ form.name(size=64) }}<br>
+			{{ form.name(size=64) }}
+			{% for error in form.name.errors %}
+				<span style="color:red;"> {{error}}</span>
+			{% endfor %}
+			<br>
 			Location:<br>
-			{{ form.location(size=10) }}<br>
+			{{ form.location(size=10) }}
+			{% for error in form.location.errors %}
+				<span style="color:red;"> {{error}}</span>
+			{% endfor %}
+			<br>
+			
 			Date:<br>
-			{{ form.date(size=10) }}<br>
+			{{ form.date }}
+			{% for error in form.date.errors %}
+				<span style="color:red;"> {{error}}</span>
+			{% endfor %}
+			<br>
 			Duration:<br>
-			{{ form.duration(size=64) }}<br>
+			
+			Hours {{ form.duration_hours(size=5) }}
+			Mins {{ form.duration_mins(size=5) }}
+			Secs {{ form.duration_secs(size=5) }}
+			<br>
+			{% for error in form.duration_hours.errors %}
+				<span style="color:red;"> {{error}}</span>
+			{% endfor %}
+			{% for error in form.duration_mins.errors %}
+				<span style="color:red;"> {{error}}</span>
+			{% endfor %}
+			{% for error in form.duration_secs.errors %}
+				<span style="color:red;"> {{error}}</span>
+			{% endfor %}
+
+			Project:<br>
+			{{ form.project(class="dropdown") }}<br>
+			Drone: <br>
+			{{ form.drone(class="dropdown")}}<br>
 			Flight Type:<br>
-			{{ form.flight_type(size=64) }}<br>
+			{{ form.flight_type(class="dropdown") }}
+			{% for error in form.flight_type.errors %}
+				<span style="color:red;"> {{error}}</span>
+			{% endfor %}
+			<br>
+			Operation Type: <br>
+			{{ form.operation_type(class="dropdown")}}
+			{% for error in form.operation_type.errors %}
+				<span style="color:red;"> {{error}}</span>
+			{% endfor %}
+			<br>
+			More Type Info: <br>
+			{{ form.more_type_info }}<br>
 			Night Flight:<br>
-			{{ form.night_flight(size=10) }}<br>
+			{{ form.night_flight(type="checkbox") }}<br>
 			Landing Count:<br>
 			{{ form.landing_count(size=10) }}<br>
 			Travelled Distance:<br>
