@@ -36,4 +36,7 @@ app.register_blueprint(project)
 from .views.drone import drone
 app.register_blueprint(drone)
 
+from .views.log import log
+app.register_blueprint(log)
+
 
