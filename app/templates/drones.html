@@ -1,25 +1,45 @@
 {% extends "base.html" %}
 {% block content %}
     <div class="jumbotron">
-        <span><h3>Drone List  ({{user.drones.count()}}) <a href="/drone/add" class="btn btn-lg btn-default"> Add </a> </h3> </span>
-        <hr>
-        
-        <div class="container">                
-            <hr>
+        <div class="container">
+            <h3>Drones ({{user.drones.count()}}) <a href="/drone/add" class="btn btn-lg btn-default"> Add </a> </h3> 
             {% if drones.count()!=0 %}
-                {% for drone in drones %}
-                    <div class="row">
-                        <a href="/drone/view/{{drone.id}}"><h3> {{drone.name}} ver. {{drone.version_number}}</h3></a>
-                        <p> Brand/Model: {{drone.brand}} ({{drone.model}}) </p>
-                        <p> Notes: {{drone.notes}} </p>
-                        <a href="/drone/edit/{{drone.id}}" class="btn btn-sm btn-warning"> Edit </a>
-                        <a href="/drone/delete/{{drone.id}}" class="btn btn-sm btn-danger"> Delete </a>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="table-responsive">
+                            <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Drone Name</th>
+                                    <th>Version Number</th>
+                                    <th>Brand</th>
+                                    <th>Model</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for drone in drones %}
+                                <tr>
+                                    <td><a href="/drone/view/{{drone.id}}">{{drone.name}}</a></td>
+                                    <td>{{drone.version_number}}</td>
+                                    <td>{{drone.brand}}</td>
+                                    <td>{{drone.model}}</td>
+                                    <td><a href="/drone/edit/{{drone.id}}" class="btn btn-sm btn-warning"> Edit </a><a href="/drone/delete/{{drone.id}}" class="btn btn-sm btn-danger"> Delete </a></td>
+                                    
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+
+                            </table>
+                        </div>        
                     </div>
-                {% endfor %}
+                </div>
+               
             {% else %}
                 <div class="row">
-                    <h3> You have no drones. Click the Add button above to add one! </h3>
-                    <p> Is this an error? Contact the administrator. </p>
+                    <div class="col-sm-12">
+                        <h3> You have no drones. Click the Add button above to add one! </h3>
+                        <p> Is this an error? Contact the administrator. </p>
+                    </div>
                 </div>
             {% endif %}
 
