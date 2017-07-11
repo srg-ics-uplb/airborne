@@ -112,7 +112,7 @@
 
 										
 										{% else %}
-											<li><p> {{key|capitalize |replace("-", " ")}} : {{value}} </p></li>
+											<li><p> {{key|capitalize |replace('-', " ")|replace('_', " ")}} : {{value}} </p></li>
 										{% endif %}
 									{% endfor %}
 									</ul>
