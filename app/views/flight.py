@@ -53,6 +53,8 @@ def view_flight(flight_id):
     logs = Log.query.filter_by(flight_id=flight_id).all()
     for log in logs:
          log.processed_content = json.loads(log.content)
+        #  log.processed_content['timestamp'] = datetime.(log.processed_content['timestamp'])
+
          print "Log " + log.filename + " successfully processed"    
     
 

@@ -47,37 +47,79 @@
 							{% for log in logs %}
 							<div class="row">
 								<div class="col-sm-12">
-									<p>Log # {{log.id}} </p>
-									<p>Log file "{{log.filename}}"</p>
-									<p>Tests:</p> 
+									{# <p>Log # {{log.id}} </p> #}
+									<p>Log file "{{log.filename}}" <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#delete-flight-log" ng-click="set_delete_flight({{log.id}})">Delete this log file</button></p>
+
+										
+									
 									<ul>
-									{% for key, values in log.processed_content['tests'].items()%}
-										<li><p>{{key}} </p></li>
+									{% for key, value in log.processed_content.items() %}	
+										
+										{%if key=='tests'%}
+										<li><p>Tests:</p> </li>
 										<ul>
-										{% for key_1, value_1 in values.items() %}
-											{% if key_1=='results' %}
-												{% if not value_1 %}
-												<h4> {{key_1}} : none </h4>	
-												{% else %}
-												<h4> {{key_1}} : </h4>
-													{% for results_list in value_1 %}
+										
+										{% for row in value.items()|batch(3) %}
+											<div class="row">
+											{% for key_1, values_1 in row %}
+												
+												<div class="col-sm-4 panel panel-default">
+													<div class="panel-heading">
+														<p><a href="#{{log.id}}{{key_1|replace(' ', '_')}}" data-toggle="collapse">{{key_1}} </a></p>
+													</div>
+													<div class="panel-collapse collapse" id="{{log.id}}{{key_1|replace(' ', '_')}}">
+														<div class="panel-body">
 														<ul>
-														{% for key_2, value_2 in results_list.items() %}
-															<li><h5>{{ key_2 }} : {{ value_2 }}</h5></li>
+														{% for key_2, value_2 in values_1.items() %}
+															{% if key_2=='results' %}
+																{% if not value_2 %}
+																	<li><h4> {{key_2|capitalize |replace("-", " ")}} : none </h4>	</li>
+																{% else %}
+																	<li><h4> {{key_2|capitalize |replace("-", " ")}} : </h4></li>
+																	{% for results_list in value_2 %}
+																		<ul>
+																		{% for key_3, value_3 in results_list.items() %}
+																			<li><h5>{{ key_3|capitalize |replace("-", " ") }} : {{ value_3 }}</h5></li>
+																		{% endfor %}
+																		</ul>
+																	{% endfor %}
+																{% endif %}
+															{% elif key_2=='status' %}
+																<li>
+																	<h4>{{ key_2|capitalize |replace("-", " ") }} : 
+																		{% if value_2 == 'FAIL'%}
+																		<span class="label label-danger">{{ value_2 }}</span>
+																		{% elif value_2 =='WARN' %}
+																		<span class="label label-warning">{{ value_2 }}</span>
+																		{% else %}
+																		<span class="label label-success">{{ value_2 }}</span>
+																		{% endif %}
+																	</h4>
+																</li>
+															{% else %}
+																<li><h4>{{ key_2|capitalize |replace("-", " ") }} : {{ value_2 }}</h4></li>
+															{% endif %}
 														{% endfor %}
 														</ul>
-													{% endfor %}
-												{% endif %}
-											{% else %}
-											<li><h4>{{ key_1 }} : {{ value_1 }}</h4></li>
-											{% endif %}
+														</div>
+													</div>
+												</div>
+												
+											{% endfor %}
+											</div>
 										{% endfor %}
 										</ul>
+
+										
+										{% else %}
+											<li><p> {{key|capitalize |replace("-", " ")}} : {{value}} </p></li>
+										{% endif %}
 									{% endfor %}
 									</ul>
-									<button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#delete-flight-log" ng-click="set_delete_flight({{log.id}})">Delete this log file</button>
+									
 								</div>
 							</div>
+							<br>
 							{% endfor %}
 						{% else %}
 
