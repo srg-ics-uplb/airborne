@@ -5,7 +5,7 @@ from ..models import Project, Drone, Flight, Log
 from flask_login import  current_user, login_required
 from werkzeug.utils import secure_filename
 from datetime import datetime
-import os
+import os, subprocess, json
 
 #####   FLIGHT MANAGEMENT ROUTES AND VIEWS
 flight = Blueprint('flight', __name__)
@@ -39,6 +39,7 @@ def view_all_flights():
 def view_flight(flight_id):
     user = current_user
     flight = Flight.query.get(flight_id)
+    
     if flight is None:
         abort(404)
     
@@ -47,25 +48,34 @@ def view_flight(flight_id):
     if current_user.id != project.user_id:
         abort(404)
     
-    else:
-        drone = Drone.query.get(flight.drone_id)
+
+    drone = Drone.query.get(flight.drone_id)
+    logs = Log.query.filter_by(flight_id=flight_id).all()
+    for log in logs:
+         log.processed_content = json.loads(log.content)
+         print "Log " + log.filename + " successfully processed"    
+    
+
+    form = LogForm()
+
+    if form.validate_on_submit():
+        f = form.log_file.data
+        filename = secure_filename(user.username + ' - ' + str(datetime.now()) +' - '+ f.filename )
+        f.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        print app.config['LOG_ANALYZER_DIR'] + app.config['UPLOAD_FOLDER'] + '\\' + filename
+        args = app.config['LOG_ANALYZER_DIR'] + app.config['UPLOAD_FOLDER'] + '\\' + filename
+        content = subprocess.check_output(args)
+
+
         
-        form = LogForm()
-        print form.validate_on_submit()
-        if form.validate_on_submit():
-            f = form.log_file.data
-            filename = secure_filename(user.username + ' - ' + str(datetime.now()) +' - '+ f.filename )
-            
-            f.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            log = Log(filename, flight_id)
-            
-            db.session.add(log)
-            db.session.commit()
+        log = Log(filename, content, flight_id)
+        
+        db.session.add(log)
+        db.session.commit()
+        print 'Upload Successful for file: ' + filename
+        redirect(url_for('flight.view_flight', flight_id=flight_id))
 
-            print 'Upload Successful for file: ' + filename
-            redirect(url_for('flight.view_flight', flight_id=flight_id))
-
-        return render_template('view_flight.html', title=flight.name,  flight=flight, drone=drone, project=project, form=form)
+    return render_template('view_flight.html', title=flight.name,  flight=flight, drone=drone, project=project, form=form, logs=logs)
 
 #   ADD A FLIGHT
 @flight.route('/flight/add', methods=['GET','POST'])

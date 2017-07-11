@@ -43,12 +43,38 @@
 						
 					</h2>
 					
-						{% if flight.logs.count()!=0 %}
-							{% for log in flight.logs %}
+						{% if logs %}
+							{% for log in logs %}
 							<div class="row">
 								<div class="col-sm-12">
 									<p>Log # {{log.id}} </p>
 									<p>Log file "{{log.filename}}"</p>
+									<p>Tests:</p> 
+									<ul>
+									{% for key, values in log.processed_content['tests'].items()%}
+										<li><p>{{key}} </p></li>
+										<ul>
+										{% for key_1, value_1 in values.items() %}
+											{% if key_1=='results' %}
+												{% if not value_1 %}
+												<h4> {{key_1}} : none </h4>	
+												{% else %}
+												<h4> {{key_1}} : </h4>
+													{% for results_list in value_1 %}
+														<ul>
+														{% for key_2, value_2 in results_list.items() %}
+															<li><h5>{{ key_2 }} : {{ value_2 }}</h5></li>
+														{% endfor %}
+														</ul>
+													{% endfor %}
+												{% endif %}
+											{% else %}
+											<li><h4>{{ key_1 }} : {{ value_1 }}</h4></li>
+											{% endif %}
+										{% endfor %}
+										</ul>
+									{% endfor %}
+									</ul>
 									<button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#delete-flight-log" ng-click="set_delete_flight({{log.id}})">Delete this log file</button>
 								</div>
 							</div>
