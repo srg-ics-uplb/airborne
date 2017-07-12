@@ -12,40 +12,73 @@
 					<div class="form-group  col-sm-4">
 						<label for="firstname">First Name:</label>
 						{{ form.firstname(class="form-control") }}
+						{% for error in form.firstname.errors %}
+							<span style="color:red;"> {{error}}</span><br>
+						{% endfor %}
 					</div>
 					<div class="form-group  col-sm-4">	
 						<label for="middlename">Middle Name:</label>
 						{{ form.middlename(class="form-control") }}
+						{% for error in form.middlename.errors %}
+							<span style="color:red;"> {{error}}</span><br>
+						{% endfor %}
 					</div>
 					<div class="form-group col-sm-4">	
 						<label for="lastname">Last Name:</label>
 						{{ form.lastname(class="form-control") }}
+						{% for error in form.lastname.errors %}
+							<span style="color:red;"> {{error}}</span><br>
+						{% endfor %}
 					</div>
 				</div>
 				<div class="row">
-					<div class="form-group col-sm-6">	
+					<div class="form-group col-sm-4">	
 						<label for="username">Username:</label>
 						{{ form.username(class="form-control") }}
+						{% for error in form.username.errors %}
+							<span style="color:red;"> {{error}}</span><br>
+						{% endfor %}
 					</div>
+					<div class="form-group col-sm-8">	
+						<label for="email">Email:</label>
+						{{ form.email(size=30, class="form-control") }}
+						{% for error in form.email.errors %}
+							<span style="color:red;"> {{error}}</span><br>
+						{% endfor %}
+					</div>
+
+				</div>	
+				<div class="row">
+					
 					<div class="form-group col-sm-6">	
 						<label for="password">Password:</label>
 						{{ form.password(class="form-control") }}
+						{% for error in form.password.errors %}
+							<span style="color:red;"> {{error}}</span><br>
+						{% endfor %}
 					</div>
-				</div>	
-				<div class="row">
-					<div class="form-group col-sm-12">	
-						<label for="email">Email:</label>
-						{{ form.email(size=30, class="form-control") }}
+					<div class="form-group col-sm-6">	
+						<label for="confirm_password">Confirm Password:</label>
+						{{ form.confirm_password(class="form-control") }}
+						{% for error in form.confirm_password.errors %}
+							<span style="color:red;"> {{error}}</span><br>
+						{% endfor %}
 					</div>
 				</div>
 				<div class="row">
 					<div class="form-group col-sm-4">	
 						<label for="age">Age:</label>
 						{{ form.age( class="form-control") }}
+						{% for error in form.age.errors %}
+							<span style="color:red;"> {{error}}</span><br>
+						{% endfor %}
 					</div>
 					<div class="form-group col-sm-4">
 						<label for="sex">Sex:</label>
 						{{ form.sex(class="dropdown", class="form-control") }}
+						{% for error in form.sex.errors %}
+							<span style="color:red;"> {{error}}</span><br>
+						{% endfor %}
 					</div>
 					<div class="form-group col-sm-4 ">
 						

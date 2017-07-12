@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileRequired
 from wtforms import StringField, BooleanField, IntegerField, PasswordField, SelectField,  TextAreaField, DecimalField	
-from wtforms.validators import DataRequired, InputRequired, Optional, ValidationError, NumberRange
+from wtforms.validators import DataRequired, InputRequired, Optional, ValidationError, NumberRange, Email,EqualTo, Length
 # from wtforms.fields.html5 import DateField 
 from wtforms_components import DateField, TimeField
 
@@ -17,13 +17,14 @@ class LoginForm(FlaskForm):
 	remember_me = BooleanField('remember_me', default=False)
 
 class SignupForm(FlaskForm):
-	firstname = StringField('firstname', validators=[DataRequired()])
-	middlename = StringField('middlename', validators=[DataRequired()])
-	lastname = StringField('lastname', validators=[DataRequired()])
-	username = StringField('username', validators=[DataRequired()])
-	password = PasswordField('password', validators=[DataRequired()])
-	email = StringField('email', validators=[DataRequired()])
-	age = IntegerField('age', validators=[DataRequired()])
+	firstname = StringField('firstname', validators=[InputRequired(), Length(max=64)])
+	middlename = StringField('middlename', validators=[InputRequired(), Length(max=64)])
+	lastname = StringField('lastname', validators=[InputRequired(),Length(max=64)])
+	username = StringField('username', validators=[InputRequired(),Length(min=8, max=64)])
+	password = PasswordField('password', validators=[InputRequired(),EqualTo('confirm_password', message='Passwords do not match!'), Length(min=8, max=32)])
+	confirm_password = PasswordField('confirm_password')
+	email = StringField('email', validators=[Email(), Length(max=120)])
+	age = IntegerField('age', validators=[NumberRange(min=18)])
 	sex = SelectField('sex', choices=[('m', 'Male'), ('f','Female')])
 
 
