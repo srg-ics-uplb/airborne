@@ -5,26 +5,6 @@
 		<div class="container">
 			<h1>{{drone.name}} </h1>
 			<div class="row">
-				<div class="col-sm-8">
-					<h2>Flight Involvement</h2>
-					{% if drone.flights.count()!=0 %}
-						<div class="row">
-						{% for flight in drone.flights %}
-							<div class="col-sm-8">
-								<h3> <a href="/flight/view/{{flight.id}}"> {{flight.name}} </a></h3>
-								<p> {{ flight.date}} at {{ flight.location }} </p>
-								<p> Description: {{flight.notes}} </p>
-								<p> Duration: {{flight.duration//3600}} hour(s), {{ (flight.duration%3600)//60 }} minute(s), {{ flight.duration%60 }} second(s) </p>
-								
-							</div>
-						{% endfor %}
-					{% else %}
-						<div class="row">
-							<h3> Currently not used in any flights. </h3> 
-						</div>
-					{% endif %}
-				</div>	
-				</div>
 				<div class="col-sm-4">
 					<h2>Specifications</h2>
 					<p>Brand: {{drone.brand}} </p>
@@ -36,6 +16,30 @@
 					<a href="/drone/edit/{{drone.id}}" class="btn btn-sm btn-warning"><span class="glyphicon glyphicon-edit"></span> Edit </a>
 					<a href="/drone/delete/{{drone.id}}" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-trash"></span> Delete </a>
 				</div>
+				<div class="col-sm-8">
+					<h2>Flight Involvement</h2>
+					{% if drone.flights.count()!=0 %}
+						<div class="row">
+						{% for flight in drone.flights %}
+							<div class="col-sm-12">
+								<h3> <a href="/flight/view/{{flight.id}}"> {{flight.name}} </a></h3>
+								<p> {{ flight.date}} at {{ flight.location }} </p>
+								<p> Description: {{flight.notes}} </p>
+								<p> Duration: {{flight.duration//3600}} hour(s), {{ (flight.duration%3600)//60 }} minute(s), {{ flight.duration%60 }} second(s) </p>
+								
+							</div>
+						{% endfor %}
+						</div>
+					{% else %}
+						<div class="row">
+							<div class="col-sm-12">
+								<h3> Currently not used in any flights. </h3> 
+							</div>
+						</div>
+					{% endif %}
+				</div>	
+				</div>
+				
 			</div>
 		</div>
     </div>	
