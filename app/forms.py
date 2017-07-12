@@ -1,14 +1,14 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileRequired
 from wtforms import StringField, BooleanField, IntegerField, PasswordField, SelectField,  TextAreaField, DecimalField	
-from wtforms.validators import DataRequired, Optional, ValidationError
+from wtforms.validators import DataRequired, InputRequired, Optional, ValidationError, NumberRange
 # from wtforms.fields.html5 import DateField 
 from wtforms_components import DateField, TimeField
 
 
 def is_positive(FlaskForm, field):
 	if field.data < 0:
-		raise ValidationError(field.field_name+' must be positive.')
+		raise ValidationError(field.name+' must be positive.')
 
 class LoginForm(FlaskForm):
 
@@ -45,9 +45,9 @@ class FlightForm(FlaskForm):
 	name = StringField('name', validators=[DataRequired()])
 	location = StringField('location', validators=[DataRequired()])
 	date = DateField('date', format='%Y-%m-%d', validators=[Optional()])
-	duration_hours = IntegerField('duration_hours', validators=[is_positive])
-	duration_mins = IntegerField('duration_mins', validators=[is_positive])
-	duration_secs = IntegerField('duration_secs', validators=[is_positive])
+	duration_hours = IntegerField('duration_hours', validators=[NumberRange(min=0, max=23)])
+	duration_mins = IntegerField('duration_mins', validators=[NumberRange(min=0, max=59)])
+	duration_secs = IntegerField('duration_secs', validators=[NumberRange(min=0, max=59)])
 	flight_types=[
 		('Commercial','Commercial'), 
 		('Emergency','Emergency'), 
@@ -74,7 +74,7 @@ class FlightForm(FlaskForm):
 	drone = SelectField('drone', coerce=int,validators=[DataRequired()])
 
 
-	night_flight = BooleanField('night_flight', validators=[DataRequired()])
+	night_flight = BooleanField('night_flight', validators=[Optional()])
 	landing_count = IntegerField('landing_count', validators=[DataRequired()])
 	travelled_distance = DecimalField('travelled_distance', validators=[DataRequired()])
 	max_agl_altitude = DecimalField('max_agl_altitude', validators=[DataRequired()])

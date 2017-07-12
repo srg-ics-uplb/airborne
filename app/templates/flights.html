@@ -3,7 +3,7 @@
         <div class="jumbotron">
            
             <div class="container">
-                 <h3>Flights  ({{flight_count}}) <a href="/flight/add" class="btn btn-lg btn-default"> Add </a> </h3>
+                 <h3>Flights  ({{flight_count}}) <a href="/flight/add" class="btn btn-lg btn-success"><span class="glyphicon glyphicon-plus"></span> Add </a> </h3>
                  
                 <div class="row">
                     {% if flight_count!=0 %}
@@ -27,8 +27,8 @@
                                                 <td <a href="/project/view/{{flight.project.id}}">{{flight.project.name}} </a></td>
                                                 <td> <a href="/drone/view/{{flight.project.id}}">{{flight.drone.name}} </a> </td>
                                                 <td>
-                                                    <a href="/flight/edit/{{flight.id}}" class="btn btn-sm btn-warning"> Edit </a>
-                                                    <a href="/flight/delete/{{flight.id}}" class="btn btn-sm btn-danger"> Delete </a>
+                                                    <a href="/flight/edit/{{flight.id}}" class="btn btn-sm btn-warning"><span class="glyphicon glyphicon-edit"></span> Edit </a>
+                                                    <a href="/flight/delete/{{flight.id}}" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-trash"></span> Delete </a>
                                                 </td>    
                                             </tr>   
                                         {% endfor %}

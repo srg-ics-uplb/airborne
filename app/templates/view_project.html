@@ -5,8 +5,14 @@
                 <h1> {{ project.name}} </h1>
                 <h4>Description: {{project.description}}</h4>
                 <br>
-                <a href="/project/edit/{{project.id}}" class="btn btn-sm btn-warning"> Edit </a>
-                <a href="/project/delete/{{project.id}}" class="btn btn-sm btn-danger"> Delete </a>
+                <a href="/project/edit/{{project.id}}" class="btn btn-sm btn-warning"> 
+                    <span class="glyphicon glyphicon-edit"></span>
+                    Edit 
+                </a>
+                <a href="/project/delete/{{project.id}}" class="btn btn-sm btn-danger"> 
+                    <span class="glyphicon glyphicon-minus"></span>
+                    Delete 
+                </a>
 
             </div>
         </div>
@@ -39,8 +45,10 @@
                     </div>
                 {% else %}
                 <div class="row">
+                    <div class="col-sm-12">
                     <h3> There are currently no flights in this project. </h3>
                     <p> Is this an error? Contact the administrator. </p>
+                    </div>
                 </div>
                 {% endif %}
             </div>

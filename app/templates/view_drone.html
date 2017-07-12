@@ -14,7 +14,7 @@
 								<h3> <a href="/flight/view/{{flight.id}}"> {{flight.name}} </a></h3>
 								<p> {{ flight.date}} at {{ flight.location }} </p>
 								<p> Description: {{flight.notes}} </p>
-								<p> Duration: {{flight.duration/3600}} hours, {{ (flight.duration%3600)/60 }} minutes, {{ flight.duration%60 }} seconds </p>
+								<p> Duration: {{flight.duration//3600}} hour(s), {{ (flight.duration%3600)//60 }} minute(s), {{ flight.duration%60 }} second(s) </p>
 								
 							</div>
 						{% endfor %}
@@ -27,14 +27,14 @@
 				</div>
 				<div class="col-sm-4">
 					<h2>Specifications</h2>
-					<p>Brand:{{drone.brand}} </p>
+					<p>Brand: {{drone.brand}} </p>
 					<p>Model: {{drone.model}} </p>
 					<p>Version Number: {{drone.version_number}}</p>
 					<p>Weight: {{drone.weight}}</p>
 					<p>Maximum Payload Capacity: {{drone.max_payload_cap}} </p>
 					<p>Maximum Speed: {{drone.max_speed}}</p>
-					<a href="/drone/edit/{{drone.id}}" class="btn btn-sm btn-warning"> Edit </a>
-					<a href="/drone/delete/{{drone.id}}" class="btn btn-sm btn-danger"> Delete </a>
+					<a href="/drone/edit/{{drone.id}}" class="btn btn-sm btn-warning"><span class="glyphicon glyphicon-edit"></span> Edit </a>
+					<a href="/drone/delete/{{drone.id}}" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-trash"></span> Delete </a>
 				</div>
 			</div>
 		</div>

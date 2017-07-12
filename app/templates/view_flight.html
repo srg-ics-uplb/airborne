@@ -29,7 +29,7 @@
 					</div>
 					<div class="col-sm-4">
 						<h2> Flight Statistics </h2>
-						<p> Duration: {{flight.duration/3600}} hours, {{ (flight.duration%3600)/60 }} minutes, {{ flight.duration%60 }} seconds </p>
+						<p> Duration: {{flight.duration//3600}} hour(s), {{ (flight.duration%3600)//60 }} minute(s), {{ flight.duration%60 }} second(s) </p>
 						<p> Number of landings: {{flight.landing_count}} </p>
 						<p> Distance travelled: {{flight.travelled_distance}} </p>
 						<p> Maximum AGL(above ground level) altitude: {{flight.max_agl_altitude}} </p>
@@ -39,7 +39,10 @@
 					<div class="col-sm-12">
 					<h2> 
 						Log Statistics 
-						<button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#add-flight-log">Add Flight Log</button>
+						<button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#add-flight-log">
+							<span class="glyphicon glyphicon-plus"></span>
+							Add Flight Log
+						</button>
 						
 					</h2>
 					
@@ -48,7 +51,7 @@
 							<div class="row">
 								<div class="col-sm-12">
 									{# <p>Log # {{log.id}} </p> #}
-									<p>Log file "{{log.filename}}" <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#delete-flight-log" ng-click="set_delete_flight({{log.id}})">Delete this log file</button></p>
+									<p>Log file "{{log.filename}}" <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#delete-flight-log" ng-click="set_delete_flight({{log.id}})"><span class="glyphicon glyphicon-trash"></span> Delete this log file</button></p>
 
 										
 									
@@ -65,7 +68,10 @@
 												
 												<div class="col-sm-4 panel panel-default">
 													<div class="panel-heading">
-														<p><a href="#{{log.id}}{{key_1|replace(' ', '_')}}" data-toggle="collapse">{{key_1}} </a></p>
+														<p>
+															<a href="#{{log.id}}{{key_1|replace(' ', '_')}}" data-toggle="collapse">{{key_1}} </a>
+															<span class="glyphicon glyphicon-chevron-down"></span>
+														</p>
 													</div>
 													<div class="panel-collapse collapse" id="{{log.id}}{{key_1|replace(' ', '_')}}">
 														<div class="panel-body">
@@ -140,8 +146,10 @@
 			<div class="modal-header">
 				<h3 class="modal-title"> Add Flight Log </h3>
 			</div>
-			<div class="modal-body">
-				<form method="post" enctype="multipart/form-data" name="add_flight_log">
+			<form method="post" enctype="multipart/form-data" name="add_flight_log">
+				<div class="modal-body">
+				
+
 					{{ form.csrf_token }}
 					{{ form.log_file }}
 
@@ -149,9 +157,13 @@
 						<span style="color:red;"> {{error}}</span>
 					{% endfor %}
 					
-					<input type="submit" value="Upload Log"/>
-				</form>
-			</div>
+					
+				
+				</div>
+				<div class="modal-footer">
+					<input type="submit" value="Upload Log" class="btn btn-primary"/>
+				</div>
+			</form>
 		</div>	
 	</div>
 </div>	
