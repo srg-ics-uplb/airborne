@@ -1,9 +1,10 @@
 from flask_wtf import FlaskForm
-from flask_wtf.file import FileField, FileRequired
+from flask_wtf.file import FileField, FileRequired, FileAllowed
 from wtforms import StringField, BooleanField, IntegerField, PasswordField, SelectField,  TextAreaField, DecimalField	
 from wtforms.validators import DataRequired, InputRequired, Optional, ValidationError, NumberRange, Email,EqualTo, Length
 # from wtforms.fields.html5 import DateField 
 from wtforms_components import DateField, TimeField
+from app import app
 
 
 def is_positive(FlaskForm, field):
@@ -83,4 +84,4 @@ class FlightForm(FlaskForm):
 	weather_description = TextAreaField('weather_description', validators=[Optional()])
 
 class LogForm(FlaskForm):
-	log_file = FileField('log_file', validators=[FileRequired()])
+	log_file = FileField('log_file', validators=[FileRequired(), FileAllowed(app.config['ALLOWED_EXTENSIONS'], 'Should be a dataflash text dump(*.log), telemetry log(*.tlog), or dataflash binary log(*.bin)')])

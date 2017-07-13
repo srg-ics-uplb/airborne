@@ -151,9 +151,9 @@
 				
 
 					{{ form.csrf_token }}
-					{{ form.log_file }}
+					{{ form.log_file(class="form-control") }}
 
-					{% for error in form.errors %}
+					{% for error in form.log_file.errors %}
 						<span style="color:red;"> {{error}}</span>
 					{% endfor %}
 					

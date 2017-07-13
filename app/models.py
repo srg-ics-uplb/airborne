@@ -186,7 +186,9 @@ class Log(db.Model):
 
 	id = db.Column(db.Integer, primary_key=True)
 	filename = db.Column(db.String(255), nullable=False)
-	content = db.Column(db.Text)
+	### Unreliable. Manually alter table datatype from "Text" to "LongText" in order to handle bigger logs.
+	content = db.Column(db.UnicodeText)
+
 	flight_id = db.Column(db.Integer, db.ForeignKey('flight.id'))
 
 	def __init__(self, filename, content,  flight_id):
