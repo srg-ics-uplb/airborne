@@ -9,6 +9,7 @@ migrations/
 
 #Upload Folder for logs. Keep actual logs out, but retain the directory
 app/uploads/logs/*.bin
+app/uploads/logs/*.log
 
 #Dronekit-la Folder
 /dronekit-la
