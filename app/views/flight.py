@@ -62,14 +62,32 @@ def view_flight(flight_id):
 
     if form.validate_on_submit():
         f = form.log_file.data
+        h = form.log_file.data
         filename = secure_filename(user.username + ' - ' + str(datetime.now()) +' - '+ f.filename )
+        
+        # attempt to get gps coordinates when uploaded file is a text dump (*.log)
+        gps_name = filename.rsplit('.', 1) 
+        print h
+        if gps_name[1] == "log":
+            print 'yay itlog'
+            g = open(app.config['GPS_COORDINATE_FILES_FOLDER']+'\\'+gps_name[0]+'.map', 'w')
+            for line in h:
+                a = line.split(',', 1)
+                if a[0] == "GPS":
+                    g.write(a[1])
+
+            g.close()
+            
+        f.seek(0)
+        # save file
         f.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+        #open dronekit-la and capture output
         print app.config['LOG_ANALYZER_DIR'] + app.config['UPLOAD_FOLDER'] + '\\' + filename
         args = app.config['LOG_ANALYZER_DIR'] + app.config['UPLOAD_FOLDER'] + '\\' + filename
         content = subprocess.check_output(args)
-
-
         
+        #save contents to db to avoid running dronekit-la again
         log = Log(filename, content, flight_id)
         
         db.session.add(log)

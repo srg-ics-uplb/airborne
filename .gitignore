@@ -11,5 +11,10 @@ migrations/
 app/uploads/logs/*.bin
 app/uploads/logs/*.log
 
+#Upload Folder for gps coordinate files. Keep actual files out, but retain the directory
+app/uploads/gps/*.map
+
+
+
 #Dronekit-la Folder
 /dronekit-la
