@@ -1,5 +1,13 @@
 {% extends "base.html" %}
 
+{% block map_data %}
+	{% if maps %}
+		{% for map in maps %}
+			{{map.js}}
+		{% endfor %}
+	{% endif %}
+	
+{% endblock %}
 {% block content %}
 <div ng-app="flightApp">
 <div ng-controller="LogController">
@@ -126,6 +134,11 @@
 								</div>
 							</div>
 							<br>
+							
+								
+								{{log.map.html}}
+								
+							
 							{% endfor %}
 						{% else %}
 

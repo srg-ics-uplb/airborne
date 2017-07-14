@@ -6,7 +6,9 @@ from app import app, db #still needs app for config
 from flask import render_template, redirect, url_for, request, abort, Blueprint
 from ..forms import FlightForm, LogForm
 from ..models import Project, Drone, Flight, Log
+from log import get_map_markers, get_first_point
 from flask_login import  current_user, login_required
+from flask_googlemaps import Map 
 from werkzeug.utils import secure_filename
 from datetime import datetime
 import os, subprocess, json
@@ -56,11 +58,25 @@ def view_flight(flight_id):
 
     drone = Drone.query.get(flight.drone_id)
     logs = Log.query.filter_by(flight_id=flight_id).all()
+    maps = []
     for log in logs:
         log.processed_content = json.loads(log.content)
         log.processed_content['timestamp'] = datetime.fromtimestamp(log.processed_content['timestamp']/1000000)
-
-        print "Log " + log.filename + " successfully processed"    
+        point = get_first_point(log.id)
+        maps.append(Map(
+            identifier = "map" + str(log.id),
+            lat = point[0],
+            lng = point[1],
+            markers = get_map_markers(log.id)
+        ))
+        log.map = Map(
+            identifier = "map" + str(log.id),
+            lat = point[0],
+            lng = point[1],
+            markers = get_map_markers(log.id)
+        )
+        
+        print "Log " + log.filename + " successfully processed"     
 
 
     form = LogForm()
@@ -126,7 +142,7 @@ def view_flight(flight_id):
         print 'Upload Successful for file: ' + filename
         return redirect(url_for('flight.view_flight', flight_id=flight_id))
 
-    return render_template('view_flight.html', title=flight.name,  flight=flight, drone=drone, project=project, form=form, logs=logs)
+    return render_template('view_flight.html', title=flight.name,  flight=flight, drone=drone, project=project, form=form, logs=logs, maps=maps)
 
 #   ADD A FLIGHT
 @flight.route('/flight/add', methods=['GET','POST'])

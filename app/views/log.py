@@ -4,7 +4,8 @@ from flask_login import  current_user, login_required
 from ..models import Project, Flight, Log
 from werkzeug.utils import secure_filename
 from datetime import datetime
-import os
+import os, csv
+from math import sin, cos, radians, sqrt, atan2
 ##### LOG MANAGEMENT ROUTES AND VIEWS
 log = Blueprint('log', __name__)
 
@@ -46,3 +47,47 @@ def delete_log(log_id):
         
         return redirect(url_for('flight.view_flight', flight_id=flight_id))
 
+def get_first_point(log_id):
+    log = Log.query.get(log_id)
+    filepath = app.config['GPS_COORDINATE_FILE_FOLDER'] + '\\' + log.gps_filename
+    with open(filepath, 'r') as mapfile:
+        reader = csv.DictReader(mapfile)
+        line = reader.next()
+        basepoint = line['Lat'], line['Lng']
+    return basepoint
+
+def get_map_markers(log_id):
+    """
+        This function attempts to get a good amount of markers for google maps to render
+        If the approximate distance between two points is greater than a certain threshold,
+        add a new waypoint. This is to avoid having two much points to render.
+        Formula from http://www.movable-type.co.uk/scripts/latlong.html
+    """
+    threshold = 3
+    r = 6371e3
+    waypoints = []
+    log = Log.query.get(log_id)
+    filepath = app.config['GPS_COORDINATE_FILE_FOLDER'] + '\\' + log.gps_filename
+    with open(filepath, 'r') as mapfile:
+        reader = csv.DictReader(mapfile)
+        line = reader.next()
+        waypoint = line['Lat'], line['Lng']
+        prev = waypoint
+
+        print prev
+        waypoints.append(waypoint)
+        for row in reader:
+            phi1 = radians(float(row['Lat']))
+            phi2 = radians(float(prev[0]))
+            deltaphi = radians(float(row['Lat']) - float(prev[0]))
+            deltalambda = radians(float(row['Lng']) - float(prev[1]))
+            a = sin(deltaphi/2) * sin(deltaphi/2) + (cos(phi1) * cos(phi2) * sin(deltalambda/2) * sin(deltalambda/2))
+            c = 2 * atan2(sqrt(a),sqrt(1-a))
+            d = r * c
+
+            
+            if d > threshold:
+                prev = row['Lat'], row['Lng']
+                waypoints.append(prev)
+            
+    return waypoints
