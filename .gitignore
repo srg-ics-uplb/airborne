@@ -1,18 +1,19 @@
 #Flask files
 flask/
 
-#Compile Python files
+#Compiled Python files
 *.pyc
 
 #Database Migrations
 migrations/
 
-#Upload Folder for logs. Keep actual logs out, but retain the directory
-app/uploads/logs/*.bin
-app/uploads/logs/*.log
+#Upload Folders for logs. Keep actual logs out, but retain the directory
+app/uploads/logs/original/*.bin
+app/uploads/logs/original/*.log
+app/uploads/logs/original/*.tlog
+app/uploads/logs/gps/*.map
+app/uploads/logs/processed_la/*.json
 
-#Upload Folder for gps coordinate files. Keep actual files out, but retain the directory
-app/uploads/gps/*.map
 
 
 

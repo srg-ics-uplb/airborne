@@ -4,11 +4,14 @@ SECRET_KEY = 'you-will-never-guess'
 MYSQL_USERNAME = 'root'
 MYSQL_PASSWORD = 'root'
 
-GPS_COORDINATE_FILES_FOLDER = 'app\uploads\gps'
+
 UPLOAD_FOLDER = 'app\uploads\logs'
 ALLOWED_EXTENSIONS = ['bin', 'log', 'tlog']
 MAX_CONTENT_LENGTH = 30 * 1024 * 1024
 
+GPS_COORDINATE_FILE_FOLDER = UPLOAD_FOLDER + '\gps'
+PROCESSED_OUTPUT_FILE_FOLDER = UPLOAD_FOLDER + '\processed_la'
+ORIGINAL_LOG_FILE_FOLDER = UPLOAD_FOLDER + '\original'
 
 #some constants set to avoid vehicle definition fail
 DRONE_TYPE = 'copter '

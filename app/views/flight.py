@@ -67,31 +67,43 @@ def view_flight(flight_id):
         # attempt to get gps coordinates when uploaded file is a text dump (*.log)
         gps_name = filename.rsplit('.', 1) 
 
+        # if file is a text dump, get all lines about "GPS", else no gps file
         if gps_name[1] == "log":
             print 'yay itlog'
-            g = open(app.config['GPS_COORDINATE_FILES_FOLDER']+'\\'+gps_name[0]+'.map', 'w')
+            gps_filename = gps_name[0] + '.map'
+            g = open(app.config['GPS_COORDINATE_FILE_FOLDER']+'\\'+ gps_filename, 'w')
             g.write('TimeUS, Status, GMS, GWk, NSats, HDop, Lat, Lng, RAlt, Spd, GCrs, VZ, U' )
             for line in f:
                 a = line.split(',', 1)
                 if a[0] == "GPS":
                     b = a[1].replace('\n', '')
                     
-                    g.write(b)
+                    g.write(b.strip())
 
             g.close()
+        else:
+            gps_filename = None
             
         f.seek(0)
         # save file
-        f.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        f.save(os.path.join(app.config['ORIGINAL_LOG_FILE_FOLDER'], filename))
 
         #open dronekit-la and capture output
-        print app.config['LOG_ANALYZER_DIR'] + app.config['UPLOAD_FOLDER'] + '\\' + filename
-        args = app.config['LOG_ANALYZER_DIR'] + app.config['UPLOAD_FOLDER'] + '\\' + filename
+        print app.config['LOG_ANALYZER_DIR'] + app.config['ORIGINAL_LOG_FILE_FOLDER'] + '\\' + filename
+        args = app.config['LOG_ANALYZER_DIR'] + app.config['ORIGINAL_LOG_FILE_FOLDER'] + '\\' + filename
         content = subprocess.check_output(args)
         
+
+        processed_filename = filename.rsplit('.', 1)[0] + '.json'
+
+        processed = open(app.config['PROCESSED_OUTPUT_FILE_FOLDER'] + '\\' + processed_filename, 'w')
+        processed.write(content)
+        processed.close()
+
         #save contents to db to avoid running dronekit-la again
-        log = Log(filename, content, flight_id)
+        log = Log(filename, content, gps_filename, processed_filename,flight_id)
         
+
         db.session.add(log)
         db.session.commit()
         print 'Upload Successful for file: ' + filename

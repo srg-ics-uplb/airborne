@@ -35,7 +35,12 @@ def delete_log(log_id):
     if current_user.id != project.user_id:
         abort(404)
     else:
-        os.remove(os.path.join(app.config['UPLOAD_FOLDER'], log.filename))
+        os.remove(os.path.join(app.config['ORIGINAL_LOG_FILE_FOLDER'], log.filename))
+
+        if log.gps_filename is not None:
+            os.remove(os.path.join(app.config['GPS_COORDINATE_FILE_FOLDER'], log.gps_filename))
+        
+        os.remove(os.path.join(app.config['PROCESSED_OUTPUT_FILE_FOLDER'], log.processed_filename))
         db.session.delete(log)
         db.session.commit()
         

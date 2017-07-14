@@ -189,9 +189,15 @@ class Log(db.Model):
 	### Unreliable. Manually alter table datatype from "Text" to "LongText" in order to handle bigger logs.
 	content = db.Column(db.UnicodeText)
 
+	gps_filename = db.Column(db.String(255))
+	processed_filename = db.Column(db.String(255), nullable=False)
 	flight_id = db.Column(db.Integer, db.ForeignKey('flight.id'))
 
-	def __init__(self, filename, content,  flight_id):
+	def __init__(self, filename, content, gps_filename, processed_filename, flight_id):
 		self.filename = filename
 		self.content = content
+		self.gps_filename = gps_filename
+		self.processed_filename = processed_filename
 		self.flight_id = flight_id
+
+
