@@ -1,3 +1,7 @@
+"""
+        View module for Flights. This module defines routes and logic for Flight-related things.
+"""
+
 from app import app, db #still needs app for config
 from flask import render_template, redirect, url_for, request, abort, Blueprint
 from ..forms import FlightForm, LogForm
@@ -6,6 +10,7 @@ from flask_login import  current_user, login_required
 from werkzeug.utils import secure_filename
 from datetime import datetime
 import os, subprocess, json
+
 
 #####   FLIGHT MANAGEMENT ROUTES AND VIEWS
 flight = Blueprint('flight', __name__)
@@ -52,11 +57,11 @@ def view_flight(flight_id):
     drone = Drone.query.get(flight.drone_id)
     logs = Log.query.filter_by(flight_id=flight_id).all()
     for log in logs:
-         log.processed_content = json.loads(log.content)
-         log.processed_content['timestamp'] = datetime.fromtimestamp(log.processed_content['timestamp']/1000000)
+        log.processed_content = json.loads(log.content)
+        log.processed_content['timestamp'] = datetime.fromtimestamp(log.processed_content['timestamp']/1000000)
 
-         print "Log " + log.filename + " successfully processed"    
-    
+        print "Log " + log.filename + " successfully processed"    
+
 
     form = LogForm()
 
@@ -68,7 +73,7 @@ def view_flight(flight_id):
         gps_name = filename.rsplit('.', 1) 
 
         # if file is a text dump, get all lines about "GPS", else no gps file
-        if gps_name[1] == "log":
+        if gps_name[1].lower() == "log":
             print 'yay itlog'
             gps_filename = gps_name[0] + '.csv'
             g = open(app.config['GPS_COORDINATE_FILE_FOLDER']+'\\'+ gps_filename, 'w')
@@ -77,16 +82,28 @@ def view_flight(flight_id):
                 a = line.split(', ', 1)
                 if a[0] == "GPS":
                     b = a[1].replace('\n', '')
-                    
                     g.write(b)
-
             g.close()
+
+
         else:
             gps_filename = None
-            
+
+
         f.seek(0)
         # save file
         f.save(os.path.join(app.config['ORIGINAL_LOG_FILE_FOLDER'], filename))
+            
+        if gps_name[1].lower() == "bin":
+            args = app.config['MAVLOGDUMP_RUN'] + '\\' + filename
+            gps_filename = gps_name[0] + '.csv'
+            print args
+            content = subprocess.check_output(args)
+            filepath = app.config['GPS_COORDINATE_FILE_FOLDER'] + '\\' + gps_filename
+            with open(filepath, 'w') as csvfile:
+                for row in content.splitlines():
+                    csvfile.write(row)
+                    csvfile.write('\n')
 
         #open dronekit-la and capture output
         print app.config['LOG_ANALYZER_DIR'] + app.config['ORIGINAL_LOG_FILE_FOLDER'] + '\\' + filename

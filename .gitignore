@@ -18,5 +18,5 @@ app/uploads/logs/processed_la/*.json
 
 
 
-#Dronekit-la Folder
-/dronekit-la
+#Folder for 3rd Party tools
+tools/
