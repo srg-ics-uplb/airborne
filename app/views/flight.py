@@ -70,15 +70,15 @@ def view_flight(flight_id):
         # if file is a text dump, get all lines about "GPS", else no gps file
         if gps_name[1] == "log":
             print 'yay itlog'
-            gps_filename = gps_name[0] + '.map'
+            gps_filename = gps_name[0] + '.csv'
             g = open(app.config['GPS_COORDINATE_FILE_FOLDER']+'\\'+ gps_filename, 'w')
-            g.write('TimeUS, Status, GMS, GWk, NSats, HDop, Lat, Lng, RAlt, Spd, GCrs, VZ, U' )
+            g.write('TimeUS, Status, GMS, GWk, NSats, HDop, Lat, Lng, RAlt, Alt, Spd, GCrs, VZ, U\n' )
             for line in f:
-                a = line.split(',', 1)
+                a = line.split(', ', 1)
                 if a[0] == "GPS":
                     b = a[1].replace('\n', '')
                     
-                    g.write(b.strip())
+                    g.write(b)
 
             g.close()
         else:

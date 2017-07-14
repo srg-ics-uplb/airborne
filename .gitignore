@@ -12,6 +12,7 @@ app/uploads/logs/original/*.bin
 app/uploads/logs/original/*.log
 app/uploads/logs/original/*.tlog
 app/uploads/logs/gps/*.map
+app/uploads/logs/gps/*.csv
 app/uploads/logs/processed_la/*.json
 
 
