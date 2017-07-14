@@ -62,19 +62,21 @@ def view_flight(flight_id):
 
     if form.validate_on_submit():
         f = form.log_file.data
-        h = form.log_file.data
         filename = secure_filename(user.username + ' - ' + str(datetime.now()) +' - '+ f.filename )
         
         # attempt to get gps coordinates when uploaded file is a text dump (*.log)
         gps_name = filename.rsplit('.', 1) 
-        print h
+
         if gps_name[1] == "log":
             print 'yay itlog'
             g = open(app.config['GPS_COORDINATE_FILES_FOLDER']+'\\'+gps_name[0]+'.map', 'w')
-            for line in h:
+            g.write('TimeUS, Status, GMS, GWk, NSats, HDop, Lat, Lng, RAlt, Spd, GCrs, VZ, U' )
+            for line in f:
                 a = line.split(',', 1)
                 if a[0] == "GPS":
-                    g.write(a[1])
+                    b = a[1].replace('\n', '')
+                    
+                    g.write(b)
 
             g.close()
             
@@ -93,7 +95,7 @@ def view_flight(flight_id):
         db.session.add(log)
         db.session.commit()
         print 'Upload Successful for file: ' + filename
-        redirect(url_for('flight.view_flight', flight_id=flight_id))
+        return redirect(url_for('flight.view_flight', flight_id=flight_id))
 
     return render_template('view_flight.html', title=flight.name,  flight=flight, drone=drone, project=project, form=form, logs=logs)
 
