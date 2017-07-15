@@ -13,8 +13,8 @@ class User(db.Model):
 	sex = db.Column(db.String(1), nullable=False)
 	authenticated = db.Column(db.Boolean, default=False)
 	# equipments = db.relationship('Equipment', backref='owner', lazy='dynamic')
-	projects = db.relationship('Project', backref='owner', lazy='dynamic')
-	drones = db.relationship('Drone', backref='owner', lazy='dynamic')
+	projects = db.relationship('Project', backref='owner', lazy='dynamic', cascade="delete")
+	drones = db.relationship('Drone', backref='owner', lazy='dynamic', cascade="delete")
 
 	def __init__(self, first_name, middle_name, last_name, email, username, password, age, sex):
 		self.first_name = first_name
@@ -96,7 +96,7 @@ class Drone(Equipment):
 	# color = db.Column (db.String(20), nullable=False)
 	# geometry = db.Column (db.String(20), nullable=False) 
 	
-	flights = db.relationship('Flight', backref='equipment', lazy='dynamic')
+	flights = db.relationship('Flight', backref='equipment', lazy='dynamic', cascade="delete")
 
 	__mapper_args__ = {
 		'polymorphic_identity': 'drone',
@@ -124,7 +124,7 @@ class Project(db.Model):
 	description = db.Column(db.Text)
 	user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
-	flights = db.relationship('Flight', backref='project', lazy='dynamic')
+	flights = db.relationship('Flight', backref='project', lazy='dynamic', cascade="delete")
 
 	def __init__(self, name, description,user_id):
 		self.name = name
@@ -162,7 +162,7 @@ class Flight(db.Model):
 	project_id = db.Column(db.Integer, db.ForeignKey('project.id'))
 
 	#Log files
-	logs = db.relationship('Log', backref="flight", lazy='dynamic')
+	logs = db.relationship('Log', backref="flight", lazy='dynamic', cascade="delete")
 
 	def __init__(self, name, location, date, duration, flight_type, more_type_info, operation_type, night_flight, landing_count, travelled_distance, max_agl_altitude, notes, weather_description, drone_id, project_id):
 		self.name = name
@@ -186,9 +186,18 @@ class Log(db.Model):
 
 	id = db.Column(db.Integer, primary_key=True)
 	filename = db.Column(db.String(255), nullable=False)
+	### Unreliable. Manually alter table datatype from "Text" to "LongText" in order to handle bigger logs.
+	content = db.Column(db.UnicodeText)
 
+	gps_filename = db.Column(db.String(255))
+	processed_filename = db.Column(db.String(255), nullable=False)
 	flight_id = db.Column(db.Integer, db.ForeignKey('flight.id'))
 
-	def __init__(self, filename, flight_id):
+	def __init__(self, filename, content, gps_filename, processed_filename, flight_id):
 		self.filename = filename
+		self.content = content
+		self.gps_filename = gps_filename
+		self.processed_filename = processed_filename
 		self.flight_id = flight_id
+
+

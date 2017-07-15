@@ -1,17 +1,29 @@
 {% extends "base.html" %}
 
 {% block content %}
-	<h1>Log In</h1>
-	<form action="" method="post" name="login">
-		{{ form.hidden_tag() }}
-		<p>
-			Username:<br>
-			{{ form.username(size=30) }}<br>
-			Password:<br>
-			{{ form.password(size=30) }}<br>
+	
+	<div class="container">
+		<form action="" method="post" name="login" class="form-signin">
+			<div class="login-header">
+				<h1>Log In</h1>
+			</div>	
 			
-		</p>
-		<p>{{ form.remember_me }} Remember Me </p>
-		<p><input type="submit" value="Log In"></p>
-	</form>
+			{{ form.hidden_tag() }}
+			<div class="login-body">
+				<div class="form-group">
+					<label for="username">Username:</label>
+					{{ form.username(size=30, class="form-control") }}
+				</div>
+				<div class="form-group">	
+					<label for="password">Password:</label>
+					{{ form.password(size=30, class="form-control") }}
+				</div>
+				<div class="checkbox">
+					
+					<label for="remember_me">{{ form.remember_me() }}  Remember Me </label>
+				</div>
+				<p><input type="submit" value="Log In" class="btn btn-default"></p>
+			</div>
+		</form>
+	</div>
 {% endblock %}

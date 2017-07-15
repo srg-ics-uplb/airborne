@@ -13,3 +13,5 @@ Prerequisites:
 		Flask-mysqlclient (might require some manual installation)
 		Flask-WTForms
 		Flask-Migrate
+		Pymavlink
+		Flask-GoogleMaps

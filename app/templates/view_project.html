@@ -1,33 +1,56 @@
 {% extends "base.html" %}
 {% block content %}
         <div class="jumbotron">
-            <span><h3> {{ project.name}} </h3> </span>
-			{{project.description}}
-			<br>
-            <a href="/project/edit/{{project.id}}" class="btn btn-sm btn-warning"> Edit </a>
-			<a href="/project/delete/{{project.id}}" class="btn btn-sm btn-danger"> Delete </a>
-			<hr>
-            
+            <div class="container">
+                <h1> {{ project.name}} </h1>
+                <h4>Description: {{project.description}}</h4>
+                <br>
+                <a href="/project/edit/{{project.id}}" class="btn btn-sm btn-warning"> 
+                    <span class="glyphicon glyphicon-edit"></span>
+                    Edit 
+                </a>
+                <a href="/project/delete/{{project.id}}" class="btn btn-sm btn-danger"> 
+                    <span class="glyphicon glyphicon-minus"></span>
+                    Delete 
+                </a>
 
-			<h4> Flights </h4>
-            <div class="container">                
-            <hr>
-                {% if project.flights.count()!=0 %}
-                    {% for flight in project.flights %}
-                        <div class="row">
-                            <h3> <a href="/flight/view/{{flight.id}}"> {{flight.name}} </a></h3>
-							<p> {{ flight.date}} at {{ flight.location }} </p>
-                            <p> Description: {{flight.notes}} </p>
-                            <p> Duration: {{flight.duration/3600}} hours, {{ (flight.duration%3600)/60 }} minutes, {{ flight.duration%60 }} seconds </p>
-                            
-                        </div>
-                    {% endfor %}
-                {% else %}
-            <div class="row">
-                <h3> There are currently no flights in this project. </h3>
-                <p> Is this an error? Contact the administrator. </p>
-            </div>
-            {% endif %}
             </div>
         </div>
+        <div class="jumbotron">
+            <div class="container">
+                <h2> Flights </h2>
+                {% if project.flights.count()!=0 %}
+                    <div class="responsive-table">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Flight</th>
+                                    <th>Description</th>
+                                    <th>Date/Location</th>
+                                    <th>Duration</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                        {% for flight in project.flights %}
+                            <tr>
+                                <td><a href="/flight/view/{{flight.id}}"> {{flight.name}} </a></td>
+                                <td>{{flight.notes}}</td>
+                                <td>{{ flight.date}} at {{ flight.location }}</td>
+                                <td>{{flight.duration/3600}} hours, {{ (flight.duration%3600)/60 }} minutes, {{ flight.duration%60 }} seconds</td>
+                            </tr>
+                    {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                <div class="row">
+                    <div class="col-sm-12">
+                    <h3> There are currently no flights in this project. </h3>
+                    <p> Is this an error? Contact the administrator. </p>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>  
 {% endblock %}

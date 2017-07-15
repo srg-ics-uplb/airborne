@@ -1,0 +1,23 @@
+.login-body{
+	max-width: 40%;
+	margin:auto;
+}
+
+.login-header{
+	margin:auto;
+	text-align: center;
+}
+
+.signup-body{
+	max-width: 40%;
+	margin:auto;
+}
+
+.signup-header{
+	text-align: center;
+	margin:auto;
+}
+
+.signup-submit{
+	margin:auto;
+}

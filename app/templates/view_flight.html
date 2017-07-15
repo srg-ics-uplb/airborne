@@ -1,5 +1,13 @@
 {% extends "base.html" %}
 
+{% block map_data %}
+	{% if maps %}
+		{% for map in maps %}
+			{{map.js}}
+		{% endfor %}
+	{% endif %}
+	
+{% endblock %}
 {% block content %}
 <div ng-app="flightApp">
 <div ng-controller="LogController">
@@ -29,7 +37,7 @@
 					</div>
 					<div class="col-sm-4">
 						<h2> Flight Statistics </h2>
-						<p> Duration: {{flight.duration/3600}} hours, {{ (flight.duration%3600)/60 }} minutes, {{ flight.duration%60 }} seconds </p>
+						<p> Duration: {{flight.duration//3600}} hour(s), {{ (flight.duration%3600)//60 }} minute(s), {{ flight.duration%60 }} second(s) </p>
 						<p> Number of landings: {{flight.landing_count}} </p>
 						<p> Distance travelled: {{flight.travelled_distance}} </p>
 						<p> Maximum AGL(above ground level) altitude: {{flight.max_agl_altitude}} </p>
@@ -39,19 +47,98 @@
 					<div class="col-sm-12">
 					<h2> 
 						Log Statistics 
-						<button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#add-flight-log">Add Flight Log</button>
+						<button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#add-flight-log">
+							<span class="glyphicon glyphicon-plus"></span>
+							Add Flight Log
+						</button>
 						
 					</h2>
 					
-						{% if flight.logs.count()!=0 %}
-							{% for log in flight.logs %}
+						{% if logs %}
+							{% for log in logs %}
 							<div class="row">
 								<div class="col-sm-12">
-									<p>Log # {{log.id}} </p>
-									<p>Log file "{{log.filename}}"</p>
-									<button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#delete-flight-log" ng-click="set_delete_flight({{log.id}})">Delete this log file</button>
+									{# <p>Log # {{log.id}} </p> #}
+									<p>Log file "{{log.filename}}" <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#delete-flight-log" ng-click="set_delete_flight({{log.id}})"><span class="glyphicon glyphicon-trash"></span> Delete this log file</button></p>
+
+										
+									
+									<ul>
+									{% for key, value in log.processed_content.items() %}	
+										
+										{%if key=='tests'%}
+										<li><p>Tests:</p> </li>
+										<ul>
+										
+										{% for row in value.items()|batch(3) %}
+											<div class="row">
+											{% for key_1, values_1 in row %}
+												
+												<div class="col-sm-4 panel panel-default">
+													<div class="panel-heading">
+														<p>
+															<a href="#{{log.id}}{{key_1|replace(' ', '_')}}" data-toggle="collapse">{{key_1}} </a>
+															<span class="glyphicon glyphicon-chevron-down"></span>
+														</p>
+													</div>
+													<div class="panel-collapse collapse" id="{{log.id}}{{key_1|replace(' ', '_')}}">
+														<div class="panel-body">
+														<ul>
+														{% for key_2, value_2 in values_1.items() %}
+															{% if key_2=='results' %}
+																{% if not value_2 %}
+																	<li><h4> {{key_2|capitalize |replace("-", " ")}} : none </h4>	</li>
+																{% else %}
+																	<li><h4> {{key_2|capitalize |replace("-", " ")}} : </h4></li>
+																	{% for results_list in value_2 %}
+																		<ul>
+																		{% for key_3, value_3 in results_list.items() %}
+																			<li><h5>{{ key_3|capitalize |replace("-", " ") }} : {{ value_3 }}</h5></li>
+																		{% endfor %}
+																		</ul>
+																	{% endfor %}
+																{% endif %}
+															{% elif key_2=='status' %}
+																<li>
+																	<h4>{{ key_2|capitalize |replace("-", " ") }} : 
+																		{% if value_2 == 'FAIL'%}
+																		<span class="label label-danger">{{ value_2 }}</span>
+																		{% elif value_2 =='WARN' %}
+																		<span class="label label-warning">{{ value_2 }}</span>
+																		{% else %}
+																		<span class="label label-success">{{ value_2 }}</span>
+																		{% endif %}
+																	</h4>
+																</li>
+															{% else %}
+																<li><h4>{{ key_2|capitalize |replace("-", " ") }} : {{ value_2 }}</h4></li>
+															{% endif %}
+														{% endfor %}
+														</ul>
+														</div>
+													</div>
+												</div>
+												
+											{% endfor %}
+											</div>
+										{% endfor %}
+										</ul>
+
+										
+										{% else %}
+											<li><p> {{key|capitalize |replace('-', " ")|replace('_', " ")}} : {{value}} </p></li>
+										{% endif %}
+									{% endfor %}
+									</ul>
+									
 								</div>
 							</div>
+							<br>
+							
+								
+								{{log.map.html}}
+								
+							
 							{% endfor %}
 						{% else %}
 
@@ -72,18 +159,24 @@
 			<div class="modal-header">
 				<h3 class="modal-title"> Add Flight Log </h3>
 			</div>
-			<div class="modal-body">
-				<form method="post" enctype="multipart/form-data" name="add_flight_log">
-					{{ form.csrf_token }}
-					{{ form.log_file }}
+			<form method="post" enctype="multipart/form-data" name="add_flight_log">
+				<div class="modal-body">
+				
 
-					{% for error in form.errors %}
+					{{ form.csrf_token }}
+					{{ form.log_file(class="form-control") }}
+
+					{% for error in form.log_file.errors %}
 						<span style="color:red;"> {{error}}</span>
 					{% endfor %}
 					
-					<input type="submit" value="Upload Log"/>
-				</form>
-			</div>
+					
+				
+				</div>
+				<div class="modal-footer">
+					<input type="submit" value="Upload Log" class="btn btn-primary"/>
+				</div>
+			</form>
 		</div>	
 	</div>
 </div>	

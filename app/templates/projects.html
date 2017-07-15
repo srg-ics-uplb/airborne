@@ -1,28 +1,43 @@
 {% extends "base.html" %}
 {% block content %}
         <div class="jumbotron">
-            <span><h3>Projects  ({{user.projects.count()}}) <a href="/project/add" class="btn btn-lg btn-default"> Add </a> </h3> </span>
-            <hr>
-            
             <div class="container">                
-            <hr>
+                <h3>Projects  ({{user.projects.count()}}) <a href="/project/add" class="btn btn-lg btn-success"><span class="glyphicon glyphicon-plus"></span> Add </a> </h3>
+                
+                <div class="row">
                 {% if projects.count()!=0 %}
-                    {% for project in projects %}
-                        <div class="row">
-                            <h3> <a href="/project/view/{{project.id}}"> {{project.name}} </a></h3>
-
-                            <p> Description: {{project.description}} </p>
-                            <p> Number of flights: {{project.flights.count()}} </p>
-                            <a href="/project/edit/{{project.id}}" class="btn btn-sm btn-warning"> Edit </a>
-                            <a href="/project/delete/{{project.id}}" class="btn btn-sm btn-danger"> Delete </a>
-                        </div>
-                    {% endfor %}
+                    <div class="responsive-table col-sm-12">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th> Project Name </th>
+                                    <th> Description </th>
+                                    <th> Number of Flights </th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for project in projects %}
+                                    <tr>
+                                        <td><a href="/project/view/{{project.id}}"> {{project.name}} </a></td>
+                                        <td>{{project.description}}</td>
+                                        <td>{{project.flights.count()}}</td>
+                                        <td>
+                                            <a href="/project/edit/{{project.id}}" class="btn btn-sm btn-warning"><span class="glyphicon glyphicon-edit"></span> Edit </a>
+                                            <a href="/project/delete/{{project.id}}" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-trash"></span> Delete </a>
+                                        </td>
+                                    </tr>    
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
                 {% else %}
-            <div class="row">
-                <h3> You have no projects. Click the Add button above to start! </h3>
-                <p> Is this an error? Contact the administrator. </p>
-            </div>
-            {% endif %}
+                    <div class="col-sm-12">
+                        <h3> You have no projects. Click the Add button above to start! </h3>
+                        <p> Is this an error? Contact the administrator. </p>
+                    </div>
+                </div>
+                {% endif %}
             </div>
         </div>
 {% endblock %}

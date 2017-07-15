@@ -1,86 +1,163 @@
 {% extends "base.html" %}
 
 {% block content %}
-	<h1>{{ form_title }}</h1>
-	<form action="" method="post" name="{{name}}">
-		{{ form.hidden_tag() }}
-		{% if form.errors %}
-			<ul class="errors">
-				{% for field_name, field_errors in form.errors|dictsort if field_errors %}
-					{% for error in field_errors %}
-						<li>{{ form[field_name].label }}: {{ error }}</li>
+	<div class="container">
+		<h1>{{ form_title }}</h1>
+		<form action="" method="post" name="{{name}}">
+			{{ form.hidden_tag() }}
+			{#
+			{% if form.errors %}
+				<ul class="errors">
+					{% for field_name, field_errors in form.errors|dictsort if field_errors %}
+						{% for error in field_errors %}
+							<li>{{ form[field_name].label }}: {{ error }}</li>
+						{% endfor %}
 					{% endfor %}
-				{% endfor %}
-			</ul>
-		{% endif %}
-		<p>
+				</ul>
+			{% endif %}
+			#}
 			
-			Flight Name:<br>
-			{{ form.name(size=64) }}
-			{% for error in form.name.errors %}
-				<span style="color:red;"> {{error}}</span>
-			{% endfor %}
-			<br>
-			Location:<br>
-			{{ form.location(size=10) }}
-			{% for error in form.location.errors %}
-				<span style="color:red;"> {{error}}</span>
-			{% endfor %}
-			<br>
-			
-			Date:<br>
-			{{ form.date }}
-			{% for error in form.date.errors %}
-				<span style="color:red;"> {{error}}</span>
-			{% endfor %}
-			<br>
-			Duration:<br>
-			
-			Hours {{ form.duration_hours(size=5) }}
-			Mins {{ form.duration_mins(size=5) }}
-			Secs {{ form.duration_secs(size=5) }}
-			<br>
-			{% for error in form.duration_hours.errors %}
-				<span style="color:red;"> {{error}}</span>
-			{% endfor %}
-			{% for error in form.duration_mins.errors %}
-				<span style="color:red;"> {{error}}</span>
-			{% endfor %}
-			{% for error in form.duration_secs.errors %}
-				<span style="color:red;"> {{error}}</span>
-			{% endfor %}
+			<div>	
+				<div class="row">
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label for="name">Flight Name:</label>
+							
+							{{ form.name(class="form-control") }}
+							{% for error in form.name.errors %}
+								<span style="color:red;"> {{error}}</span>
+							{% endfor %}
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label for="location">Location:</label>
+							{{ form.location(class="form-control") }}
+							{% for error in form.location.errors %}
+								<span style="color:red;"> {{error}}</span>
+							{% endfor %}
+						</div>
+					</div>
+				</div>
+				<br>
 
-			Project:<br>
-			{{ form.project(class="dropdown") }}<br>
-			Drone: <br>
-			{{ form.drone(class="dropdown")}}<br>
-			Flight Type:<br>
-			{{ form.flight_type(class="dropdown") }}
-			{% for error in form.flight_type.errors %}
-				<span style="color:red;"> {{error}}</span>
-			{% endfor %}
-			<br>
-			Operation Type: <br>
-			{{ form.operation_type(class="dropdown")}}
-			{% for error in form.operation_type.errors %}
-				<span style="color:red;"> {{error}}</span>
-			{% endfor %}
-			<br>
-			More Type Info: <br>
-			{{ form.more_type_info }}<br>
-			Night Flight:<br>
-			{{ form.night_flight(type="checkbox") }}<br>
-			Landing Count:<br>
-			{{ form.landing_count(size=10) }}<br>
-			Travelled Distance:<br>
-			{{ form.travelled_distance(size=10) }}<br>
-			Max AGL Altitude:<br>
-			{{ form.max_agl_altitude(size=10) }}<br>
-			Notes:<br>
-			{{ form.notes(size=50) }}<br>
-			Weather Description:<br>
-			{{ form.weather_description(size=10) }}
-		</p>
-		<p><input type="submit" value="{{ submit_value }}"></p>
-	</form>
+				<div class="row">
+					
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label for="date">Date:</label>
+							{{ form.date(class="form-control") }}
+							{% for error in form.date.errors %}
+								<span style="color:red;"> {{error}}</span>
+							{% endfor %}
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label for="duration">Duration:</label><br>
+
+							<div class="row">
+								<div class="col-sm-4">
+									<label for="duration_hours" class="sr-only"></label> {{ form.duration_hours(class="form-control", placeholder="Hours") }}
+									{% for error in form.duration_hours.errors %}
+										<span style="color:red;"> {{error}}</span><br>
+									{% endfor %}
+								</div>
+								<div class="col-sm-4">
+									<label for="duration_mins" class="sr-only"> </label> {{ form.duration_mins(class="form-control", placeholder="Minutes") }}
+									{% for error in form.duration_mins.errors %}
+										<span style="color:red;"> {{error}}</span><br>
+									{% endfor %}
+								</div>
+								<div class="col-sm-4">
+									<label for="duration_secs" class="sr-only"> </label> {{ form.duration_secs(class="form-control", placeholder="Seconds") }}
+									{% for error in form.duration_secs.errors %}
+										<span style="color:red;"> {{error}}</span><br>
+									{% endfor %}
+								</div>
+							</div>
+							<br>
+
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-3">
+						<div class="form-group">
+							<label for="project">Project:</label>
+							{{ form.project(class="dropdown form-control") }}
+						</div>
+					</div>
+					<div class="col-sm-3">	
+						<div class="form-group">
+							<label for="drone">Drone: </label>
+							{{ form.drone(class="dropdown form-control")}}
+						</div>
+					</div>
+					<div class="col-sm-2">	
+						<div class="form-group">
+							<label for="flight_type">Flight Type:</label>
+							{{ form.flight_type(class="dropdown form-control") }}
+							{% for error in form.flight_type.errors %}
+								<span style="color:red;"> {{error}}</span>
+							{% endfor %}
+						</div>
+					</div>
+					<div class="col-sm-2">	
+						<div class="form-group">
+							<label for="operation_type"> Operation Type: </label>
+							{{ form.operation_type(class="dropdown form-control")}}
+							{% for error in form.operation_type.errors %}
+								<span style="color:red;"> {{error}}</span>
+							{% endfor %}
+						</div>
+					</div>
+					<div class="col-sm-2">	
+						<div class="form-group">
+							<label for="more_type_info">More Type Info:</label>
+							{{ form.more_type_info(class="form-control") }}
+						</div>
+					</div>	
+				</div>
+				<div class="row">
+					<div class="col-sm-3">
+						<div class="form-group">
+							<label for="night_flight">Night Flight:</label><br>
+							{{ form.night_flight(data_toggle="toggle", class="form-control") }}
+							{% for error in form.night_flight.errors %}
+								<span style="color:red;"> {{error}}</span>
+							{% endfor %}
+						</div>	
+					</div>
+					<div class="col-sm-3">	
+						<div class="form-group">
+							<label for="landing_count">Landing Count:</label>
+							{{ form.landing_count(class="form-control") }}
+						</div>
+					</div>
+					<div class="col-sm-3">	
+						<div class="form-group">
+							<label for="travelled_distance">Travelled Distance:</label>
+							{{ form.travelled_distance(class="form-control") }}
+						</div>
+					</div>
+					<div class="col-sm-3">		
+						<div class="form-group">
+							<label for="max_agl_altitude">Max AGL Altitude:</label>
+							{{ form.max_agl_altitude(class="form-control") }}
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="notes">Notes:</label>
+					{{ form.notes(class="form-control") }}
+				</div>
+				<div class="form-group">
+					<label for="weather_description">Weather Description:</label>
+					{{ form.weather_description(class="form-control") }}
+				</div>
+			</div>
+			<p><input type="submit" value="{{ submit_value }}" class="btn btn-primary"></p>
+		</form>
+	</div>	
 {% endblock %}

@@ -1,29 +1,94 @@
 {% extends "base.html" %}
 
 {% block content %}
-	<h1>Sign in</h1>
-	<form action="" method="post" name="signup">
-		{{ form.hidden_tag() }}
-		<p>
-			
-			First Name:<br>
-			{{ form.firstname(size=30) }}<br>
-			Middle Name:<br>
-			{{ form.middlename(size=30) }}<br>
-			Last Name:<br>
-			{{ form.lastname(size=30) }}<br>
-			Username:<br>
-			{{ form.username(size=30) }}<br>
-			Password:<br>
-			{{ form.password(size=30) }}<br>
-			Email:<br>
-			{{ form.email(size=30) }}<br>
-			Age:<br>
-			{{ form.age(size=5) }}<br>
-			Sex:<br>
-			{{ form.sex(class="dropdown") }}<br>
+	
+	<div class="container">
 
-		</p>
-		<p><input type="submit" value="Sign Up"></p>
-	</form>
+		<form action="" method="post" name="signup" class="form-signin">
+			<h1 class="form-signin-header signup-header">Sign Up</h1><br>
+			{{ form.hidden_tag() }}
+			<div class="signup-body">
+				<div class="row">
+					<div class="form-group  col-sm-4">
+						<label for="firstname">First Name:</label>
+						{{ form.firstname(class="form-control") }}
+						{% for error in form.firstname.errors %}
+							<span style="color:red;"> {{error}}</span><br>
+						{% endfor %}
+					</div>
+					<div class="form-group  col-sm-4">	
+						<label for="middlename">Middle Name:</label>
+						{{ form.middlename(class="form-control") }}
+						{% for error in form.middlename.errors %}
+							<span style="color:red;"> {{error}}</span><br>
+						{% endfor %}
+					</div>
+					<div class="form-group col-sm-4">	
+						<label for="lastname">Last Name:</label>
+						{{ form.lastname(class="form-control") }}
+						{% for error in form.lastname.errors %}
+							<span style="color:red;"> {{error}}</span><br>
+						{% endfor %}
+					</div>
+				</div>
+				<div class="row">
+					<div class="form-group col-sm-4">	
+						<label for="username">Username:</label>
+						{{ form.username(class="form-control") }}
+						{% for error in form.username.errors %}
+							<span style="color:red;"> {{error}}</span><br>
+						{% endfor %}
+					</div>
+					<div class="form-group col-sm-8">	
+						<label for="email">Email:</label>
+						{{ form.email(size=30, class="form-control") }}
+						{% for error in form.email.errors %}
+							<span style="color:red;"> {{error}}</span><br>
+						{% endfor %}
+					</div>
+
+				</div>	
+				<div class="row">
+					
+					<div class="form-group col-sm-6">	
+						<label for="password">Password:</label>
+						{{ form.password(class="form-control") }}
+						{% for error in form.password.errors %}
+							<span style="color:red;"> {{error}}</span><br>
+						{% endfor %}
+					</div>
+					<div class="form-group col-sm-6">	
+						<label for="confirm_password">Confirm Password:</label>
+						{{ form.confirm_password(class="form-control") }}
+						{% for error in form.confirm_password.errors %}
+							<span style="color:red;"> {{error}}</span><br>
+						{% endfor %}
+					</div>
+				</div>
+				<div class="row">
+					<div class="form-group col-sm-4">	
+						<label for="age">Age:</label>
+						{{ form.age( class="form-control") }}
+						{% for error in form.age.errors %}
+							<span style="color:red;"> {{error}}</span><br>
+						{% endfor %}
+					</div>
+					<div class="form-group col-sm-4">
+						<label for="sex">Sex:</label>
+						{{ form.sex(class="dropdown", class="form-control") }}
+						{% for error in form.sex.errors %}
+							<span style="color:red;"> {{error}}</span><br>
+						{% endfor %}
+					</div>
+					<div class="form-group col-sm-4 ">
+						
+					</div>	
+				</div>
+				<input type="submit" value="Sign Up" class="btn btn-lg btn-default signup-submit btn-block">
+
+				
+			</div>
+
+		</form>
+	</div>
 {% endblock %}

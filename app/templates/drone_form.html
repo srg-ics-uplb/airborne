@@ -1,29 +1,48 @@
 {% extends "base.html" %}
 
 {% block content %}
-	<h1>{{ form_title }}</h1>
-	<form action="" method="post" name="{{name}}">
-		{{ form.hidden_tag() }}
-		<p>
-			
-			Drone Name:<br>
-			{{ form.name(size=64) }}<br>
-			Weight:<br>
-			{{ form.weight(size=10) }}<br>
-			Version Number:<br>
-			{{ form.version_number(size=10) }}<br>
-			Brand:<br>
-			{{ form.brand(size=64) }}<br>
-			Model:<br>
-			{{ form.model(size=64) }}<br>
-			Notes:<br>
-			{{ form.notes(size=64) }}<br>
-			Maximum Payload Capacity:<br>
-			{{ form.max_payload_cap(size=10) }}<br>
-			Maximum Speed:<br>
-			{{ form.max_speed(size=10) }}<br>
-
-		</p>
-		<p><input type="submit" value="{{ submit_value }}"></p>
-	</form>
+	<div class="container">
+		
+		
+		<form action="" method="post" name="{{name}}" >
+			{{ form.hidden_tag() }}
+			<div class="drone-form-body">
+				<h1>{{ form_title }}</h1>
+				<div class="form-group">
+				<label for="name">Drone Name:</label>
+				{{ form.name(class="form-control") }}
+				</div>
+				<div class="form-group">
+				<label for="weight">Weight:</label>
+				{{ form.weight(class="form-control") }}
+				</div>
+				<div class="form-group">
+				<label for="version_number">Version Number:</label>
+				{{ form.version_number(class="form-control") }}
+				</div>
+				<div class="form-group">
+				<label for="brand">Brand:</label>
+				{{ form.brand(class="form-control") }}
+				</div>
+				<div class="form-group">
+				<label for="model">Model:</label>
+				{{ form.model(class="form-control") }}
+				</div>
+				<div class="form-group">
+				<label for="notes">Notes:</label>
+				{{ form.notes(class="form-control") }}
+				</div>
+				<div class="form-group">
+				<label for="maximum_payload_capacity">Maximum Payload Capacity:</label>
+				{{ form.max_payload_cap(class="form-control") }}
+				</div>
+				<div class="form-group">
+				<label for="max_speed">Maximum Speed:</label>
+				{{ form.max_speed(class="form-control") }}
+				</div>
+			<input type="submit" value="{{ submit_value }}" class="btn btn-default">
+			</div>
+		</form>
+		</div>
+	</div>
 {% endblock %}

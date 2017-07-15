@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_bcrypt import Bcrypt
-
+from flask_googlemaps import GoogleMaps
 
 
 app = Flask(__name__)
@@ -16,6 +16,7 @@ migrate = Migrate(app, db)
 bcrypt = Bcrypt(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
+gmap = GoogleMaps(app)
 
 # blueprints
 from .views.general import general

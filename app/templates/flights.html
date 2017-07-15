@@ -1,31 +1,48 @@
 {% extends "base.html" %}
 {% block content %}
         <div class="jumbotron">
-            <span><h3>Flights  ({{flight_count}}) <a href="/flight/add" class="btn btn-lg btn-default"> Add </a> </h3> </span>
-            <hr>
-            
-            <div class="container">                
-            <hr>
-                
-                
-            {% if flight_count!=0 %}
-                    {% for flight in flights %}
-                    <div class="row">
-                        <h3> <a href="/flight/view/{{flight.id}}"> {{flight.name}} </a></h3>
-
-                        <p> Description: {{flight.notes}} </p>
-                        <p> From project: <a href="/project/view/{{flight.project.id}}">{{flight.project.name}} </a></p>
-                        <p> Drone Used: <a href="/drone/view/{{flight.project.id}}">{{flight.drone.name}} </a></p>
-                        <a href="/flight/edit/{{flight.id}}" class="btn btn-sm btn-warning"> Edit </a>
-                        <a href="/flight/delete/{{flight.id}}" class="btn btn-sm btn-danger"> Delete </a>
-                    </div>
-            {% endfor %}
-            {% else %}
-            <div class="row">
-                <h3> You have no flights. Click the Add button above to start! </h3>
-                <p> Is this an error? Contact the administrator. </p>
-            </div>
-            {% endif %}
+           
+            <div class="container">
+                 <h3>Flights  ({{flight_count}}) <a href="/flight/add" class="btn btn-lg btn-success"><span class="glyphicon glyphicon-plus"></span> Add </a> </h3>
+                 
+                <div class="row">
+                    {% if flight_count!=0 %}
+                        <div class="col-sm-12">
+                            <div class="responsive-table">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Flight Name</th>
+                                            <th>Description</th>
+                                            <th>Project</th>
+                                            <th>Drone Used</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for flight in flights %}
+                                            <tr>
+                                                <td> <a href="/flight/view/{{flight.id}}"> {{flight.name}} </a></td>
+                                                <td> {{flight.notes}} </td>
+                                                <td <a href="/project/view/{{flight.project.id}}">{{flight.project.name}} </a></td>
+                                                <td> <a href="/drone/view/{{flight.project.id}}">{{flight.drone.name}} </a> </td>
+                                                <td>
+                                                    <a href="/flight/edit/{{flight.id}}" class="btn btn-sm btn-warning"><span class="glyphicon glyphicon-edit"></span> Edit </a>
+                                                    <a href="/flight/delete/{{flight.id}}" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-trash"></span> Delete </a>
+                                                </td>    
+                                            </tr>   
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="col-sm-12">
+                            <h3> You have no flights. Click the Add button above to start! </h3>
+                            <p> Is this an error? Contact the administrator. </p>
+                        </div>
+                    {% endif %}
+                </div>
             </div>
         </div>
 {% endblock %}

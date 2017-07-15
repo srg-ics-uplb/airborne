@@ -1,11 +1,18 @@
+"""
+        View module for Flights. This module defines routes and logic for Flight-related things.
+"""
+
 from app import app, db #still needs app for config
 from flask import render_template, redirect, url_for, request, abort, Blueprint
 from ..forms import FlightForm, LogForm
 from ..models import Project, Drone, Flight, Log
+from log import get_map_markers, get_first_point
 from flask_login import  current_user, login_required
+from flask_googlemaps import Map 
 from werkzeug.utils import secure_filename
 from datetime import datetime
-import os
+import os, subprocess, json
+
 
 #####   FLIGHT MANAGEMENT ROUTES AND VIEWS
 flight = Blueprint('flight', __name__)
@@ -39,6 +46,7 @@ def view_all_flights():
 def view_flight(flight_id):
     user = current_user
     flight = Flight.query.get(flight_id)
+    
     if flight is None:
         abort(404)
     
@@ -47,25 +55,94 @@ def view_flight(flight_id):
     if current_user.id != project.user_id:
         abort(404)
     
-    else:
-        drone = Drone.query.get(flight.drone_id)
+
+    drone = Drone.query.get(flight.drone_id)
+    logs = Log.query.filter_by(flight_id=flight_id).all()
+    maps = []
+    for log in logs:
+        log.processed_content = json.loads(log.content)
+        log.processed_content['timestamp'] = datetime.fromtimestamp(log.processed_content['timestamp']/1000000)
+        point = get_first_point(log.id)
+        maps.append(Map(
+            identifier = "map" + str(log.id),
+            lat = point[0],
+            lng = point[1],
+            markers = get_map_markers(log.id)
+        ))
+        log.map = Map(
+            identifier = "map" + str(log.id),
+            lat = point[0],
+            lng = point[1],
+            markers = get_map_markers(log.id)
+        )
         
-        form = LogForm()
-        print form.validate_on_submit()
-        if form.validate_on_submit():
-            f = form.log_file.data
-            filename = secure_filename(user.username + ' - ' + str(datetime.now()) +' - '+ f.filename )
-            
-            f.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            log = Log(filename, flight_id)
-            
-            db.session.add(log)
-            db.session.commit()
+        print "Log " + log.filename + " successfully processed"     
 
-            print 'Upload Successful for file: ' + filename
-            redirect(url_for('flight.view_flight', flight_id=flight_id))
 
-        return render_template('view_flight.html', title=flight.name,  flight=flight, drone=drone, project=project, form=form)
+    form = LogForm()
+
+    if form.validate_on_submit():
+        f = form.log_file.data
+        filename = secure_filename(user.username + ' - ' + str(datetime.now()) +' - '+ f.filename )
+        
+        # attempt to get gps coordinates when uploaded file is a text dump (*.log)
+        gps_name = filename.rsplit('.', 1) 
+
+        # if file is a text dump, get all lines about "GPS", else no gps file
+        if gps_name[1].lower() == "log":
+            print 'yay itlog'
+            gps_filename = gps_name[0] + '.csv'
+            g = open(app.config['GPS_COORDINATE_FILE_FOLDER']+'\\'+ gps_filename, 'w')
+            g.write('TimeUS, Status, GMS, GWk, NSats, HDop, Lat, Lng, RAlt, Alt, Spd, GCrs, VZ, U\n' )
+            for line in f:
+                a = line.split(', ', 1)
+                if a[0] == "GPS":
+                    b = a[1].replace('\n', '')
+                    g.write(b)
+            g.close()
+
+
+        else:
+            gps_filename = None
+
+
+        f.seek(0)
+        # save file
+        f.save(os.path.join(app.config['ORIGINAL_LOG_FILE_FOLDER'], filename))
+            
+        if gps_name[1].lower() == "bin":
+            args = app.config['MAVLOGDUMP_RUN'] + '\\' + filename
+            gps_filename = gps_name[0] + '.csv'
+            print args
+            content = subprocess.check_output(args)
+            filepath = app.config['GPS_COORDINATE_FILE_FOLDER'] + '\\' + gps_filename
+            with open(filepath, 'w') as csvfile:
+                for row in content.splitlines():
+                    csvfile.write(row)
+                    csvfile.write('\n')
+
+        #open dronekit-la and capture output
+        print app.config['LOG_ANALYZER_DIR'] + app.config['ORIGINAL_LOG_FILE_FOLDER'] + '\\' + filename
+        args = app.config['LOG_ANALYZER_DIR'] + app.config['ORIGINAL_LOG_FILE_FOLDER'] + '\\' + filename
+        content = subprocess.check_output(args)
+        
+
+        processed_filename = filename.rsplit('.', 1)[0] + '.json'
+
+        processed = open(app.config['PROCESSED_OUTPUT_FILE_FOLDER'] + '\\' + processed_filename, 'w')
+        processed.write(content)
+        processed.close()
+
+        #save contents to db to avoid running dronekit-la again
+        log = Log(filename, content, gps_filename, processed_filename,flight_id)
+        
+
+        db.session.add(log)
+        db.session.commit()
+        print 'Upload Successful for file: ' + filename
+        return redirect(url_for('flight.view_flight', flight_id=flight_id))
+
+    return render_template('view_flight.html', title=flight.name,  flight=flight, drone=drone, project=project, form=form, logs=logs, maps=maps)
 
 #   ADD A FLIGHT
 @flight.route('/flight/add', methods=['GET','POST'])
