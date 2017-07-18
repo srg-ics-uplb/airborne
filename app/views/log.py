@@ -4,7 +4,8 @@ from flask_login import  current_user, login_required
 from ..models import Project, Flight, Log
 from werkzeug.utils import secure_filename
 from datetime import datetime
-import os, csv
+from flask_googlemaps import Map
+import os, csv, subprocess
 from math import sin, cos, radians, sqrt, atan2
 ##### LOG MANAGEMENT ROUTES AND VIEWS
 log = Blueprint('log', __name__)
@@ -47,18 +48,92 @@ def delete_log(log_id):
         
         return redirect(url_for('flight.view_flight', flight_id=flight_id))
 
+def write_dronekit_la_output_file(filename):
+    """
+        Write JSON file for dronekit-la output
+    """
+    args = app.config['LOG_ANALYZER_DIR'] + app.config['ORIGINAL_LOG_FILE_FOLDER'] + '\\' + filename
+    content = subprocess.check_output(args)
+    
+
+    processed_filename = filename.rsplit('.', 1)[0] + '.json'
+    with open(app.config['PROCESSED_OUTPUT_FILE_FOLDER'] + '\\' + processed_filename, 'w') as processed:
+        processed.write(content)
+        processed.close()
+    
+    return content
+
+def write_log_gps_file(file_handle, filename):
+    """
+        Write CSV file for GPS data from dataflash text dumps(*.log)
+    """
+    g = open(app.config['GPS_COORDINATE_FILE_FOLDER']+'\\'+ filename, 'w')
+    g.write('TimeUS,Status,GMS,GWk,NSats,HDop,Lat,Lng,RAlt,Alt,Spd,GCrs,VZ,U\n')
+    for line in file_handle:
+        a = line.split(', ', 1)
+        if a[0] == "GPS":
+            b = a[1].replace('\r', '')
+            b = b.replace(' ', '')
+            g.write(b)
+    g.close()
+    file_handle.seek(0)
+
+def write_bin_gps_file(log, filename):
+    """
+        Write CSV file for GPS data from dataflash binary logs(*.bin)
+    """    
+    args = app.config['MAVLOGDUMP_RUN'] + '\\' + log
+    
+    print args
+    content = subprocess.check_output(args)
+    filepath = app.config['GPS_COORDINATE_FILE_FOLDER'] + '\\' + filename
+    with open(filepath, 'w') as csvfile:
+        for row in content.splitlines():
+            csvfile.write(row)
+            csvfile.write('\n')
+
+def create_map(log_id):
+    """
+        Given the log file's id, a Map object is constructed by getting the necessary waypoints
+        and inserting them into the Map constructor provided by Flask-GoogleMaps
+    """
+    point = get_first_point(log_id)
+    markers = get_map_markers_json(log_id)
+    
+    polyline = {
+        'stroke_color': '#0AB0DE',
+        'stroke_opacity': 1.0,
+        'stroke_weight': 3,
+        'path': get_map_markers_json(log_id)
+    }
+
+    return Map(
+            identifier = "map" + str(log_id),
+            zoom=15,
+            lat = point[0],
+            lng = point[1],
+            markers=markers,
+            polylines=[polyline]
+        )
+
 def get_first_point(log_id):
+    """
+        Get the first point from the GPS data file. 
+    """
     log = Log.query.get(log_id)
     filepath = app.config['GPS_COORDINATE_FILE_FOLDER'] + '\\' + log.gps_filename
     with open(filepath, 'r') as mapfile:
         reader = csv.DictReader(mapfile)
         line = reader.next()
+        print line
         basepoint = line['Lat'], line['Lng']
     return basepoint
 
+
+#MAY BE REMOVED
 def get_map_markers(log_id):
     """
-        This function attempts to get a good amount of markers for google maps to render
+        This function attempts to get a good amount of markers for google maps to render.
         If the approximate distance between two points is greater than a certain threshold,
         add a new waypoint. This is to avoid having two much points to render.
         Formula from http://www.movable-type.co.uk/scripts/latlong.html

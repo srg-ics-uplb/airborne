@@ -6,9 +6,9 @@ from app import app, db #still needs app for config
 from flask import render_template, redirect, url_for, request, abort, Blueprint
 from ..forms import FlightForm, LogForm
 from ..models import Project, Drone, Flight, Log
-from log import get_map_markers, get_first_point, get_map_markers_json
+from log import get_map_markers, get_first_point, get_map_markers_json, create_map, write_log_gps_file, write_bin_gps_file, write_dronekit_la_output_file
 from flask_login import  current_user, login_required
-from flask_googlemaps import Map 
+from flask_googlemaps import Map
 from werkzeug.utils import secure_filename
 from datetime import datetime
 import os, subprocess, json
@@ -62,22 +62,8 @@ def view_flight(flight_id):
     for log in logs:
         log.processed_content = json.loads(log.content)
         log.processed_content['timestamp'] = datetime.fromtimestamp(log.processed_content['timestamp']/1000000)
-        point = get_first_point(log.id)
-        markers = get_map_markers_json(log.id)
-        polyline = {
-            'stroke_color': '#0AB0DE',
-            'stroke_opacity': 1.0,
-            'stroke_weight': 3,
-            'path': get_map_markers_json(log.id)
-        }
-        maps.append(Map(
-            identifier = "map" + str(log.id),
-            zoom=15,
-            lat = point[0],
-            lng = point[1],
-            markers=markers,
-            polylines=[polyline]
-        ))
+
+        maps.append(create_map(log.id))
         log.map = maps[len(maps)-1]
         
         print "Log " + log.filename + " successfully processed"     
@@ -94,48 +80,21 @@ def view_flight(flight_id):
 
         # if file is a text dump, get all lines about "GPS", else no gps file
         if gps_name[1].lower() == "log":
-            print 'yay itlog'
             gps_filename = gps_name[0] + '.csv'
-            g = open(app.config['GPS_COORDINATE_FILE_FOLDER']+'\\'+ gps_filename, 'w')
-            g.write('TimeUS, Status, GMS, GWk, NSats, HDop, Lat, Lng, RAlt, Alt, Spd, GCrs, VZ, U\n' )
-            for line in f:
-                a = line.split(', ', 1)
-                if a[0] == "GPS":
-                    b = a[1].replace('\n', '')
-                    g.write(b)
-            g.close()
+            write_log_gps_file(f, gps_filename)
+            f.seek(0)
 
-
-        else:
-            gps_filename = None
-
-
-        f.seek(0)
         # save file
         f.save(os.path.join(app.config['ORIGINAL_LOG_FILE_FOLDER'], filename))
-            
+        
+        #check if file is a binary log. This check can only happen after the file has been written.
         if gps_name[1].lower() == "bin":
-            args = app.config['MAVLOGDUMP_RUN'] + '\\' + filename
             gps_filename = gps_name[0] + '.csv'
-            print args
-            content = subprocess.check_output(args)
-            filepath = app.config['GPS_COORDINATE_FILE_FOLDER'] + '\\' + gps_filename
-            with open(filepath, 'w') as csvfile:
-                for row in content.splitlines():
-                    csvfile.write(row)
-                    csvfile.write('\n')
+            write_bin_gps_file(filename, gps_filename)
 
         #open dronekit-la and capture output
-        print app.config['LOG_ANALYZER_DIR'] + app.config['ORIGINAL_LOG_FILE_FOLDER'] + '\\' + filename
-        args = app.config['LOG_ANALYZER_DIR'] + app.config['ORIGINAL_LOG_FILE_FOLDER'] + '\\' + filename
-        content = subprocess.check_output(args)
-        
-
         processed_filename = filename.rsplit('.', 1)[0] + '.json'
-
-        processed = open(app.config['PROCESSED_OUTPUT_FILE_FOLDER'] + '\\' + processed_filename, 'w')
-        processed.write(content)
-        processed.close()
+        content = write_dronekit_la_output_file(filename)
 
         #save contents to db to avoid running dronekit-la again
         log = Log(filename, content, gps_filename, processed_filename,flight_id)
