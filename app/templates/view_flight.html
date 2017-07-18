@@ -5,8 +5,8 @@
 		{% for map in maps %}
 			{{map.js}}
 		{% endfor %}
+		
 	{% endif %}
-	
 {% endblock %}
 {% block content %}
 <div ng-app="flightApp">
@@ -134,11 +134,7 @@
 								</div>
 							</div>
 							<br>
-							
-								
-								{{log.map.html}}
-								
-							
+							{{log.map.html}}
 							{% endfor %}
 						{% else %}
 

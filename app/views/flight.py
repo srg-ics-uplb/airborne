@@ -6,7 +6,7 @@ from app import app, db #still needs app for config
 from flask import render_template, redirect, url_for, request, abort, Blueprint
 from ..forms import FlightForm, LogForm
 from ..models import Project, Drone, Flight, Log
-from log import get_map_markers, get_first_point
+from log import get_map_markers, get_first_point, get_map_markers_json
 from flask_login import  current_user, login_required
 from flask_googlemaps import Map 
 from werkzeug.utils import secure_filename
@@ -63,18 +63,22 @@ def view_flight(flight_id):
         log.processed_content = json.loads(log.content)
         log.processed_content['timestamp'] = datetime.fromtimestamp(log.processed_content['timestamp']/1000000)
         point = get_first_point(log.id)
+        markers = get_map_markers_json(log.id)
+        polyline = {
+            'stroke_color': '#0AB0DE',
+            'stroke_opacity': 1.0,
+            'stroke_weight': 3,
+            'path': get_map_markers_json(log.id)
+        }
         maps.append(Map(
             identifier = "map" + str(log.id),
+            zoom=15,
             lat = point[0],
             lng = point[1],
-            markers = get_map_markers(log.id)
+            markers=markers,
+            polylines=[polyline]
         ))
-        log.map = Map(
-            identifier = "map" + str(log.id),
-            lat = point[0],
-            lng = point[1],
-            markers = get_map_markers(log.id)
-        )
+        log.map = maps[len(maps)-1]
         
         print "Log " + log.filename + " successfully processed"     
 

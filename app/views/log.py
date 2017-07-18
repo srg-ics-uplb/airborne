@@ -91,3 +91,51 @@ def get_map_markers(log_id):
                 waypoints.append(prev)
             
     return waypoints
+
+
+def get_map_markers_json(log_id):
+    """
+        Same as get_map_markers, but output is in json format
+    """
+    threshold = 3
+    r = 6371e3
+    waypoints = []
+    log = Log.query.get(log_id)
+    filepath = app.config['GPS_COORDINATE_FILE_FOLDER'] + '\\' + log.gps_filename
+    with open(filepath, 'r') as mapfile:
+        reader = csv.DictReader(mapfile)
+        line = reader.next()
+        waypoint = {
+            'icon': 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
+            'lat': float(line['Lat']),
+            'lng': float(line['Lng']),
+            'infobox': '<p> START </p>'
+        }
+        prev = waypoint
+
+        print prev
+        waypoints.append(waypoint)
+        count = 1
+        for row in reader:
+            phi1 = radians(float(row['Lat']))
+            phi2 = radians(float(prev['lat']))
+            deltaphi = radians(float(row['Lat']) - float(prev['lat']))
+            deltalambda = radians(float(row['Lng']) - float(prev['lng']))
+            a = sin(deltaphi/2) * sin(deltaphi/2) + (cos(phi1) * cos(phi2) * sin(deltalambda/2) * sin(deltalambda/2))
+            c = 2 * atan2(sqrt(a),sqrt(1-a))
+            d = r * c
+
+            
+            if d > threshold:
+                prev = {
+                    'icon': 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+                    'lat': float(row['Lat']),
+                    'lng': float(row['Lng']),
+                    'infobox': '<p> '+ str(count) +' </p>'
+                }
+                waypoints.append(prev)
+                count+=1
+        waypoints[len(waypoints)-1]['icon'] = 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
+        waypoints[len(waypoints)-1]['infobox'] = '<p> END </p>'
+    print waypoints
+    return waypoints
