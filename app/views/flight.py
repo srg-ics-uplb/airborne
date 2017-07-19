@@ -6,7 +6,7 @@ from app import app, db #still needs app for config
 from flask import render_template, redirect, url_for, request, abort, Blueprint
 from ..forms import FlightForm, LogForm
 from ..models import Project, Drone, Flight, Log
-from log import get_map_markers, get_first_point, get_map_markers_json, create_map, write_log_gps_file, write_bin_gps_file, write_dronekit_la_output_file
+from log import get_map_markers, get_first_point, get_map_markers_json, create_map, write_log_gps_file, write_bin_gps_file, write_dronekit_la_output_file, write_dronekit_la_output_file_plain
 from flask_login import  current_user, login_required
 from flask_googlemaps import Map
 from werkzeug.utils import secure_filename
@@ -105,7 +105,7 @@ def view_flight(flight_id):
         print 'Upload Successful for file: ' + filename
         return redirect(url_for('flight.view_flight', flight_id=flight_id))
 
-    return render_template('view_flight.html', title=flight.name,  flight=flight, drone=drone, project=project, form=form, logs=logs, maps=maps)
+    return render_template('view_flight_hardcoded.html', title=flight.name,  flight=flight, drone=drone, project=project, form=form, logs=logs, maps=maps)
 
 #   ADD A FLIGHT
 @flight.route('/flight/add', methods=['GET','POST'])

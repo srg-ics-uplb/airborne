@@ -63,6 +63,22 @@ def write_dronekit_la_output_file(filename):
     
     return content
 
+def write_dronekit_la_output_file_plain(filename):
+    """
+        Write plain text file for dronekit-la output
+    """
+    args = app.config['LOG_ANALYZER_TXT_DIR'] + app.config['ORIGINAL_LOG_FILE_FOLDER'] + '\\' + filename
+    content = subprocess.check_output(args)
+    
+
+    processed_filename = filename.rsplit('.', 1)[0] + '.txt'
+    with open(app.config['PROCESSED_OUTPUT_FILE_FOLDER'] + '\\' + processed_filename, 'w') as processed:
+        processed.write(content)
+        processed.close()
+    
+    return content
+
+
 def write_log_gps_file(file_handle, filename):
     """
         Write CSV file for GPS data from dataflash text dumps(*.log)
@@ -84,7 +100,7 @@ def write_bin_gps_file(log, filename):
     """    
     args = app.config['MAVLOGDUMP_RUN'] + '\\' + log
     
-    print args
+
     content = subprocess.check_output(args)
     filepath = app.config['GPS_COORDINATE_FILE_FOLDER'] + '\\' + filename
     with open(filepath, 'w') as csvfile:
@@ -125,7 +141,6 @@ def get_first_point(log_id):
     with open(filepath, 'r') as mapfile:
         reader = csv.DictReader(mapfile)
         line = reader.next()
-        print line
         basepoint = line['Lat'], line['Lng']
     return basepoint
 
@@ -149,7 +164,7 @@ def get_map_markers(log_id):
         waypoint = line['Lat'], line['Lng']
         prev = waypoint
 
-        print prev
+        
         waypoints.append(waypoint)
         for row in reader:
             phi1 = radians(float(row['Lat']))
@@ -172,7 +187,7 @@ def get_map_markers_json(log_id):
     """
         Same as get_map_markers, but output is in json format
     """
-    threshold = 3
+    threshold = 2.5
     r = 6371e3
     waypoints = []
     log = Log.query.get(log_id)
@@ -188,7 +203,6 @@ def get_map_markers_json(log_id):
         }
         prev = waypoint
 
-        print prev
         waypoints.append(waypoint)
         count = 1
         for row in reader:
@@ -212,5 +226,4 @@ def get_map_markers_json(log_id):
                 count+=1
         waypoints[len(waypoints)-1]['icon'] = 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
         waypoints[len(waypoints)-1]['infobox'] = '<p> END </p>'
-    print waypoints
     return waypoints
