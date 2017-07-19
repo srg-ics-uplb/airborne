@@ -5,6 +5,9 @@ SECRET_KEY = 'you-will-never-guess'
 MYSQL_USERNAME = 'root'
 MYSQL_PASSWORD = 'root'
 
+#enable auto template reload
+TEMPLATES_AUTO_RELOAD = True
+
 #for use with mavlogdump
 PYTHON_DIR = 'flask\\Scripts\\python.exe '
 
@@ -29,6 +32,9 @@ FRAME_TYPE_ARG = ' -f ' + FRAME_TYPE
 
 #log analyzer set to output json format
 LOG_ANALYZER_DIR = 'tools\\dronekit-la\\dronekit-la.exe -s json ' + DRONE_TYPE_ARG + FRAME_TYPE_ARG
+
+#log analyzer set to output plaintext format
+LOG_ANALYZER_TXT_DIR = 'tools\\dronekit-la\\dronekit-la.exe -s plain-text ' + DRONE_TYPE_ARG + FRAME_TYPE_ARG
 
 #mavlogdump for parsing a csv file containing gps-related data from bin logs
 MAVLOGDUMP_ARGS = '--format csv --types GPS '
