@@ -14,7 +14,7 @@ TEMPLATES_AUTO_RELOAD = True
 PYTHON_DIR = 'flask\\Scripts\\python.exe '
 
 #for Google Maps API
-GOOGLEMAPS_KEY = 'AIzaSyBnNjcDq_RASeUwI3HHYljhBht7CtjGYx0'
+GOOGLEMAPS_KEY = api_key
 
 #Upload restraints
 ALLOWED_EXTENSIONS = ['bin', 'log', 'tlog']
