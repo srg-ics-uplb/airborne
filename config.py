@@ -1,4 +1,6 @@
 """Config file for Airborne"""
+from api_key import api_key
+
 WTF_CSRF_ENABLED = True
 SECRET_KEY = 'you-will-never-guess'
 
