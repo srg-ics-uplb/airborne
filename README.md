@@ -79,9 +79,14 @@ Open config.py and set your MySQL credentials on constants `MYSQL_USERNAME` and 
 
 	MYSQL_USERNAME = <some special user>
 	MYSQL_PASSWORD = <some special password>
-Get your own API key from Google Maps from [here](https://developers.google.com/maps/documentation/javascript/get-api-key) and on config.py, set your API key to `GOOGLEMAPS_KEY`
+Get your own API key from Google Maps from [here](https://developers.google.com/maps/documentation/javascript/get-api-key) and create a new file called `api_key.py`. Inside the file, create a variable named `api_key` and set your API key to it. Here's a sample of the file.
 
-	GOOGLEMAPS_KEY = <your api key>
+	"""
+	api_key.py
+	Python module that stores the Google Maps API Key
+	You can get your own from here: https://developers.google.com/maps/documentation/javascript/get-api-key
+	"""
+	api_key = <your api key>
 
 Run the initial migration
 
