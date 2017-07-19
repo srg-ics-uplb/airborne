@@ -1,5 +1,6 @@
 # Airborne
-Drone flight management and log analytics
+Drone flight management and log analytics web application built using Python/Flask, MySQL, and Bootstrap.
+Log analysis is done using [dronekit-la](la.dronekit.io).
 
 Prerequisites:
 ======
@@ -21,6 +22,18 @@ Prerequisites:
 
 Setup:
 ======
+I don't have an install script ready yet. So bear with the manual installation process for now.
+
+
+Install the latest version of Python 2.7 and MySQL.
+On Windows, you can download them here: [Python](https://www.python.org/downloads/windows/) [MySQL](https://dev.mysql.com/downloads/mysql/)
+
+On Linux, you can use the following commands:
+
+	sudo apt-get update
+	sudo apt-get install mysql-server
+	sudo apt-get install python2.7
+
 Clone the github repository. 
 
 	git clone https://github.com/ClarkAlmazan/airborne
@@ -54,6 +67,29 @@ Install the remaining dependencies using pip:
 	pip install flask-migrate
 	pip install pymavlink
 	pip install flask-googlemaps
+
+Set the FLASK_APP environment variable to app/__init__.py
+
+	export FLASK_APP=app/__init__.py
+
+Create a new database in MySQL for Airborne. You can also create your own user that Airborne will use to access your database.
+	
+	create database airborne
+Open config.py and set your MySQL credentials on constants `MYSQL_USERNAME` and `MYSQL_PASSWORD`
+
+	MYSQL_USERNAME = <some special user>
+	MYSQL_PASSWORD = <some special password>
+Get your own API key from Google Maps from [here](https://developers.google.com/maps/documentation/javascript/get-api-key) and on config.py, set your API key to `GOOGLEMAPS_KEY`
+
+	GOOGLEMAPS_KEY = <your api key>
+
+Run the initial migration
+
+	flask db init
+	flask db migrate
+	flask db upgrade
+
+
 
 To run the development server, use:
 
