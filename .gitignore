@@ -18,6 +18,9 @@ app/uploads/logs/processed_la/*.json
 #API key file
 api_key.py
 
+#VSCode settings
+.vscode/*
+
 
 
 #Folder for 3rd Party tools
