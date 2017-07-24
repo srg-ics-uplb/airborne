@@ -16,6 +16,23 @@
 	margin:auto;
 }
 
+.custom-nav{
+	/* margin-bottom: 0px; */
+	background-color: #45453b ; 
+	font-size: 12px;
+	border:0;
+
+}
+
+.custom-nav li a, .navbar-brand{
+	color: #fff !important;
+}
+
+.custom-nav li a:hover{
+	color: #45453b !important;
+	background-color: #fff !important;
+}
+
 .button-1{
 	border: 1px solid #ff882a;
 	color: #ff882a;
@@ -66,7 +83,7 @@
 }
 
 body{
-	
+	background-color: #f7f7f7;
 }
 
 button a{

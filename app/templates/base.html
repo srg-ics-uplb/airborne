@@ -23,7 +23,7 @@
     </head>
     
     <body>
-			<nav class="navbar navbar-inverse">
+			<nav class="navbar navbar-inverse custom-nav">
 				<div class="container=fluid">
 					<div class="navbar-header">
 						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#base-navbar">
@@ -34,20 +34,27 @@
 						<a class="navbar-brand" href="/">Airborne</a>
 					</div>
 				<div class="collapse navbar-collapse" id="base-navbar">
-					<ul class="nav navbar-nav">
-						
-						{% if current_user.is_anonymous %}
-							<li><a href="/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-							<li><a href="/signup"><span class="glyphicon glyphicon-pencil"></span> Sign Up</a></li>
-						{% else %}
+					{% if current_user.is_anonymous %}
+					<ul class="nav navbar-nav navbar-right">
+						<li><a href="/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+						<li><a href="/signup"><span class="glyphicon glyphicon-pencil"></span> Sign Up</a></li>
+						<li><a href="/about"><span class="glyphicon glyphicon-info-sign"></span> About</a></li>
+					</ul>
+					{% else %}
+					<ul class="nav navbar-nav navbar-center">
+								
 							<li><a href="/dashboard"><span class="glyphicon glyphicon-dashboard"></span> Dashboard</a></li>
 							<li><a href="/projects"><span class="glyphicon glyphicon-tasks"></span> Projects</a></li>
 							<li><a href="/drones"><span class="glyphicon glyphicon-plane"></span> Drones</a></li>
 							<li><a href="/flights"><span class="glyphicon glyphicon-cloud"></span> Flights</a></li>
-							<li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
-						{% endif %}	
-						<li><a href="/about"><span class="glyphicon glyphicon-info-sign"></span> About</a></li>
+							<li><a href="/about"><span class="glyphicon glyphicon-info-sign"></span> About</a></li>
 					</ul>
+					<ul class="nav navbar-nav navbar-right">		
+							<li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+					</ul>
+					{% endif %}	
+						
+					
 				</div>	
 			</div>
 		</nav>	
