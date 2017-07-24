@@ -1,9 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
-        <div class="jumbotron">
-            <div class="container">                
-                <h3>Projects  ({{user.projects.count()}}) <a href="/project/add" class="btn btn-lg btn-success"><span class="glyphicon glyphicon-plus"></span> Add </a> </h3>
-                
+        <div class="container-fluid">
+            <div class="jumbotron">                
+                <div class="page-header">
+                    <h3>Projects  ({{user.projects.count()}}) </h3>
+                    <a href="/project/add" class="btn btn-md btn-success"><span class="glyphicon glyphicon-plus"></span> Add a new project</a> 
+                </div>
                 <div class="row">
                 {% if projects.count()!=0 %}
                     <div class="responsive-table col-sm-12">

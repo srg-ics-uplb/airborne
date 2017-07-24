@@ -2,8 +2,8 @@
 
 {% block content %}
 	
-	<div class="container">
-
+	<div class="container-fluid">
+		<div class="well">
 		<form action="" method="post" name="signup" class="form-signin">
 			<h1 class="form-signin-header signup-header">Sign Up</h1><br>
 			{{ form.hidden_tag() }}
@@ -90,5 +90,6 @@
 			</div>
 
 		</form>
+		</div>
 	</div>
 {% endblock %}

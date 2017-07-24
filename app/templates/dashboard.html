@@ -1,8 +1,84 @@
 {% extends "base.html" %}
 {% block content %}
-    <h1> Hello, {{user.first_name}}!</h1>
+    <div class="container-fluid">
+        <div class="jumbotron">
+            <h1 class="center"> Hello, {{user.first_name}}!</h1>
+        </div>
+        <div class="well well-sm">
+            
+            <div class="row center">
+                <div class="col-sm-3">    
+                    <h2> Some stats: </h2>
+                </div>
+                <div class="col-sm-3">
+                    <h3> Projects with scheduled flights: </h3>
+                    {{ unfinished_project_count }} / {{ total_project_count }}
+                </div>
+                <div class="col-sm-3">
+                    <h3> Unused drones: </h3>
+                    {{ unused_drone_count }} / {{total_drone_count}}
+                </div>
+                <div class="col-sm-3">
+                    <h3> Unfinished flights in total: </h3>
+                    {{ scheduled_flights }} / {{ total_flight_count }}
+                </div>
+            </div>
+        </div>
 
-    You have {{drone_count}} drones.
-    You have {{project_count}} projects.
-    You have {{flight_count}} flights.
+    </div>
+    <div class="container-fluid">
+        <div class="well">
+        <div class="recent-activity">
+            <div class="row">
+                <div class="col-sm-4">
+                    <h2 class="center">Recent activity(last 5 days):</h2>
+                </div>
+                <div class="col-sm-8">
+                    <h4> Project 10 @ 2014-10-11 </h4>
+                    <h4> Project 200 @ 2014-10-10 </h4>
+                    <h4> Project 12 @ 2014-10-10 </h4>
+                    <h4> Project 15 @ 2014-10-09 </h4>
+                    <h4> Project 2 @ 2014-10-7 </h4>
+                </div>
+            </div>
+        </div>
+        </div>
+        <div class="well">
+        <div class="scheduled-flights">
+            <div class="row">
+            
+                <div class="col-sm-5">
+                    <h2>Scheduled Flights (for the week):</h2>
+                </div>
+                <!-- PLACEHOLDERS -->
+                <div class="col-sm-1 day">
+                    
+                    <p> Monday </p>
+                    
+                </div>
+                <div class="col-sm-1 day">
+                    <p> Tuesday </p>
+                </div>
+                <div class="col-sm-1 day">
+                    <p> Wednesday </p>
+                </div>
+                <div class="col-sm-1 day">
+                    <p> Thursday </p>
+                </div>
+                <div class="col-sm-1 day">
+                    <p> Friday </p>
+                </div>
+                <div class="col-sm-1 day">
+                    <p> Saturday </p>
+                </div>
+                <div class="col-sm-1 day">
+                    <p> Sunday </p>
+                </div>
+                    
+            </div>
+        </div>
+        </div>
+        
+    </div>
+    
 {% endblock %}

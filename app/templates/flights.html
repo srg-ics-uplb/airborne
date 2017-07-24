@@ -1,10 +1,13 @@
 {% extends "base.html" %}
 {% block content %}
-        <div class="jumbotron">
-           
-            <div class="container">
-                 <h3>Flights  ({{flight_count}}) <a href="/flight/add" class="btn btn-lg btn-success"><span class="glyphicon glyphicon-plus"></span> Add </a> </h3>
-                 
+        <div class="container-fluid">
+            <div class="jumbotron">
+                <div class="page-header">
+                    <h3>Flights  ({{flight_count}}) </h3>
+                    <a href="/flight/add" class="btn btn-md btn-success"><span class="glyphicon glyphicon-plus"></span> Add a new flight </a>
+                    
+                </div>
+
                 <div class="row">
                     {% if flight_count!=0 %}
                         <div class="col-sm-12">

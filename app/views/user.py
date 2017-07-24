@@ -1,11 +1,12 @@
 """
     Views module for Users. This contains routes and functions that are user-related.
 """
+import datetime
 from flask import Blueprint, render_template, redirect, url_for
 from flask_login import login_user, logout_user, current_user, login_required
 from app import login_manager, bcrypt, db
 from ..forms import LoginForm, SignupForm
-from ..models import Project, Drone, User
+from ..models import Project, Drone, User,Flight
 
 
 #####   USER MANAGEMENT ROUTES AND VIEWS
@@ -22,13 +23,36 @@ def dashboard():
     #Get user's project, flight, and drone counts.
     user = current_user
     projects = Project.query.filter_by(user_id=user.id)
-    project_count = projects.count()
-    drone_count = Drone.query.filter_by(user_id=user.id).count()
-    flight_count = 0
+    drones = Drone.query.filter_by(user_id=user.id)
+    current_date = datetime.date.today()
+    total_project_count = projects.count()
+    unused_drone_count = 0
+    
+    total_drone_count = drones.count()
+    for drone in drones:
+        if drone.flights.count() == 0:
+            unused_drone_count += 1
+    total_drone_count = Drone.query.filter_by(user_id=user.id).count()
+    unfinished_project_count = 0
+    total_flight_count = 0
     for project in projects:
-        flight_count = flight_count + project.flights.count()
+        total_flight_count = total_flight_count + project.flights.count()
+        scheduled_flights = project.flights.filter(Flight.date>current_date).count()
+        for flight in project.flights:
+            if flight.date > current_date:
+                unfinished_project_count += 1
+                break
 
-    return render_template('dashboard.html', title='Dashboard', user=user, project_count=project_count, drone_count=drone_count, flight_count=flight_count)
+    return render_template('dashboard.html',
+                           title='Dashboard',
+                           user=user,
+                           total_project_count=total_project_count,
+                           total_drone_count=total_drone_count,
+                           total_flight_count=total_flight_count,
+                           unused_drone_count=unused_drone_count,
+                           unfinished_project_count=unfinished_project_count,
+                           scheduled_flights=scheduled_flights
+                          )
 
 
 

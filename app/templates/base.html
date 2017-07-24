@@ -5,6 +5,8 @@
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.0/css/bootstrap-datepicker.css" rel="stylesheet">
 		<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
 		
+		<link href="/static/css/base.css" rel="stylesheet">
+		<link href="/static/css/dashboard.css" rel="stylesheet">
 		<link href="/static/css/login.css" rel="stylesheet">
 		<link href="/static/css/drone.css" rel="stylesheet">
 		<link href="/static/css/flight.css" rel="stylesheet">
@@ -21,7 +23,6 @@
     </head>
     
     <body>
-		
 			<nav class="navbar navbar-inverse">
 				<div class="container=fluid">
 					<div class="navbar-header">
@@ -33,9 +34,6 @@
 						<a class="navbar-brand" href="/">Airborne</a>
 					</div>
 				<div class="collapse navbar-collapse" id="base-navbar">
-
-				
-					
 					<ul class="nav navbar-nav">
 						
 						{% if current_user.is_anonymous %}
@@ -55,5 +53,11 @@
 		</nav>	
 	
 		{% block content %}{% endblock %}
+		<br>
+		<div id="footer">
+			<div class="footer-text"> 
+				<a href="http://srg.ics.uplb.edu.ph">Systems Research Group</a> - <a href="http://ics.uplb.edu.ph" >Institute of Computer Science</a> - <a href="http://uplb.edu.ph">University of the Philippines Los Baños  </a>
+			</div>
+		</div>
     </body>
 </html>
