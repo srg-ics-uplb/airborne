@@ -1,3 +1,19 @@
+.dashboard-header{
+	background-color: #f28026;
+}
+
+.dashboard-header h1{
+	color: white;
+}
+
+.dashboard-header span.glyphicon{
+	color: #ffdf70;
+}
+
+.dashboard-well{
+	border-color: #f28026;
+}
+
 .scheduled-flights{
 	background-color: #F1EDEE;
 }
@@ -6,4 +22,5 @@
 	border: 1px solid black;
 	text-align: center;	
 }
+
 

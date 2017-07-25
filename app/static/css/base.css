@@ -1,5 +1,5 @@
 .home{
-	background-color: #ff882a;
+	background-color: #f28026;
 }
 
 .home h1{
@@ -34,38 +34,36 @@
 }
 
 .button-1{
-	border: 1px solid #ff882a;
-	color: #ff882a;
+	border: 1px solid #f28026;
+	color: #f28026;
 	background-color:white;	
 	text-decoration: none;
 }
 
 .button-1:hover{
-	border: 1px solid #ff882a;
+	border: 1px solid #f28026;
 	background-color: #ffaf70;
 	color:white;
 	text-decoration: none;
 }
 
 .button-2{
-	border: 1px solid #ff882a;
-	color: #ff882a;
+	border: 1px solid #f28026;
+	color: #f28026;
 	background-color:white;	
 	text-decoration: none;
 }
 
 .button-2:hover{
-	border: 1px solid #ff882a;
-	background-color: #ff882a;
+	border: 1px solid #f28026;
+	background-color: #f28026;
 	color:white;
 	text-decoration: none;
 }
 
 
-.footer {
-	background-color: #101010;
-	width: 100%;
-	height: auto;
+#footer {
+	border-top: 1px solid #f28026;
 }
 
 .footer-text{
@@ -74,12 +72,16 @@
 }
 
 .footer-text a{
-	color: #ff882a;
+	color: #f28026;
 	text-decoration: none;
 }
 
 .center{
 	text-align: center;
+}
+
+.right{
+	text-align: right;
 }
 
 .responsive-table{

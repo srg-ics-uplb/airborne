@@ -1,10 +1,14 @@
 {% extends "base.html" %}
 {% block content %}
     <div class="container-fluid">
-        <div class="jumbotron">
-            <h1 class="center"> Hello, {{user.first_name}}!</h1>
+        <div class="jumbotron dashboard-header">
+            <h1 class=""> 
+                <span class="glyphicon glyphicon-dashboard"></span>
+                Dashboard 
+                
+            </h1>
         </div>
-        <div class="well well-sm">
+        <div class="well well-sm dashboard-well">
             
             <div class="row center">
                 <div class="col-sm-3">    
@@ -19,7 +23,7 @@
                     {{ unused_drone_count }} / {{total_drone_count}}
                 </div>
                 <div class="col-sm-3">
-                    <h3> Unfinished flights in total: </h3>
+                    <h3> Unfinished flights: </h3>
                     {{ scheduled_flights }} / {{ total_flight_count }}
                 </div>
             </div>
@@ -27,7 +31,7 @@
 
     </div>
     <div class="container-fluid">
-        <div class="well">
+        <div class="well dashboard-well">
         <div class="recent-activity">
             <div class="row">
                 <div class="col-sm-4">
@@ -43,7 +47,7 @@
             </div>
         </div>
         </div>
-        <div class="well">
+        <div class="well dashboard-well">
         <div class="scheduled-flights">
             <div class="row">
             

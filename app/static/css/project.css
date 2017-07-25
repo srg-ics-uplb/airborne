@@ -1,11 +1,11 @@
 .flight-name{
 	text-decoration: none;
-	color: #ff882a;
+	color: #f28026;
 }
 
 .flight-name:hover{
 	text-decoration: none;
-	color: #ff882a;
+	color: #f28026;
 }
 
 
@@ -15,15 +15,73 @@
 
 .flight-tabs li a{
 	background-color: white;
-	color: #ff882a;
+	color: #f28026;
 }
 
 .flight-tabs li:hover a{
-	background-color: #ff882a !important;
+	background-color: #f28026 !important;
 	color: white !important;
 }
 
 .flight-tabs li.active a{
-	background-color: #ff882a !important;
+	background-color: #f28026 !important;
 	color: white !important;
+}
+
+.no-projects{
+	text-align: center;
+}
+
+.no-projects a{
+	border: 5px dashed #757575;
+	
+}
+
+.no-projects a:hover{
+	border: 5px dashed #757575;
+}
+
+.fade-50{
+	opacity: 0.5;
+}
+
+
+.projects-header{
+	background-color: #f28026;
+	padding: 15px 15px 15px 15px;
+}
+
+
+.projects-header a{
+	background-color: #ffdf70;
+	border-color: #f28026;
+	color: #f28026;
+	float: right;
+}
+
+.projects-header span.glyphicon-plus{
+	font-size: 18px;
+}
+
+.projects-header a:hover{
+	background-color: #f28026;
+	border-color: #f28026;
+	color: #ffdf70;
+	float: right;
+}
+
+.projects-header a:focus{
+	background-color: #f28026;
+	border-color: #f28026;
+	color: #ffdf70;
+	float: right;
+}
+
+.projects-header h2{
+	color: white;
+}
+
+.projects-header span.glyphicon-tasks{
+	color: #ffdf70;
+	
 }

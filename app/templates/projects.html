@@ -1,11 +1,12 @@
 {% extends "base.html" %}
 {% block content %}
         <div class="container-fluid">
-            <div class="jumbotron">                
-                <div class="page-header">
-                    <h3>Projects  ({{user.projects.count()}}) </h3>
-                    <a href="/project/add" class="btn btn-md btn-success"><span class="glyphicon glyphicon-plus"></span> Add a new project</a> 
-                </div>
+            <div class="jumbotron projects-header">                
+                <h2>
+                    <span class="glyphicon glyphicon-tasks"></span>
+                    Projects 
+                    <a href="/project/add" class="btn btn-md"><span class="glyphicon glyphicon-plus"></span></a>
+                </h2>
             </div>
         </div>
 
@@ -25,6 +26,7 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                    
                                 {% for project in projects %}
                                     <tr>
                                         <td><a href="/project/view/{{project.id}}"> {{project.name}} </a></td>
@@ -34,18 +36,26 @@
                                             <a href="/project/edit/{{project.id}}" class="btn btn-sm btn-warning"><span class="glyphicon glyphicon-edit"></span> Edit </a>
                                             <a href="/project/delete/{{project.id}}" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-trash"></span> Delete </a>
                                         </td>
-                                    </tr>    
+                                    </tr>
                                 {% endfor %}
                             </tbody>
+                    
                         </table>
                     </div>
+                    
+                    
                 {% else %}
                     <div class="col-sm-12">
-                        <h3> You have no projects. Click the Add button above to start! </h3>
-                        <p> Is this an error? Contact the administrator. </p>
+                       
+                        <div class="no-projects">
+                            <h3 class="fade-50"> You have no projects. Click the Add button to create one. </h3>
+                            <p class="fade-50"> Is this an error? Contact the administrator. </p>
+                        </a>
+                        
                     </div>
                 </div>
                 {% endif %}
             </div>
         </div>
+    </div>
 {% endblock %}

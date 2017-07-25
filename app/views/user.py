@@ -35,13 +35,15 @@ def dashboard():
     total_drone_count = Drone.query.filter_by(user_id=user.id).count()
     unfinished_project_count = 0
     total_flight_count = 0
+    scheduled_flights = 0
     for project in projects:
         total_flight_count = total_flight_count + project.flights.count()
-        scheduled_flights = project.flights.filter(Flight.date>current_date).count()
+        scheduled_flights =+ project.flights.filter(Flight.date>current_date).count()
         for flight in project.flights:
             if flight.date > current_date:
                 unfinished_project_count += 1
                 break
+ 
 
     return render_template('dashboard.html',
                            title='Dashboard',
