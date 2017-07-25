@@ -1,0 +1,29 @@
+.flight-name{
+	text-decoration: none;
+	color: #ff882a;
+}
+
+.flight-name:hover{
+	text-decoration: none;
+	color: #ff882a;
+}
+
+
+.flight-tabs{
+	margin-bottom: 10px;
+}
+
+.flight-tabs li a{
+	background-color: white;
+	color: #ff882a;
+}
+
+.flight-tabs li:hover a{
+	background-color: #ff882a !important;
+	color: white !important;
+}
+
+.flight-tabs li.active a{
+	background-color: #ff882a !important;
+	color: white !important;
+}

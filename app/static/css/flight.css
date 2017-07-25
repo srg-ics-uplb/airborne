@@ -3,3 +3,28 @@
 	max-height: 100vh;
 }
 
+.log-info ul li{
+	list-style-type: none;
+}
+
+.test-content li{
+	list-style-type: none;
+}
+.log-test-tabs{
+	margin-bottom: 10px;
+}
+
+.log-test-tabs li a{
+	background-color: white;
+	color: #ff882a;
+}
+
+.log-test-tabs li:hover a{
+	background-color: #ff882a !important;
+	color: white !important;
+}
+
+.log-test-tabs li.active a{
+	background-color: #ff882a !important;
+	color: white !important;
+}

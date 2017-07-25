@@ -82,6 +82,15 @@
 	text-align: center;
 }
 
+.responsive-table{
+	margin:auto;
+}
+
+td a:hover {
+	text-decoration: none;
+}
+
+ 
 body{
 	background-color: #f7f7f7;
 }

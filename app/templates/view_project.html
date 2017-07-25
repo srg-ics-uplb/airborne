@@ -1,10 +1,13 @@
 {% extends "base.html" %}
 {% block content %}
-        <div class="jumbotron">
-            <div class="container-fluid">
-                <h1> {{ project.name}} </h1>
-                <h4>Description: {{project.description}}</h4>
+        
+        <div class="container-fluid">
+            <div class="jumbotron">
+                <h1 class="center"> {{ project.name}} </h1>
+                <h4 class="center">Description: {{project.description}}</h4>
+                <h4 class="center">Total Flight Duration: {{total_flight_duration//3600}} hour(s), {{ (total_flight_duration%3600)//60 }} minute(s), {{ total_flight_duration%60 }} second(s) </h4>
                 <br>
+                <!--
                 <a href="/project/edit/{{project.id}}" class="btn btn-sm btn-warning"> 
                     <span class="glyphicon glyphicon-edit"></span>
                     Edit 
@@ -13,44 +16,125 @@
                     <span class="glyphicon glyphicon-minus"></span>
                     Delete 
                 </a>
-
+                -->
             </div>
         </div>
-        <div class="jumbotron">
-            <div class="container-fluid">
-                <h2> Flights </h2>
-                {% if project.flights.count()!=0 %}
-                    <div class="responsive-table">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Flight</th>
-                                    <th>Description</th>
-                                    <th>Date/Location</th>
-                                    <th>Duration</th>
-                                </tr>
-                            </thead>
-                            <tbody>
+        
+        <div class="container-fluid">
+            <div class="well">
+                <div class="page-header">
+                    <h2 class="center"> Flights </h2>
+                </div>
+                <ul class="nav nav-tabs nav-justified flight-tabs">
+                    <li class="active"><a data-toggle="tab" href="#current_flights">Current</a></li>
+                    <li><a data-toggle="tab" href="#upcoming_flights">Upcoming</a></li>
+                    <li><a data-toggle="tab" href="#past_flights">Past</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div id="current_flights" class="tab-pane fade in active">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                {% if current_flights.count()!=0 %}
+                                    <div class="responsive-table">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Flight</th>
+                                                <th>Duration</th>
+                                                <th>Date/Location</th>
+                                                <th>Description</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
 
-                        {% for flight in project.flights %}
-                            <tr>
-                                <td><a href="/flight/view/{{flight.id}}"> {{flight.name}} </a></td>
-                                <td>{{flight.notes}}</td>
-                                <td>{{ flight.date}} at {{ flight.location }}</td>
-                                <td>{{flight.duration/3600}} hours, {{ (flight.duration%3600)/60 }} minutes, {{ flight.duration%60 }} seconds</td>
-                            </tr>
-                    {% endfor %}
-                            </tbody>
-                        </table>
+                                    {% for flight in current_flights %}
+                                        <tr>
+                                            <td ><a class="flight-name" href="/flight/view/{{flight.id}}"> {{flight.name}} </a></td>
+                                            <td>{{flight.duration//3600}} h, {{ (flight.duration%3600)//60 }} m, {{ flight.duration%60|int }} s</td>
+                                            <td>{{ flight.date}} at {{ flight.location }}</td>
+                                            <td>{{flight.notes}}</td>
+                                        </tr>
+                                    {% endfor %}
+                                        </tbody>
+                                    </table>
+                                    </div>
+                                {% else %}
+                                        <h4 class="center"> No current flights. </h4>
+                                {% endif %}
+                            </div>
+                        </div>
                     </div>
-                {% else %}
-                <div class="row">
-                    <div class="col-sm-12">
-                    <h3> There are currently no flights in this project. </h3>
-                    <p> Is this an error? Contact the administrator. </p>
+                    <div id="upcoming_flights" class="tab-pane fade">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                {% if upcoming_flights.count()!=0 %}
+                                    <div class="responsive-table">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Flight</th>
+                                                <th>Date/Location</th>
+                                                <th>Duration</th>
+                                                <th>Description</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                    {% for flight in upcoming_flights %}
+                                        <tr>
+                                            <td><a class="flight-name" href="/flight/view/{{flight.id}}"> {{flight.name}} </a></td>
+                                            <td>{{flight.duration//3600 }} h, {{ (flight.duration%3600)//60 }} m, {{ flight.duration%60|int}} s</td>
+                                            <td>{{ flight.date}} at {{ flight.location }}</td>
+                                            <td>{{flight.notes}}</td>
+                                        </tr>
+                                    {% endfor %}
+                                        </tbody>
+                                    </table>
+                                    </div>
+                                {% else %}
+
+                                            <h4 class="center"> No upcoming flights. </h4>
+
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div id="past_flights" class="tab-pane fade">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                {% if past_flights.count()!=0 %}
+                                    <div class="responsive-table">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Flight</th>
+                                                <th>Duration</th>
+                                                <th>Date/Location</th>
+                                                <th>Description</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                    {% for flight in past_flights %}
+                                        <tr>
+                                            <td><a class="flight-name" href="/flight/view/{{flight.id}}"> {{flight.name}} </a></td>
+                                            <td>{{flight.duration//3600 }} h, {{ (flight.duration%3600)//60 }} m, {{ flight.duration%60|int}} s</td>
+                                            <td>{{ flight.date}} at {{ flight.location }}</td>
+                                            <td>{{flight.notes}}</td>
+                                        </tr>
+                                    {% endfor %}
+                                        </tbody>
+                                    </table>
+                                    </div>
+                                {% else %}
+
+                                            <h4 class="center"> No past flights. </h4>
+
+                                {% endif %}
+                            </div>
+                        </div>
                     </div>
                 </div>
-                {% endif %}
             </div>
         </div>  
 {% endblock %}

@@ -1,11 +1,13 @@
 """
     Views module for Projects. This contains routes and functions that are project-related.
 """
+from datetime import date
 from app import db
 from flask import render_template, redirect, url_for, abort, Blueprint
 from flask_login import  current_user, login_required
 from ..forms import ProjectForm
-from ..models import Project
+from ..models import Project, Flight
+
 
 
 
@@ -49,7 +51,14 @@ def view_project(project_id):
 
     #Else proceed to view
     else:
-        return render_template("view_project.html", title=project.name, project=project)
+        current_date = date.today()
+        current_flights = Flight.query.filter(Flight.project_id==project_id, date==current_date)
+        past_flights = Flight.query.filter(Flight.project_id==project_id, date>current_date)
+        upcoming_flights = Flight.query.filter(Flight.project_id==project_id, date<current_date)
+        total_flight_duration = 0
+        for flight in Flight.query.filter_by(project_id=project_id):
+            total_flight_duration += flight.duration
+        return render_template("view_project.html", title=project.name, project=project, current_flights=current_flights, past_flights=past_flights, upcoming_flights=upcoming_flights, total_flight_duration=total_flight_duration)
 
 #   ADD A PROJECT
 @project.route('/project/add', methods=['GET', 'POST'])
