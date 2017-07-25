@@ -1,14 +1,13 @@
 {% extends "base.html" %}
 {% block content %}
     <div class="container-fluid">
-        <div class="jumbotron">
-            <div class="page-header">
-                <h3>Drones ({{user.drones.count()}}) </h3>
-                <a href="/drone/add" class="btn btn-md btn-success">
-                    <span class="glyphicon glyphicon-plus"></span> 
-                    Add a new drone
-                </a>
-            </div>
+        <div class="jumbotron drones-header">
+           
+            <h2>
+                 <span class="glyphicon glyphicon-plane"></span>
+                Drones 
+                <a href="/drone/add" class="btn btn-md"><span class="glyphicon glyphicon-plus"></span> </a>
+            </h2>
         </div>
     </div>
     <div class="container-fluid">
@@ -50,8 +49,10 @@
             {% else %}
                 <div class="row">
                     <div class="col-sm-12">
-                        <h3> You have no drones. Click the Add button above to add one! </h3>
-                        <p> Is this an error? Contact the administrator. </p>
+                        <div class="no-drones">
+                            <h3 class="fade-50"> You have no drones. Click the Add button above to add one! </h3>
+                            <p class="fade-50"> Is this an error? Contact the administrator. </p>
+                        </div>
                     </div>
                 </div>
             {% endif %}

@@ -1,9 +1,13 @@
 {% extends "base.html" %}
 {% block content %}
 	
-    <div class="jumbotron">
-		<div class="container-fluid">
-			<h1>{{drone.name}} </h1>
+    <div class="container-fluid">
+		<div class="jumbotron drone-header">
+			<h1 class="center">{{drone.name}} </h1>
+		</div>
+	</div>
+	<div class="container-fluid">
+		<div class="well">
 			<div class="row">
 				<div class="col-sm-4">
 					<h2>Specifications</h2>
@@ -38,8 +42,6 @@
 						</div>
 					{% endif %}
 				</div>	
-				</div>
-				
 			</div>
 		</div>
     </div>	

@@ -1,12 +1,14 @@
 {% extends "base.html" %}
 {% block content %}
         <div class="container-fluid">
-            <div class="jumbotron">
-                <div class="page-header">
-                    <h3>Flights  ({{flight_count}}) </h3>
-                    <a href="/flight/add" class="btn btn-md btn-success"><span class="glyphicon glyphicon-plus"></span> Add a new flight </a>
-                    
-                </div>
+            <div class="jumbotron flights-header">
+                
+                <h2>
+                    <span class="glyphicon glyphicon-cloud"></span>
+                    Flights
+                <a href="/flight/add" class="btn btn-md btn-success"><span class="glyphicon glyphicon-plus"></span></a>
+                </h1>
+            
             </div>
         </div>
         <div class="container-fluid">
@@ -44,8 +46,10 @@
                         </div>
                     {% else %}
                         <div class="col-sm-12">
-                            <h3> You have no flights. Click the Add button above to start! </h3>
-                            <p> Is this an error? Contact the administrator. </p>
+                            <div class="no-flights">
+                                <h3 class="fade-50"> You have no flights. Click the Add button above to start! </h3>
+                                <p class="fade-50"> Is this an error? Contact the administrator. </p>
+                            </div>
                         </div>
                     {% endif %}
                 </div>

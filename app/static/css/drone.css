@@ -3,4 +3,63 @@
 	max-width: 40%;
 
 }
+.drone-header{
+	border: 1px solid #f28026;
+}
 
+.drones-header{
+	background-color: #f28026;
+	padding: 15px 15px 15px 15px;
+}
+
+
+.drones-header a{
+	background-color: #ffdf70;
+	border-color: #f28026;
+	color: #f28026;
+	float: right;
+}
+
+.drones-header span.glyphicon-plus{
+	font-size: 18px;
+}
+
+.drones-header a:hover{
+	background-color: #f28026;
+	border-color: #f28026;
+	color: #ffdf70;
+	float: right;
+}
+
+.drones-header a:focus{
+	background-color: #f28026;
+	border-color: #f28026;
+	color: #ffdf70;
+	float: right;
+}
+
+.drones-header h2{
+	color: white;
+}
+
+.drones-header span.glyphicon-plane{
+	color: #ffdf70;
+	
+}
+
+.no-drones{
+	text-align: center;
+}
+
+.no-drones a{
+	border: 5px dashed #757575;
+	
+}
+
+.no-drones a:hover{
+	border: 5px dashed #757575;
+}
+
+.fade-50{
+	opacity: 0.5;
+}

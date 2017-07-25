@@ -1,3 +1,80 @@
+.no-flights{
+	text-align: center;
+}
+
+.no-flights a{
+	border: 5px dashed #757575;
+	
+}
+
+.no-flights a:hover{
+	border: 5px dashed #757575;
+}
+
+.fade-50{
+	opacity: 0.5;
+}
+
+
+.flights-header{
+	background-color: #f28026;
+	padding: 15px 15px 15px 15px;
+}
+
+
+.flights-header a{
+	background-color: #ffdf70;
+	border-color: #f28026;
+	color: #f28026;
+	float: right;
+}
+
+.flights-header span.glyphicon-plus{
+	font-size: 18px;
+}
+
+.flights-header a:hover{
+	background-color: #f28026;
+	border-color: #f28026;
+	color: #ffdf70;
+	float: right;
+}
+
+.flights-header a:focus{
+	background-color: #f28026;
+	border-color: #f28026;
+	color: #ffdf70;
+	float: right;
+}
+
+.flights-header h2{
+	color: white;
+}
+
+.flights-header span.glyphicon-cloud{
+	color: #ffdf70;
+	
+}
+
+
+.no-flights{
+	text-align: center;
+}
+
+.no-flights a{
+	border: 5px dashed #757575;
+	
+}
+
+.no-flights a:hover{
+	border: 5px dashed #757575;
+}
+
+.fade-50{
+	opacity: 0.5;
+}
+
+
 .test-body{
 	overflow-y:auto;
 	max-height: 100vh;
@@ -28,3 +105,4 @@
 	background-color: #ff882a !important;
 	color: white !important;
 }
+
