@@ -56,6 +56,17 @@
 	border-top-right-radius: 0px;
 	
 }
+
+.drone-submit:focus{
+	text-align: center;
+	margin:auto;
+	background-color: white;
+	color: #f28026;
+	border-color:#f28026;
+	border-top-left-radius: 0px;
+	border-top-right-radius: 0px;
+}
+
 .drone-header{
 	border: 1px solid #f28026;
 }

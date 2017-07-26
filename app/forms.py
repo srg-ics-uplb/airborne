@@ -44,12 +44,12 @@ class ProjectForm(FlaskForm):
 	description = TextAreaField('notes', validators=[Optional()])
 
 class FlightForm(FlaskForm):
-	name = StringField('name', validators=[DataRequired()])
-	location = StringField('location', validators=[DataRequired()])
-	date = DateField('date', format='%Y-%m-%d', validators=[Optional()])
-	duration_hours = IntegerField('duration_hours', validators=[NumberRange(min=0, max=23)])
-	duration_mins = IntegerField('duration_mins', validators=[NumberRange(min=0, max=59)])
-	duration_secs = IntegerField('duration_secs', validators=[NumberRange(min=0, max=59)])
+	name = StringField('name', validators=[InputRequired()])
+	location = StringField('location', validators=[InputRequired()])
+	date = DateField('date', format='%Y-%m-%d', validators=[InputRequired()])
+	duration_hours = IntegerField('duration_hours', validators=[InputRequired(), NumberRange(min=0, max=23, message="Give a number from 0-23")])
+	duration_mins = IntegerField('duration_mins', validators=[InputRequired(), NumberRange(min=0, max=59,  message="Give a number from 0-59")])
+	duration_secs = IntegerField('duration_secs', validators=[InputRequired(), NumberRange(min=0, max=59, message="Give a number from 0-59")])
 	flight_types=[
 		('Commercial','Commercial'), 
 		('Emergency','Emergency'), 
@@ -60,7 +60,7 @@ class FlightForm(FlaskForm):
 		('Test Flight','Test Flight'), 
 		('Training Flight','Training Flight')
 	]
-	flight_type = SelectField('flight_type', choices=flight_types, validators=[DataRequired()])
+	flight_type = SelectField('flight_type', choices=flight_types, validators=[InputRequired()])
 	more_type_info = StringField('more_type_info', validators=[Optional()])
 	operation_types=[
 		('VLOS','VLOS'),
@@ -69,17 +69,17 @@ class FlightForm(FlaskForm):
 		('Autonomous', 'Autonomous'),
 		('FPV','FPV')
 	]
-	operation_type= SelectField('operation_type', choices=operation_types, validators=[DataRequired()])
+	operation_type= SelectField('operation_type', choices=operation_types, validators=[InputRequired()])
 
-	project = SelectField('project', coerce=int, validators=[DataRequired()])
+	project = SelectField('project', coerce=int, validators=[InputRequired()])
 
-	drone = SelectField('drone', coerce=int,validators=[DataRequired()])
+	drone = SelectField('drone', coerce=int,validators=[InputRequired()])
 
 
 	night_flight = BooleanField('night_flight', validators=[Optional()])
-	landing_count = IntegerField('landing_count', validators=[DataRequired()])
-	travelled_distance = DecimalField('travelled_distance', validators=[DataRequired()])
-	max_agl_altitude = DecimalField('max_agl_altitude', validators=[DataRequired()])
+	landing_count = IntegerField('landing_count', validators=[InputRequired()])
+	travelled_distance = DecimalField('travelled_distance', validators=[InputRequired()])
+	max_agl_altitude = DecimalField('max_agl_altitude', validators=[InputRequired()])
 	notes = TextAreaField('notes', validators=[Optional()])
 	weather_description = TextAreaField('weather_description', validators=[Optional()])
 
