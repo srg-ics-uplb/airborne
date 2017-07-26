@@ -89,6 +89,18 @@
 	text-align: right;
 }
 
+.breadcrumb{
+	margin-bottom: 5px;
+	border: 2px solid #e57720;
+	border-radius: 4px;
+}
+
+.breadcrumb a{
+	text-decoration: none;
+	color: #e57720;
+
+}
+
 .responsive-table{
 	margin:auto;
 }

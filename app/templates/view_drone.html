@@ -7,9 +7,10 @@
 		</div>
 	</div>
 	<div class="container-fluid">
-		<div class="well">
-			<div class="row">
-				<div class="col-sm-4">
+
+		<div class="row">	
+			<div class="col-sm-4">
+				<div class="well">
 					<h2>Specifications</h2>
 					<p>Brand: {{drone.brand}} </p>
 					<p>Model: {{drone.model}} </p>
@@ -20,7 +21,10 @@
 					<a href="/drone/edit/{{drone.id}}" class="btn btn-sm btn-warning"><span class="glyphicon glyphicon-edit"></span> Edit </a>
 					<a href="/drone/delete/{{drone.id}}" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-trash"></span> Delete </a>
 				</div>
-				<div class="col-sm-8">
+			</div>
+			
+			<div class="col-sm-8">
+				<div class="well">
 					<h2>Flight Involvement</h2>
 					{% if drone.flights.count()!=0 %}
 						<div class="row">

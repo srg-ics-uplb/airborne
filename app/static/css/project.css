@@ -1,3 +1,42 @@
+/* VIEW PROJECT CSS */
+.project-header{
+	background-color: #f28026;
+	padding-top: 15px;
+	padding-bottom: 15px; 
+}
+
+.project-classify{
+	color: white;
+	font-size: 30px;
+}
+
+.project-header h1{
+	text-align: left;
+	color: white;
+}
+
+.project-panel{
+	padding: 0px;
+}
+
+.project-panel-header{
+	background-color: #f28026;
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
+	border-color: #f28026;
+}
+
+
+.project-panel-header h2{
+	color: white;
+	text-align: center;
+}
+
+.project-panel-body{
+	padding:20px;
+}
+
+/* PROJECT FORM CSS */
 .project-form-container{
 	max-width: 50%;
 	border-color:#f28026;
