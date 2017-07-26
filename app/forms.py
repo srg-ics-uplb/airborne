@@ -40,7 +40,7 @@ class DroneForm(FlaskForm):
 	max_speed = DecimalField('max_speed', validators=[InputRequired(), NumberRange(min=0)])
 
 class ProjectForm(FlaskForm):
-	name = StringField('name', validators=[DataRequired()])
+	name = StringField('name', validators=[InputRequired(), Length(min=5, max=20)])
 	description = TextAreaField('notes', validators=[Optional()])
 
 class FlightForm(FlaskForm):
