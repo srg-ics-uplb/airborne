@@ -30,14 +30,14 @@ class SignupForm(FlaskForm):
 
 
 class DroneForm(FlaskForm):
-	name = StringField('name', validators=[DataRequired()])
-	weight = DecimalField('weight', validators=[DataRequired()])
-	version_number = StringField('version_num', validators=[DataRequired()])
-	brand = StringField('brand', validators=[DataRequired()])
-	model = StringField('model', validators=[DataRequired()])
+	name = StringField('name', validators=[InputRequired(), Length(min=5, max=20)])
+	weight = DecimalField('weight', validators=[InputRequired(), NumberRange(min=0)])
+	version_number = StringField('version_num', validators=[InputRequired(), Length(max=20)])
+	brand = StringField('brand', validators=[InputRequired(), Length(min=5, max=20)])
+	model = StringField('model', validators=[InputRequired(), Length(min=5, max=20)])
 	notes = TextAreaField('notes', validators=[Optional()])
-	max_payload_cap = DecimalField('max_payload_cap', validators=[DataRequired()])
-	max_speed = DecimalField('max_speed', validators=[DataRequired()])
+	max_payload_cap = DecimalField('max_payload_cap', validators=[InputRequired(), NumberRange(min=0)])
+	max_speed = DecimalField('max_speed', validators=[InputRequired(), NumberRange(min=0)])
 
 class ProjectForm(FlaskForm):
 	name = StringField('name', validators=[DataRequired()])

@@ -1,7 +1,55 @@
-.drone-form-body {
-	margin-left: 10%;
+.drone-form-container{
 	max-width: 40%;
+	margin:auto;
+	border-color: #f28026;
+	padding: 0px;
+}
 
+.drone-form-container label{
+	text-overflow: ellipsis;	
+}
+
+.drone-form-header{
+	background-color: #f28026;
+	margin-bottom: 10px;	
+}
+
+.drone-form-header h1{
+	color: white;
+}
+
+.drone-form-body{
+	padding: 20px;
+}
+
+.drone-form-body .form-control:focus{
+	border-color: #f28026;
+	box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(242, 128, 38, .6)
+}
+
+.drone-form-footer{
+	background-color: #f28026;
+
+}
+
+.drone-submit{
+	text-align: center;
+	margin:auto;
+	border-color: #f28026;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	background-color: #f28026;
+	color: white;
+	width: 100%;
+	height: 100%;
+}
+.drone-submit:hover{
+	text-align: center;
+	margin:auto;
+	background-color: white;
+	color: #f28026;
+	border-color:#f28026;
+	
 }
 .drone-header{
 	border: 1px solid #f28026;

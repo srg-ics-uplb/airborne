@@ -80,6 +80,10 @@
 	text-align: center;
 }
 
+.truncate{
+	text-overflow: ellipsis;
+}
+
 .right{
 	text-align: right;
 }
