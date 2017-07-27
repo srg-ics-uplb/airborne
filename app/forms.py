@@ -22,7 +22,11 @@ def check_password(FlaskForm, field):
 		pass
 	elif not bcrypt.check_password_hash(user.password, field.data):
 		raise ValidationError('Wrong password')
-	
+
+def check_username_taken(FlaskForm, field):
+	if User.query.filter_by(username=field.data).first():
+		raise ValidationError("Username is already taken")
+
 
 class LoginForm(FlaskForm):
 
@@ -34,7 +38,7 @@ class SignupForm(FlaskForm):
 	firstname = StringField('firstname', validators=[InputRequired(), Length(max=64)])
 	middlename = StringField('middlename', validators=[InputRequired(), Length(max=64)])
 	lastname = StringField('lastname', validators=[InputRequired(),Length(max=64)])
-	username = StringField('username', validators=[InputRequired(),Length(min=8, max=64)])
+	username = StringField('username', validators=[InputRequired(), Length(min=8, max=20), check_username_taken])
 	password = PasswordField('password', validators=[InputRequired(),EqualTo('confirm_password', message='Passwords do not match!'), Length(min=8, max=32)])
 	confirm_password = PasswordField('confirm_password')
 	email = StringField('email', validators=[Email(), Length(max=120)])
