@@ -19,6 +19,15 @@
 	padding: 0px;
 }
 
+.project-panel-header-btn{
+	float:right;
+	color:white;
+}
+.project-panel-header-btn:hover{
+	float:right;
+	color:#ffdf70;
+}
+
 .project-panel-header{
 	background-color: #f28026;
 	border-top-left-radius: 4px;
@@ -29,7 +38,7 @@
 
 .project-panel-header h2{
 	color: white;
-	text-align: center;
+	padding-left:20px;
 }
 
 .project-panel-body{
