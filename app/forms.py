@@ -5,16 +5,30 @@ from wtforms.validators import DataRequired, InputRequired, Optional, Validation
 # from wtforms.fields.html5 import DateField 
 from wtforms_components import DateField, TimeField
 from app import app
+from models import User
 
 
 def is_positive(FlaskForm, field):
 	if field.data < 0:
 		raise ValidationError(field.name+' must be positive.')
 
+def is_valid_username(FlaskForm, field):
+	print User.query.filter_by(username=field.data).first()
+	if User.query.filter_by(username=field.data).first() is None:
+		raise ValidationError('Username does not exist.')
+
+def check_password(FlaskForm, field):
+	user = User.query.filter_by(username=FlaskForm.username.data).first()
+	if user is None:
+		pass
+	elif user.password != field.data:
+		raise ValidationError('Wrong password')
+	
+
 class LoginForm(FlaskForm):
 
-	username = StringField('username', validators=[DataRequired()])
-	password = PasswordField('password', validators=[DataRequired()])
+	username = StringField('username', validators=[InputRequired(), is_valid_username])
+	password = PasswordField('password', validators=[InputRequired(), check_password])
 	remember_me = BooleanField('remember_me', default=False)
 
 class SignupForm(FlaskForm):
