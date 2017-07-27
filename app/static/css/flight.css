@@ -1,3 +1,50 @@
+.flight-header{
+	background-color: #f28026;
+	padding-top: 15px;
+	padding-bottom: 15px; 
+}
+
+.flight-classify{
+	color: white;
+	font-size: 30px;
+}
+.flight-panel-header-btn{
+	float:right;
+	color:white;
+}
+.flight-panel-header-btn:hover{
+	float:right;
+	color:#ffdf70;
+}
+
+.flight-header h1{
+	text-align: left;
+	color: white;
+}
+
+.flight-panel{
+	padding: 0px;
+}
+
+.flight-panel-header{
+	background-color: #f28026;
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
+	border-color: #f28026;
+}
+
+
+.flight-panel-header h2{
+	color: white;
+	padding-left: 20px;
+}
+
+.flight-panel-body{
+	padding:20px;
+}
+
+
+
 .flight-form-container{
 	max-width: 50%;
 	margin:auto;
