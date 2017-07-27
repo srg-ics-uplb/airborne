@@ -4,7 +4,7 @@ from wtforms import StringField, BooleanField, IntegerField, PasswordField, Sele
 from wtforms.validators import DataRequired, InputRequired, Optional, ValidationError, NumberRange, Email,EqualTo, Length
 # from wtforms.fields.html5 import DateField 
 from wtforms_components import DateField, TimeField
-from app import app
+from app import app, bcrypt
 from models import User
 
 
@@ -13,7 +13,6 @@ def is_positive(FlaskForm, field):
 		raise ValidationError(field.name+' must be positive.')
 
 def is_valid_username(FlaskForm, field):
-	print User.query.filter_by(username=field.data).first()
 	if User.query.filter_by(username=field.data).first() is None:
 		raise ValidationError('Username does not exist.')
 
@@ -21,7 +20,7 @@ def check_password(FlaskForm, field):
 	user = User.query.filter_by(username=FlaskForm.username.data).first()
 	if user is None:
 		pass
-	elif user.password != field.data:
+	elif not bcrypt.check_password_hash(user.password, field.data):
 		raise ValidationError('Wrong password')
 	
 
