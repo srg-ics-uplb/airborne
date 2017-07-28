@@ -25,7 +25,7 @@ def view_all_drones():
 
     #get all drones owned by the user
     drones = Drone.query.filter_by(user_id=user.id)
-    return render_template('drones.html', title='List of drones', user=user, drones=drones)
+    return render_template('drones.html', title='Drones', user=user, drones=drones)
 
 #   VIEW DRONE DETAILS
 @drone.route('/drone/view/<drone_id>')
@@ -81,7 +81,7 @@ def add_drone():
 
         #return to view all drones page
         return redirect(url_for('drone.view_all_drones'))
-    return render_template('drone_form.html', form=form, form_title="Add a Drone", name="add_drone", submit_value="Add Drone")
+    return render_template('drone_form.html', form=form, form_title="Add a Drone", name="add_drone", submit_value="Add Drone", title="Add Drone")
 
 #   EDIT DRONE DETAILS
 @drone.route('/drone/edit/<drone_id>', methods=['GET', 'POST', 'PUT'])
@@ -119,7 +119,7 @@ def edit_drone(drone_id):
 
             return redirect(url_for('drone.view_all_drones'))
 
-        return render_template("drone_form.html", title="Edit Drone", form=form, form_title="Edit Drone Details", name="edit_drone", submit_value="Save Changes")
+        return render_template("drone_form.html", title=drone.name + " - Edit Drone", form=form, form_title="Edit Drone Details", name="edit_drone", submit_value="Save Changes")
 
 #   DELETE A DRONE
 @drone.route('/drone/delete/<drone_id>')

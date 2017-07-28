@@ -80,7 +80,7 @@ def add_project():
         db.session.commit()
         return redirect(url_for('project.view_all_projects'))
 
-    return render_template("project_form.html", form=form, form_title="Add a Project", submit_value="Add Project", name="add_project")
+    return render_template("project_form.html", form=form, form_title="Add Project", submit_value="Add Project", name="add_project")
 
 #   EDIT PROJECT DETAILS
 @project.route('/project/edit/<project_id>', methods=['GET', 'POST'])
@@ -111,7 +111,7 @@ def edit_project(project_id):
             #Commit changes to db and redirect back to projects page
             db.session.commit()
             return redirect(url_for('project.view_all_projects'))
-        return render_template("project_form.html", form=form, form_title="Edit Project Details", submit_value="Save Changes", name="edit_project")
+        return render_template("project_form.html", form=form, form_title="Edit Project Details", submit_value="Save Changes", name="edit_project", title=project.name + " - Edit Project")
 
 #   DELETE A PROJECT
 @project.route('/project/delete/<project_id>')

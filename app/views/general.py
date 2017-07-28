@@ -18,4 +18,4 @@ def about():
     """
         Route for the About page.
     """
-    return render_template('about.html')
+    return render_template('about.html', title="About")

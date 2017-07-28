@@ -225,7 +225,7 @@ def edit_flight(flight_id):
 
             db.session.commit()
             return redirect(url_for("flight.view_all_flights"))
-        return render_template("flight_form.html", title="Edit Flight", form_title="Edit Flight Details", submit_value="Save Changes", name="edit_flight", projects=projects, form=form)
+        return render_template("flight_form.html", title=flight.name + " - Edit Flight", form_title="Edit Flight Details", submit_value="Save Changes", name="edit_flight", projects=projects, form=form)
 
 #   DELETE A FLIGHT
 @flight.route('/flight/delete/<flight_id>')

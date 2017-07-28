@@ -91,7 +91,7 @@ def dashboard():
     used_drone_count = total_drone_count - unused_drone_count
     avg_drone_distance = total_flight_distance / used_drone_count
     avg_drone_duration = total_flight_duration / used_drone_count
-
+    
     weekly_flights = getFlightsperWeek(current_date)
     week_start = getMonday(current_date)
     week_end = getSunday(current_date)
@@ -147,7 +147,7 @@ def login():
                 db.session.commit()
                 login_user(user, remember=form.remember_me.data)
                 return redirect(url_for('user.dashboard'))
-    return render_template('login.html', title="Sign In", form=form)
+    return render_template('login.html', title="Log In", form=form)
 
 
 
@@ -180,7 +180,7 @@ def signup():
         db.session.add(user)
         db.session.commit()
         return redirect(url_for('user.login'))
-    return render_template('signup.html', title='Sign up', form=form)
+    return render_template('signup.html', title='Sign Up', form=form)
 
 @user.route('/logout')
 @login_required
