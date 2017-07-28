@@ -1,9 +1,143 @@
 {% extends "base.html" %}
 {% block content %}
 	<div class="container-fluid">
-		<div class="jumbotron">
+		<div class="jumbotron about-header">
 			<h1> About Airborne </h1>
-			<p> Nothing here yet </p>
+			<p> The creators, technologies, the reasons behind the project's creation, (almost) everything you need to know about the project is here. </p>
+		</div>
+	</div>
+	<div class="container">
+		<div class="well about-panel">
+			<div class="about-panel-header">
+				<div class="row">
+					<div class="col-sm-12">
+						<h2> About the Project </h2>
+					</div>
+				</div>
+			</div>
+			<div class="about-panel-body">
+			<p> 
+				Sir Joseph Hermocilla called for practicumers that will build a web application for drone log analytics, similar to Dronelogbook.com.
+				I, Clark Almazan, after failing to qualify for different internships outside the campus, signed up for Sir Hermocilla's practicum program.
+			</p>
+			</div>
+		</div>
+		<div class="well about-panel">
+			<div class="about-panel-header">
+				<div class="row">
+					<div class="col-sm-12">
+						<h2> About the Developers </h2>
+					</div>
+				</div>
+			</div>
+					
+			<div class="about-panel-body">
+				<div class="row">
+					<div class="col-sm-6">
+						<h3> Clark Daniel P. Almazan </h3>
+						<p> Undergraduate student at the University of the Philippines Los Baños, studying BS Computer Science.</p>
+					</div>
+					<div class="col-sm-6">
+						<h3> Joseph Anthony C. Hermocilla </h3>
+						<p> Associate Professor at the Institute of Computer Science, University of the Philippines Los Baños </p>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="well about-panel">
+			<div class="about-panel-header">
+				<div class="row">
+					<div class="col-sm-12">
+						<h2> Technologies Used </h2>
+						</div>
+				</div>
+			</div>						
+			<div class="about-panel-body">
+				<div class="row">
+					<div class="col-sm-4">
+						<h3> <a href="http://flask.pocoo.org/">Flask </a></h3>
+						<p> Flask is a web microframework for Python based on Werkzeug, Jinja2 and good intentions.
+							It is BSD licensed, comes with a built-in development server and debugger, uses RESTful 
+							request dispatching, and many more.
+						</p>
+						<p>
+							Flask's simplicity and extensibility is what made us use it for Airborne. Though it is a 
+							young framework, there are enough extensions that are regularly updated, and there aren't
+							much issues encountered about lack of available functions.
+						</p>
+					</div>
+					<div class="col-sm-4">
+						<h3> <a href="https://www.mysql.com">MySQL</a> </h3>
+						<p> "The only database I can use so far" -Clark </p> 
+						<p> On a more serious note, MySQL is an open-source relational
+							database management system (RDBMS).	
+						</p>
+					</div>
+					<div class="col-sm-4">
+						<h3> <a href="la.dronekit.io"> Dronekit Log Analyzer </a></h3>
+						<p> Does what it says. </p>
+					</div>
+
+				</div>
+				<div class="row">
+					<div class="col-sm-6">
+						<h3> <a href="getbootstrap.com">Bootstrap 3  </a></h3>
+						<p> The easiest to learn of them all. 
+							Bootstrap offers styling with almost no JavaScript knowledge needed. It has a good feature set,
+							such as a grid sytem, and is also responsive.
+						</p>
+					</div>
+					<div class="col-sm-6">
+						<h3><a href="https://angularjs.org"> AngularJS </a> </h3>
+						<p> Used it to pass some values to modals :/ </p>
+					</div>
+				</div>
+			</div>
+
+		</div>
+		<div class="well about-panel">
+			<div class="about-panel-header">
+				<div class="row">
+					<div class="col-sm-12">
+						<h2> Possible things to improve </h2>
+
+						<p> There are many things that I didn't manage to do. Here are some of them.</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="about-panel-body">
+				<div class="row">
+					<div class="col-sm-3">
+						<h3> Single Page Application (SPA) </h3>
+						<p> As you may already know, Airborne's frontend and backend are both handled by Flask.
+							Thus, majority of the tasks are done server-side. By turning Airborne into an SPA,
+							some of the work can be taken off the server and it'll (probably) run faster.
+						</p>
+
+					</div>
+					<div class="col-sm-3">
+						<h3> RESTFul Backend </h3>
+						<p> If you read the first one, then you've probably seen this coming. Airborne doesn't have a RESTful
+							backend. By having a RESTful backend API, Airborne's functionality can be easily ported to other 
+							platforms and applications.
+						</p>
+					</div>
+					<div class="col-sm-3">
+						<h3> More equipment types </h3>
+						<p> So far, drones are the only equipment included in Airborne. By having more equipment types,
+							Airborne can handle more data for the users.
+						</p>
+					</div>
+					<div class="col-sm-3">
+						<h3> UI/UX </h3>
+						<p> I'm not good at UI. </p>
+					</div>
+					
+				</div>
+				And other than those mentioned above, additional features are welcome!
+			</div>
 		</div>
 	</div>	
 {% endblock %}

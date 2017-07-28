@@ -1,0 +1,43 @@
+.about-header{
+	background-color: #f28026;
+	padding-top: 15px;
+	padding-bottom: 15px; 
+}
+
+
+
+.about-header h1{
+	text-align: left;
+	color: white;
+}
+.about-header p{
+	text-align: left;
+	color: white;
+}
+
+.about-panel{
+	padding: 0px;
+	text-align: center;
+}
+
+.about-panel-header{
+	color: #f28026;
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
+	border-color: #f28026;
+}
+
+
+.about-panel-header h2{
+	text-align: center;
+	color: #f28026;
+}
+
+.about-panel-body{
+	padding:20px;
+}
+
+.about-panel a{
+	text-decoration: none;
+	color: #f28026;
+}
