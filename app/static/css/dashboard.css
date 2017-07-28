@@ -10,12 +10,81 @@
 	color: #ffdf70;
 }
 
-.dashboard-well{
+.dashboard-panel{
+	padding: 0px;
+}
+
+
+.dashboard-panel-header{
+	background-color: #f28026;
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
 	border-color: #f28026;
+}
+
+
+.dashboard-panel-header h2{
+	color: white;
+	padding-left: 20px;
+}
+
+.dashboard-panel-header h4{
+	color: white;
+	padding-left: 20px;
+}
+
+.dashboard-panel-body{
+	padding:20px;
+}
+
+.stat-tabs{
+	margin-bottom: 10px;
+}
+
+.stat-tabs li a{
+	background-color: white;
+	color: #f28026;
+}
+
+.stat-tabs li .badge{
+	background-color:#f28026 ;
+}
+
+.stat-tabs li:hover a{
+	background-color: #f28026 !important;
+	color: white !important;
+}
+
+.stat-tabs li:hover .badge{
+	background-color: white ;
+	color: #f28026;
+}
+.stat-tabs li.active a{
+	background-color: #f28026 !important;
+	color: white !important;
+}
+
+.stat-tabs li.active .badge{
+	background-color: white ;
+	color: #f28026;
 }
 
 .scheduled-flights{
 	background-color: #F1EDEE;
+}
+
+.scheduled-flight{
+	border: 1px solid #f28026;
+	border-radius: 10px;
+}
+
+.scheduled-flight-header{
+	text-align: center;
+}
+
+.scheduled-flight-header a{
+	text-decoration: none;
+	color: #f28026;
 }
 
 .day{

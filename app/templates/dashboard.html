@@ -1,88 +1,122 @@
 {% extends "base.html" %}
 {% block content %}
-    <div class="container-fluid">
-        <div class="jumbotron dashboard-header">
-            <h1 class=""> 
-                <span class="glyphicon glyphicon-dashboard"></span>
-                Dashboard 
-                
-            </h1>
-        </div>
-        <div class="well well-sm dashboard-well">
-            
-            <div class="row center">
-                <div class="col-sm-3">    
-                    <h2> Some stats: </h2>
-                </div>
-                <div class="col-sm-3">
-                    <h3> Projects with scheduled flights: </h3>
-                    {{ unfinished_project_count }} / {{ total_project_count }}
-                </div>
-                <div class="col-sm-3">
-                    <h3> Unused drones: </h3>
-                    {{ unused_drone_count }} / {{total_drone_count}}
-                </div>
-                <div class="col-sm-3">
-                    <h3> Unfinished flights: </h3>
-                    {{ scheduled_flights }} / {{ total_flight_count }}
-                </div>
-            </div>
-        </div>
+	<div class="container-fluid">
+		<div class="jumbotron dashboard-header">
+			<h1> 
+				<span class="glyphicon glyphicon-dashboard"></span>
+				Dashboard 
+			</h1>
+		</div>
+		<div class="row">
+			<div class="col-sm-4">
+				<div class="well well-sm dashboard-panel">
+					<div class="dashboard-panel-header">
+						<div class="row">
+							<div class="col-sm-12">    
+								<h2> Statistics: </h2>
+							</div>
+						</div>
+					</div>
+					<div class="dashboard-panel-body">
+						<ul class="nav nav-tabs nav-justified stat-tabs">
+							<li class="active"><a data-toggle="tab" href="#project_stats">Project <span class="badge">{{total_project_count}}</span></a></li>
+							<li><a data-toggle="tab" href="#drone_stats">Drone <span class="badge">{{total_drone_count}}</span></a></li>
+							<li><a data-toggle="tab" href="#flight_stats">Flight <span class="badge">{{total_flight_count}}</span></a></li>
+						</ul>
+						<div class="tab-content">
+							<div id="project_stats" class="tab-pane fade in active">
+								<div class="row">
+									<div class="col-sm-12">
+										<p>Unfinished: {{unfinished_project_count}} </p>
+										<p>Finished: {{finished_project_count}}</p>
+										<p>Total: {{total_project_count}} </p>
 
-    </div>
-    <div class="container-fluid">
-        <div class="well dashboard-well">
-        <div class="recent-activity">
-            <div class="row">
-                <div class="col-sm-4">
-                    <h2 class="center">Recent activity(last 5 days):</h2>
-                </div>
-                <div class="col-sm-8">
-                    <h4> Project 10 @ 2014-10-11 </h4>
-                    <h4> Project 200 @ 2014-10-10 </h4>
-                    <h4> Project 12 @ 2014-10-10 </h4>
-                    <h4> Project 15 @ 2014-10-09 </h4>
-                    <h4> Project 2 @ 2014-10-7 </h4>
-                </div>
-            </div>
-        </div>
-        </div>
-        <div class="well dashboard-well">
-        <div class="scheduled-flights">
-            <div class="row">
-            
-                <div class="col-sm-5">
-                    <h2>Scheduled Flights (for the week):</h2>
-                </div>
-                <!-- PLACEHOLDERS -->
-                <div class="col-sm-1 day">
-                    
-                    <p> Monday </p>
-                    
-                </div>
-                <div class="col-sm-1 day">
-                    <p> Tuesday </p>
-                </div>
-                <div class="col-sm-1 day">
-                    <p> Wednesday </p>
-                </div>
-                <div class="col-sm-1 day">
-                    <p> Thursday </p>
-                </div>
-                <div class="col-sm-1 day">
-                    <p> Friday </p>
-                </div>
-                <div class="col-sm-1 day">
-                    <p> Saturday </p>
-                </div>
-                <div class="col-sm-1 day">
-                    <p> Sunday </p>
-                </div>
-                    
-            </div>
-        </div>
-        </div>
-        
-    </div>
-    
+									</div>
+								</div>
+							</div>
+							<div id="drone_stats" class="tab-pane fade">
+								<div class="row">
+									<div class="col-sm-12">
+										<p>Unused: {{unused_drone_count}} </p>
+										<p>Used: {{used_drone_count}}</p>
+										<p>Total: {{total_drone_count}} </p>
+										<br>
+										<p>Average total mileage/drone: {{avg_drone_distance}}</p>
+										<p>Average total duration/drone: {{avg_drone_duration}}</p> 
+
+									</div>
+								</div>
+							</div>
+							<div id="flight_stats" class="tab-pane fade">
+								<div class="row">
+									<div class="col-sm-12">
+										<p>Ongoing: {{ongoing_flights}} </p>
+										<p>Scheduled: {{scheduled_flights}}</p>
+										<p>Finished: {{finished_flights}}</p>
+										<p>Total: {{total_flight_count}} </p>
+										<br>
+										<p>Average total mileage/drone: {{avg_flight_distance}}</p>
+										<p>Average total duration/drone: {{avg_flight_duration}}</p> 
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-8">
+				<div class="well dashboard-panel">
+					<div class="dashboard-panel-header">
+						<div class="row">
+							<div class="col-sm-12">
+								<h2> Flights this week ({{week_start.strftime('%B %d, %Y')}} to {{week_end.strftime('%B %d, %Y')}})</h2>
+							</div>
+						</div>
+					</div>
+					<div class="dashboard-panel-body">
+						<div class="panel-group">
+							{% for day in weekly_flights|dictsort %}
+							<div class="well dashboard-panel">
+								<div class="dashboard-panel-header">
+									<div class="row">
+										<div class="col-sm-12">
+											<h4>{{day[0].strftime('%A, %B %d, %Y')}}</h4>
+										</div>
+									</div>
+								</div>
+								<div class="dashboard-panel-body">
+									<div class="panel-body">
+										<div class="row">
+											{% if day[1] %}
+												{% for flight in day[1] %}
+													
+													<div class="col-sm-4 scheduled-flight">
+														<div class="scheduled-flight-header">
+															<h3><a href="/flight/view/{{flight.id}}"> {{flight.name}} </a></h3>
+														</div>
+														<div class="scheduled-flight-body">
+															<p> Location: {{ flight.location }} </p>
+															<p> Duration: {{flight.duration//3600}}h, {{ (flight.duration%3600)//60 }}m, {{ flight.duration%60 }}s </p>
+														</div>
+													</div>
+												{% endfor %}
+											{% else %}
+												<div class="col-sm-12 no-flights">
+													<h4 class="fade-50"> No flights for this day </h4>
+												</div>
+											{% endif %}
+										</div>
+									</div>
+								</div>
+							</div>
+							{% endfor %}
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		</div>
+	
+	
 {% endblock %}

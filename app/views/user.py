@@ -1,7 +1,7 @@
 """
     Views module for Users. This contains routes and functions that are user-related.
 """
-import datetime
+from datetime import date, timedelta
 from flask import Blueprint, render_template, redirect, url_for
 from flask_login import login_user, logout_user, current_user, login_required
 from app import login_manager, bcrypt, db
@@ -11,6 +11,30 @@ from ..models import Project, Drone, User,Flight
 
 #####   USER MANAGEMENT ROUTES AND VIEWS
 user = Blueprint('user', __name__)
+
+
+def getMonday(date):
+    print date.weekday()
+    while date.weekday()!=0:
+        date -= timedelta(days = 1)
+    print 'date reset to nearest monday'
+    return date
+
+def getSunday(date):
+    while date.weekday()!=6:
+        date += timedelta(days = 1)
+    return date
+
+def getFlightsperWeek(date):
+    date = getMonday(date)
+    week = {}
+    count = 0
+    while count<=6:
+        flights = Flight.query.filter(Flight.date==date).all()
+        week[date] = flights
+        date += timedelta(days=1)
+        count += 1 
+    return week
 
 @user.route('/dashboard')
 @login_required
@@ -24,36 +48,75 @@ def dashboard():
     user = current_user
     projects = Project.query.filter_by(user_id=user.id)
     drones = Drone.query.filter_by(user_id=user.id)
-    current_date = datetime.date.today()
+    current_date = date.today()
     total_project_count = projects.count()
     unused_drone_count = 0
-    
     total_drone_count = drones.count()
     for drone in drones:
         if drone.flights.count() == 0:
             unused_drone_count += 1
-    total_drone_count = Drone.query.filter_by(user_id=user.id).count()
+
+
+
+    #Flight statistics
     unfinished_project_count = 0
     total_flight_count = 0
     scheduled_flights = 0
+    ongoing_flights = 0
+    total_flight_duration = 0
+    total_flight_distance = 0
     for project in projects:
         total_flight_count = total_flight_count + project.flights.count()
         scheduled_flights =+ project.flights.filter(Flight.date>current_date).count()
+        ongoing_flights =+ project.flights.filter(Flight.date==current_date).count()
         for flight in project.flights:
             if flight.date > current_date:
                 unfinished_project_count += 1
                 break
- 
 
+    finished_project_count = total_project_count - unfinished_project_count
+
+    for project in projects:
+        for flight in project.flights:
+            #count only finished flights
+            if flight.date<current_date:
+                total_flight_duration += flight.duration
+                total_flight_distance += flight.travelled_distance
+
+    finished_flights = total_flight_count - (scheduled_flights+ongoing_flights)
+
+    avg_flight_duration = total_flight_duration / total_flight_count
+    avg_flight_distance = total_flight_distance / total_flight_count
+
+    used_drone_count = total_drone_count - unused_drone_count
+    avg_drone_distance = total_flight_distance / used_drone_count
+    avg_drone_duration = total_flight_duration / used_drone_count
+
+    weekly_flights = getFlightsperWeek(current_date)
+    week_start = getMonday(current_date)
+    week_end = getSunday(current_date)
     return render_template('dashboard.html',
                            title='Dashboard',
                            user=user,
                            total_project_count=total_project_count,
+                           unfinished_project_count=unfinished_project_count,
+                           finished_project_count=finished_project_count,
                            total_drone_count=total_drone_count,
                            total_flight_count=total_flight_count,
                            unused_drone_count=unused_drone_count,
-                           unfinished_project_count=unfinished_project_count,
-                           scheduled_flights=scheduled_flights
+                           used_drone_count=used_drone_count,
+                           scheduled_flights=scheduled_flights,
+                           ongoing_flights=ongoing_flights,
+                           finished_flights=finished_flights,
+                           total_flight_duration=total_flight_duration,
+                           total_flight_distance=total_flight_distance,
+                           avg_flight_distance=avg_flight_distance,
+                           avg_flight_duration=avg_flight_duration,
+                           avg_drone_distance=avg_drone_distance,
+                           avg_drone_duration=avg_drone_duration,
+                           weekly_flights=weekly_flights,
+                           week_start=week_start,
+                           week_end=week_end
                           )
 
 
