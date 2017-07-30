@@ -41,3 +41,10 @@
 	text-decoration: none;
 	color: #f28026;
 }
+
+.about-img{
+	max-height: 200px;
+	max-width: 200px;
+	margin:auto;
+}
+
