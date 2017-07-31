@@ -4,6 +4,7 @@
 import os
 import csv
 import subprocess
+import platform
 from math import sin, cos, radians, sqrt, atan2
 from app import db, app
 from flask import redirect, url_for, abort, Blueprint
@@ -56,15 +57,26 @@ def write_dronekit_la_output_file(filename):
     """
         Write JSON file for dronekit-la output
     """
-    #run dronekit-la
-    args = app.config['LOG_ANALYZER_DIR'] + app.config['ORIGINAL_LOG_FILE_FOLDER'] + '\\' + filename
-    content = subprocess.check_output(args)
+    if platform.system()=='Windows': #if running on windows system
+        #run dronekit-la
+        args = app.config['LOG_ANALYZER_DIR'] + app.config['ORIGINAL_LOG_FILE_FOLDER'] + '\\' + filename
+        content = subprocess.check_output(args)
 
-    #open a file handle and save output of dronekit-la to a json file
-    processed_filename = filename.rsplit('.', 1)[0] + '.json'
-    with open(app.config['PROCESSED_OUTPUT_FILE_FOLDER'] + '\\' + processed_filename, 'w') as processed:
-        processed.write(content)
-        processed.close()
+        #open a file handle and save output of dronekit-la to a json file
+        processed_filename = filename.rsplit('.', 1)[0] + '.json'
+        with open(app.config['PROCESSED_OUTPUT_FILE_FOLDER'] + '\\' + processed_filename, 'w') as processed:
+            processed.write(content)
+            processed.close()
+    elif platform.system()=='Linux': #if running on linux system
+        #run dronekit-la
+        args = app.config['LOG_ANALYZER_DIR_2'] + app.config['ORIGINAL_LOG_FILE_FOLDER'] + '\\' + filename
+        content = subprocess.check_output(args)
+
+        #open a file handle and save output of dronekit-la to a json file
+        processed_filename = filename.rsplit('.', 1)[0] + '.json'
+        with open(app.config['PROCESSED_OUTPUT_FILE_FOLDER'] + '\\' + processed_filename, 'w') as processed:
+            processed.write(content)
+            processed.close()
 
     #return the contents of the file in case content needs to be saved to db
     return content
@@ -73,16 +85,30 @@ def write_dronekit_la_output_file_plain(filename):
     """
         Write plain text file for dronekit-la output
     """
-    #run dronekit-la
-    args = app.config['LOG_ANALYZER_TXT_DIR'] + app.config['ORIGINAL_LOG_FILE_FOLDER'] + '\\' + filename
-    content = subprocess.check_output(args)
+    if platform.system()=='Windows': #if running on windows system
+        #run dronekit-la
+        args = app.config['LOG_ANALYZER_TXT_DIR'] + app.config['ORIGINAL_LOG_FILE_FOLDER'] + '\\' + filename
+        content = subprocess.check_output(args)
 
-    #open file handle and save output to txt file
-    processed_filename = filename.rsplit('.', 1)[0] + '.txt'
-    filepath = app.config['PROCESSED_OUTPUT_FILE_FOLDER'] + '\\' + processed_filename
-    with open(filepath, 'w') as processed:
-        processed.write(content)
-        processed.close()
+        #open file handle and save output to txt file
+        processed_filename = filename.rsplit('.', 1)[0] + '.txt'
+        filepath = app.config['PROCESSED_OUTPUT_FILE_FOLDER'] + '\\' + processed_filename
+        with open(filepath, 'w') as processed:
+            processed.write(content)
+            processed.close()
+    
+    elif platform.system()=='Linux': #if running on linux system
+        #run dronekit-la
+        args = app.config['LOG_ANALYZER_TXT_DIR_2'] + app.config['ORIGINAL_LOG_FILE_FOLDER'] + '\\' + filename
+        content = subprocess.check_output(args)
+
+        #open file handle and save output to txt file
+        processed_filename = filename.rsplit('.', 1)[0] + '.txt'
+        filepath = app.config['PROCESSED_OUTPUT_FILE_FOLDER'] + '\\' + processed_filename
+        with open(filepath, 'w') as processed:
+            processed.write(content)
+            processed.close()
+
 
     #return contents in case content needs to be saved to db
     return content
@@ -118,7 +144,10 @@ def write_bin_gps_file(log, filename):
         Write CSV file for GPS data from dataflash binary logs(*.bin)
     """
     #run mavlogdump.py
-    args = app.config['MAVLOGDUMP_RUN'] + '\\' + log
+    if platform.system()=='Windows': 
+        args = app.config['MAVLOGDUMP_RUN'] + '\\' + log
+    elif platform.system()=='Linux':
+        args = app.config['MAVLOGDUMP_RUN_2'] + '\\' + log
     content = subprocess.check_output(args)
 
     #save contents to a csv file

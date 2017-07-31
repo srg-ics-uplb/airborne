@@ -7,16 +7,6 @@ echo "Creating virtual environment..."
 virtualenv flask
 fi
 
-if [ ! -e tools ]
-then
-echo "Creating tools folder..."
-mkdir tools
-fi
-
-echo "Installing Python MySQL connector related stuff..."
-sudo apt-get install libmysqlclient-dev python-mysqldb
-
-
 echo "Installing required Flask extensions..."
 flask/bin/pip install flask
 flask/bin/pip install flask-login
