@@ -162,9 +162,10 @@ def write_bin_gps_file(log, filename):
     #run mavlogdump.py
     if platform.system()=='Windows': 
         args = app.config['MAVLOGDUMP_RUN'] + '\\' + log
+        content = subprocess.check_output(args)
     elif platform.system()=='Linux':
         args = app.config['MAVLOGDUMP_RUN_2'] + '/' + log
-    content = subprocess.check_output(shlex.split(args))
+        content = subprocess.check_output(shlex.split(args))
 
     #save contents to a csv file
     if platform.system()=='Windows':
