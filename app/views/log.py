@@ -5,6 +5,7 @@ import os
 import csv
 import subprocess
 import platform
+import shlex
 from math import sin, cos, radians, sqrt, atan2
 from app import db, app
 from flask import redirect, url_for, abort, Blueprint
@@ -163,7 +164,7 @@ def write_bin_gps_file(log, filename):
         args = app.config['MAVLOGDUMP_RUN'] + '\\' + log
     elif platform.system()=='Linux':
         args = app.config['MAVLOGDUMP_RUN_2'] + '/' + log
-    content = subprocess.check_output(args)
+    content = subprocess.check_output(shlex.split(args))
 
     #save contents to a csv file
     if platform.system()=='Windows':
