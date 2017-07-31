@@ -3,6 +3,7 @@
 """
 import os
 import json
+import platform
 from datetime import datetime
 from app import app, db #still needs app for config
 from flask import render_template, redirect, url_for, abort, Blueprint
@@ -98,7 +99,10 @@ def view_flight(flight_id):
             f.seek(0)
 
         # save file
-        f.save(os.path.join(app.config['ORIGINAL_LOG_FILE_FOLDER'], filename))
+        if platform.system()=='Windows':
+            f.save(os.path.join(app.config['ORIGINAL_LOG_FILE_FOLDER'], filename))
+        elif platform.system()=='Linux':
+            f.save(os.path.join(app.config['ORIGINAL_LOG_FILE_FOLDER_2'], filename))
 
         #check if file is a binary log. This check can only happen after the file has been written.
         if gps_name[1].lower() == "bin":
