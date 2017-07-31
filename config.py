@@ -25,11 +25,18 @@ ALLOWED_EXTENSIONS = ['bin', 'log', 'tlog']
 MAX_CONTENT_LENGTH = 30 * 1024 * 1024
 
 
-#Directories for uploaded content
+#Directories for uploaded content on Windows
 UPLOAD_FOLDER = 'app\\uploads\\logs'
 GPS_COORDINATE_FILE_FOLDER = UPLOAD_FOLDER + '\\gps'
 PROCESSED_OUTPUT_FILE_FOLDER = UPLOAD_FOLDER + '\\processed_la'
 ORIGINAL_LOG_FILE_FOLDER = UPLOAD_FOLDER + '\\original'
+
+#Directories for uploaded content on Linux
+UPLOAD_FOLDER_2 = 'app/uploads/logs'
+GPS_COORDINATE_FILE_FOLDER_2 = UPLOAD_FOLDER_2 + '/gps'
+PROCESSED_OUTPUT_FILE_FOLDER_2 = UPLOAD_FOLDER_2 + '/processed_la'
+ORIGINAL_LOG_FILE_FOLDER_2 = UPLOAD_FOLDER_2 + '/original'
+
 
 #some constants set to avoid vehicle definition fail
 DRONE_TYPE = 'copter '
@@ -58,7 +65,7 @@ MAVLOGDUMP_RUN = PYTHON_DIR + MAVLOGDUMP_DIR + ORIGINAL_LOG_FILE_FOLDER
 ### THESE ARGS ARE MADE FOR USE ON LINUX SYSTEMS
 
 #for use with mavlogdump
-PYTHON_DIR_2 = 'flask\\Scripts\\python '
+PYTHON_DIR_2 = 'flask/Scripts/python '
 
 #log analyzer set to output json format
 LOG_ANALYZER_DIR_2 = 'dronekit-la -s json ' + DRONE_TYPE_ARG + FRAME_TYPE_ARG
@@ -68,7 +75,7 @@ LOG_ANALYZER_TXT_DIR_2 = 'dronekit-la -s plain-text ' + DRONE_TYPE_ARG + FRAME_T
 
 #mavlogdump for parsing a csv file containing gps-related data from bin logs
 MAVLOGDUMP_ARGS_2 = '--format csv --types GPS '
-MAVLOGDUMP_DIR_2 = 'tools\\mavlogdump.py ' + MAVLOGDUMP_ARGS_2
-MAVLOGDUMP_RUN_2 = PYTHON_DIR_2 + MAVLOGDUMP_DIR_2 + ORIGINAL_LOG_FILE_FOLDER
+MAVLOGDUMP_DIR_2 = 'tools/mavlogdump.py ' + MAVLOGDUMP_ARGS_2
+MAVLOGDUMP_RUN_2 = PYTHON_DIR_2 + MAVLOGDUMP_DIR_2 + ORIGINAL_LOG_FILE_FOLDER_2
 
 
