@@ -30,5 +30,7 @@ flask/bin/flask db init
 mysql -u root -p -e "CREATE DATABASE IF NOT EXISTS airborne;"
 flask/bin/flask db migrate
 flask/bin/flask db upgrade
+echo "Apply workaround for storing large dronekit-la outputs in db"
+mysql -u root -p -e "ALTER TABLE log MODIFY content LONGTEXT;"
 fi
 

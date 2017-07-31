@@ -15,6 +15,7 @@ Prerequisites:
 		Flask-SQLAlchemy	
 		Flask-mysqlclient (might require some manual installation)
 		Flask-WTForms
+		WTForms-Components
 		Flask-Migrate
 		Pymavlink
 		Flask-GoogleMaps
@@ -76,9 +77,18 @@ On Linux, install it using the commands below:
 	sudo dpkg -i dronekit-la_0.5_amd64.deb
 	sudo apt-get install -f
 
+For production purposes, install Gunicorn (Linux only):
 
-To run the development server, use:
+	pip install Gunicorn
 
-	python run.py
-Currently there is no available server for production use. It'll be there soon.
+How to Run:
+=====
+
+To run the development server(Windows and Linux), use:
+
+	flask/Scripts/python run.py #for Windows
+	flask/bin/python run.py #for Linux
+To run the production server (Linux only), use:
+	
+	./production-linux.sh
 
