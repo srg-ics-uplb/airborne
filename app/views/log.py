@@ -38,27 +38,27 @@ def delete_log(log_id):
         abort(404)
     #Else proceed to delete file
     else:
-	if platform.system()=='Windows':
-		#remove original log file
-		os.remove(os.path.join(app.config['ORIGINAL_LOG_FILE_FOLDER'], log.filename))
+        if platform.system()=='Windows':
+            #remove original log file
+            os.remove(os.path.join(app.config['ORIGINAL_LOG_FILE_FOLDER'], log.filename))
 
-		#remove gps csv file if exists
-		if log.gps_filename is not None:
-		    os.remove(os.path.join(app.config['GPS_COORDINATE_FILE_FOLDER'], log.gps_filename))
+            #remove gps csv file if exists
+            if log.gps_filename is not None:
+                os.remove(os.path.join(app.config['GPS_COORDINATE_FILE_FOLDER'], log.gps_filename))
 
-		#remove processed dronekit-la output file
-		os.remove(os.path.join(app.config['PROCESSED_OUTPUT_FILE_FOLDER'], log.processed_filename))
+            #remove processed dronekit-la output file
+            os.remove(os.path.join(app.config['PROCESSED_OUTPUT_FILE_FOLDER'], log.processed_filename))
 
-	elif platform.system()=='Linux':
-		#remove original log file
-		os.remove(os.path.join(app.config['ORIGINAL_LOG_FILE_FOLDER_2'], log.filename))
+        elif platform.system()=='Linux':
+            #remove original log file
+            os.remove(os.path.join(app.config['ORIGINAL_LOG_FILE_FOLDER_2'], log.filename))
 
-		#remove gps csv file if exists
-		if log.gps_filename is not None:
-		    os.remove(os.path.join(app.config['GPS_COORDINATE_FILE_FOLDER_2'], log.gps_filename))
+            #remove gps csv file if exists
+            if log.gps_filename is not None:
+                os.remove(os.path.join(app.config['GPS_COORDINATE_FILE_FOLDER_2'], log.gps_filename))
 
-		#remove processed dronekit-la output file
-		os.remove(os.path.join(app.config['PROCESSED_OUTPUT_FILE_FOLDER_2'], log.processed_filename))
+            #remove processed dronekit-la output file
+            os.remove(os.path.join(app.config['PROCESSED_OUTPUT_FILE_FOLDER_2'], log.processed_filename))
 
         #remove from db and redirect to flight page
         db.session.delete(log)
@@ -131,10 +131,10 @@ def write_log_gps_file(file_handle, filename):
         Write CSV file for GPS data from dataflash text dumps(*.log)
     """
     #open file handle for gps csv file
-	if platform.system()=='Windows':
-	    g = open(app.config['GPS_COORDINATE_FILE_FOLDER']+'\\'+ filename, 'w')
-	elif platform.system()=='Linux':
-	    g = open(app.config['GPS_COORDINATE_FILE_FOLDER_2']+'/'+ filename, 'w')
+    if platform.system()=='Windows':
+        g = open(app.config['GPS_COORDINATE_FILE_FOLDER']+'\\'+ filename, 'w')
+    elif platform.system()=='Linux':
+        g = open(app.config['GPS_COORDINATE_FILE_FOLDER_2']+'/'+ filename, 'w')
 
     #write initial row containing columns
     g.write('TimeUS,Status,GMS,GWk,NSats,HDop,Lat,Lng,RAlt,Alt,Spd,GCrs,VZ,U\n')
@@ -166,10 +166,10 @@ def write_bin_gps_file(log, filename):
     content = subprocess.check_output(args)
 
     #save contents to a csv file
-	if platform.system()=='Windows':
-	    filepath = app.config['GPS_COORDINATE_FILE_FOLDER'] + '\\' + filename
-	elif platform.system()=='Linux':
-	    filepath = app.config['GPS_COORDINATE_FILE_FOLDER_2'] + '/' + filename
+    if platform.system()=='Windows':
+        filepath = app.config['GPS_COORDINATE_FILE_FOLDER'] + '\\' + filename
+    elif platform.system()=='Linux':
+        filepath = app.config['GPS_COORDINATE_FILE_FOLDER_2'] + '/' + filename
     with open(filepath, 'w') as csvfile:
         for row in content.splitlines():
             csvfile.write(row)
@@ -208,10 +208,10 @@ def get_first_point(log_id):
     """
 
     log = Log.query.get(log_id)
-	if platform.system()=='Windows':
-	    filepath = app.config['GPS_COORDINATE_FILE_FOLDER'] + '\\' + log.gps_filename
-	elif platform.system()=='Linux':
-	    filepath = app.config['GPS_COORDINATE_FILE_FOLDER_2'] + '/' + log.gps_filename
+    if platform.system()=='Windows':
+        filepath = app.config['GPS_COORDINATE_FILE_FOLDER'] + '\\' + log.gps_filename
+    elif platform.system()=='Linux':
+        filepath = app.config['GPS_COORDINATE_FILE_FOLDER_2'] + '/' + log.gps_filename
     with open(filepath, 'r') as mapfile:
         reader = csv.DictReader(mapfile)
         line = reader.next()
@@ -231,10 +231,10 @@ def get_map_markers_json(log_id):
 
     #retrieve log file
     log = Log.query.get(log_id)
-	if platform.system()=='Windows':
-	    filepath = app.config['GPS_COORDINATE_FILE_FOLDER'] + '\\' + log.gps_filename
-	elif platform.system()=='Linux':
-	    filepath = app.config['GPS_COORDINATE_FILE_FOLDER_2'] + '/' + log.gps_filename
+    if platform.system()=='Windows':
+        filepath = app.config['GPS_COORDINATE_FILE_FOLDER'] + '\\' + log.gps_filename
+    elif platform.system()=='Linux':
+        filepath = app.config['GPS_COORDINATE_FILE_FOLDER_2'] + '/' + log.gps_filename
     with open(filepath, 'r') as mapfile:
         #initialize DictReader
         reader = csv.DictReader(mapfile)
