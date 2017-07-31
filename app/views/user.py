@@ -84,13 +84,21 @@ def dashboard():
                 total_flight_distance += flight.travelled_distance
 
     finished_flights = total_flight_count - (scheduled_flights+ongoing_flights)
-
-    avg_flight_duration = total_flight_duration / total_flight_count
-    avg_flight_distance = total_flight_distance / total_flight_count
+    if total_flight_count==0:
+        avg_flight_duration = 0
+        avg_flight_distance = 0
+    else:
+        avg_flight_duration = total_flight_duration / total_flight_count
+        avg_flight_distance = total_flight_distance / total_flight_count
 
     used_drone_count = total_drone_count - unused_drone_count
-    avg_drone_distance = total_flight_distance / used_drone_count
-    avg_drone_duration = total_flight_duration / used_drone_count
+
+    if total_drone_count==0:
+        avg_drone_distance = 0
+        avg_drone_duration = 0
+    else:
+        avg_drone_distance = total_flight_distance / used_drone_count
+        avg_drone_duration = total_flight_duration / used_drone_count
     
     weekly_flights = getFlightsperWeek(current_date)
     week_start = getMonday(current_date)
