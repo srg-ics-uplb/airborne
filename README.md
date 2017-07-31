@@ -9,11 +9,11 @@ Prerequisites:
 	Flask 0.12
 	dronekit-la
 	mavlogdump.py(from Pymavlink tools repo)	
-	The following Python/Flask extensions:		
+	The following Python/Flask extensions:
 		Flask-Login
 		Flask-Bcrypt
 		Flask-SQLAlchemy	
-		Flask-mysqlclient (might require some manual installation)
+		mysqlclient (might require some manual installation) or mysql-python
 		Flask-WTForms
 		WTForms-Components
 		Flask-Migrate
@@ -54,8 +54,9 @@ Get your own API key from Google Maps from [here](https://developers.google.com/
 Also on config.py, set your api key on constant 'GOOGLEMAPS_KEY'
 
 	GOOGLEMAPS_KEY = <your api key>
-Run the install script. It will install most of the components required. This requires Bash.
+Run the install script. It will install most of the components required. This requires Bash. Grant permissions if necessary.
 
+	chmod +x install.sh
 	./install.sh
 Download a copy of dronekit-la from [here](https://github.com/dronekit/dronekit-la/releases/latest). 
 On Windows, place the contents of the zip file inside the tools folder. You'll have something that looks like this:
@@ -79,7 +80,7 @@ On Linux, install it using the commands below:
 
 For production purposes, install Gunicorn (Linux only):
 
-	pip install Gunicorn
+	pip install gunicorn
 
 How to Run:
 =====
@@ -90,5 +91,6 @@ To run the development server(Windows and Linux), use:
 	flask/bin/python run.py #for Linux
 To run the production server (Linux only), use:
 	
+	chmod +x production-linux.sh #only if necessary
 	./production-linux.sh
 
