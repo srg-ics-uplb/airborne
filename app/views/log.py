@@ -82,8 +82,8 @@ def write_dronekit_la_output_file(filename):
             processed.close()
     elif platform.system()=='Linux': #if running on linux system
         #run dronekit-la
-        args = app.config['LOG_ANALYZER_DIR_2'] + app.config['ORIGINAL_LOG_FILE_FOLDER_2'] + '\\' + filename
-        content = subprocess.check_output(args)
+        args = app.config['LOG_ANALYZER_DIR_2'] + app.config['ORIGINAL_LOG_FILE_FOLDER_2'] + '/' + filename
+        content = subprocess.check_output(shlex.split(args))
 
         #open a file handle and save output of dronekit-la to a json file
         processed_filename = filename.rsplit('.', 1)[0] + '.json'
@@ -113,7 +113,7 @@ def write_dronekit_la_output_file_plain(filename):
     elif platform.system()=='Linux': #if running on linux system
         #run dronekit-la
         args = app.config['LOG_ANALYZER_TXT_DIR_2'] + app.config['ORIGINAL_LOG_FILE_FOLDER_2'] + '/' + filename
-        content = subprocess.check_output(args)
+        content = subprocess.check_output(shlex.split(args))
 
         #open file handle and save output to txt file
         processed_filename = filename.rsplit('.', 1)[0] + '.txt'
