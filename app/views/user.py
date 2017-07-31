@@ -93,7 +93,7 @@ def dashboard():
 
     used_drone_count = total_drone_count - unused_drone_count
 
-    if total_drone_count==0:
+    if used_drone_count==0:
         avg_drone_distance = 0
         avg_drone_duration = 0
     else:
