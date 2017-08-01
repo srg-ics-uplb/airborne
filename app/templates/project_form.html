@@ -1,22 +1,40 @@
 {% extends "base.html" %}
 
 {% block content %}
-	<div class="container">
-		<h1>{{ form_title }}</h1>
-		<form action="" method="post" name="{{name}}">
-			{{ form.hidden_tag() }}
+	<div class="container-fluid">
+		<div class="well project-form-container">
+			<form action="" method="post" name="{{name}}">
+				<div class="project-form-header">
+					<div class="row">
+						<div class="col-sm-12">
+							<h1>{{ form_title }}</h1>
+						</div>
+					</div>
+				</div>
+				{{ form.hidden_tag() }}
+				<div class="project-form-body">
+					<div class="form-group">
+						<label for="name">Project Name:</label>
+						{{ form.name(class="form-control") }}
+						{% for error in form.name.errors %}
+							<span style="color:red;"> {{error}}</span><br>
+						{% endfor %}
+					</div>
+					<div class="form-group">
+						<label for="description">Description:<br></label>
+						{{ form.description(class="form-control") }}
+						{% for error in form.description.errors %}
+							<span style="color:red;"> {{error}}</span><br>
+						{% endfor %}
+					</div>
+				</div>
+
+				<div class="project-form-footer">
+					<input type="submit" value="{{ submit_value }}" class="btn btn-default project-submit">
+				</div>
+			</form>
+		</div>
 			
-				<div class="form-group">
-					<label for="name">Project Name:</label>
-					{{ form.name(class="form-control") }}
-				</div>
-				<div class="form-group">
-					<label for="description">Description:<br></label>
-					{{ form.description(class="form-control") }}
-				</div>
-			<p>
-				<input type="submit" value="{{ submit_value }}" class="btn btn-default">
-			</p>
-		</form>
+		</div>
 	</div>
 {% endblock %}

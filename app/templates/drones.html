@@ -1,12 +1,21 @@
 {% extends "base.html" %}
 {% block content %}
-    <div class="jumbotron">
-        <div class="container">
-            <h3>Drones ({{user.drones.count()}}) <a href="/drone/add" class="btn btn-lg btn-success"><span class="glyphicon glyphicon-plus"></span> Add </a> </h3> 
+    <div class="container-fluid">
+        <div class="jumbotron drones-header">
+           
+            <h2>
+                 <span class="glyphicon glyphicon-plane"></span>
+                Drones 
+                <a href="/drone/add" class="btn btn-md"><span class="glyphicon glyphicon-plus"></span> </a>
+            </h2>
+        </div>
+    </div>
+    <div class="container-fluid" ng-app="droneApp">
+        <div class="well" ng-controller="DroneController">
             {% if drones.count()!=0 %}
                 <div class="row">
                     <div class="col-sm-12">
-                        <div class="table-responsive">
+                        <div class="table-responsive" >
                             <table class="table">
                             <thead>
                                 <tr>
@@ -25,7 +34,7 @@
                                     <td>{{drone.model}}</td>
                                     <td>
                                         <a href="/drone/edit/{{drone.id}}" class="btn btn-sm btn-warning"><span class="glyphicon glyphicon-edit"></span> Edit </a>
-                                        <a href="/drone/delete/{{drone.id}}" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-trash"></span> Delete </a>
+                                        <a type="button" data-toggle="modal" data-target="#delete-drone" ng-click="set_delete_drone({{drone.id}}, '{{drone.name}}')" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-trash"></span> Delete </a>
                                     </td>
                                     
                                 </tr>
@@ -40,12 +49,57 @@
             {% else %}
                 <div class="row">
                     <div class="col-sm-12">
-                        <h3> You have no drones. Click the Add button above to add one! </h3>
-                        <p> Is this an error? Contact the administrator. </p>
+                        <div class="no-drones">
+                            <h3 class="fade-50"> You have no drones. Click the Add button above to add one! </h3>
+                            <p class="fade-50"> Is this an error? Contact the administrator. </p>
+                        </div>
                     </div>
                 </div>
             {% endif %}
 
-            </div>
+
+<!-- Allow AngularJS to interfere here in order to pass drone_id to delete properly -->
+{% raw %}
+<div class="modal fade" id="delete-drone">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3 class="modal-title">Confirm Delete Drone</h3>
+			</div>
+			<div class="modal-body">
+				<p>Are you sure you want to delete this drone?</p>
+				<p id="drone-delete-name">Drone {{drone_name}} </p>
+			</div>
+			<div class="modal-footer">
+				<a href="/drone/delete/{{drone_id}}" class="btn btn-sm btn-danger" >Delete </a>
+				<button class="btn btn-sm btn-default" data-dismiss="modal">Cancel</button>
+				
+			</div>
+		</div>
+	</div>
+</div>
+{% endraw %}
+        </div>
     </div>
+    
+
+
+<script type="text/javascript">
+	angular.module('droneApp', [])
+	.controller('DroneController', ['$scope', function($scope){
+        $scope.drone_id = undefined;
+        $scope.drone_name = undefined;
+		$scope.set_delete_drone = function(id, name){
+            console.log("why hello there "+ id);
+            console.log("why hello there "+ name);
+
+            $scope.drone_id = id;
+            $scope.drone_name = name;
+            console.log($scope.drone_id);
+            console.log($scope.drone_name);
+			
+		};
+	
+}]);
+</script> 
 {% endblock %}

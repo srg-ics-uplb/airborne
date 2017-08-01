@@ -2,10 +2,16 @@
 
 {% block content %}
 	
-	<div class="container">
-
+	<div class="container-fluid">
+		<div class="well signup-container">
 		<form action="" method="post" name="signup" class="form-signin">
-			<h1 class="form-signin-header signup-header">Sign Up</h1><br>
+			<div class="signup-header">
+				<div class="row">
+					<div class="col-sm-12">
+						<h1 >Sign Up</h1>
+					</div>
+				</div>
+			</div>
 			{{ form.hidden_tag() }}
 			<div class="signup-body">
 				<div class="row">
@@ -84,11 +90,13 @@
 						
 					</div>	
 				</div>
-				<input type="submit" value="Sign Up" class="btn btn-lg btn-default signup-submit btn-block">
-
+				<div class="signup-footer">
+				<input type="submit" value="Sign Up" class="btn btn-lg signup-submit">
+				</div>
 				
 			</div>
 
 		</form>
+		</div>
 	</div>
 {% endblock %}

@@ -1,9 +1,69 @@
 {% extends "base.html" %}
 {% block content %}
-    <div class="container">
-    <div class="jumbotron">
-        <h1> Airborne</h1>
-        <p>A drone flight management web application </p>
+    <div class="container-fluid">
+        <div class="jumbotron home">
+            <h1 class="center"> Airborne</h1>
+            <p class="center">
+                A drone flight management web application that's free and open-source.
+            </p>
+            <div class="center">
+                
+                <a href="/signup" class="btn btn-lg btn-default button-1"> Get Started Now </a>
+                <!--
+                <a href="#features" class="btn btn-lg btn-default button"> View Features </a>
+                -->
+                <a href="#contribute" class="btn btn-lg btn-default button-1"> Contribute </a>
+            </div>
+        </div>
     </div>
+    <div class="container-fluid">
+        <div class="well" id="features">
+            <h2 class="center"> Features </h2>
+            <div class="row">
+                <div class="col-sm-4">
+                    <!---Dronekit logo taken from http://dronekit.io/dronekitlogo.svg -->
+                    <img src="/static/img/dronekitlogo.svg" id="dronekit-logo" class="feature-img img-responsive"/>
+                    <h4 class="center"> Drone log analytics using Dronekit-LA </h4> 
+                    <p>Airborne is capable of log analysis using dronekit-la. It is a fast, powerful, and open-source tool for analyzing ArduPilot logs.</p>
+                </div>
+                <div class="col-sm-4">
+                    <!--- Google Maps logo taken from https://developers.google.com/maps/images/lhimages/api/icon_placesapi.svg -->
+                    <img src="/static/img/gmaps.svg" id="gmap-logo" class="feature-img img-responsive">
+                    <h4 class="center">Flight path tracing using Google Maps</h4>
+                    <p>GPS coordinates are extracted from logs you upload, and with the help of Google Maps, you can trace
+                        the path your drone took during flight.
+                    </p>
+                </div>
+                <div class="col-sm-4">
+                    <!--- Github logo taken from https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg -->
+                    <img src="/static/img/github.svg" class="feature-img img-responsive">
+                    <h4 class="center">Free and open-source</h4>
+                    <p>You're free to contribute to developing Airborne. Fork us on Github and add features or solve issues as you wish</p>
+                </div>
+                
+            </div> 
+        </div>
     </div>
+    <div class="container-fluid">
+        <div class="well" id="contribute">
+            
+            <h2 class="center"> Contribute to Airborne's development </h2>
+            <div class="buttons center">
+                
+                <a href="https://github.com/srg-ics-uplb/airborne" class="btn btn-lg btn-default button-2">
+                    <span class="glyphicon glyphicon-github"></span>
+                    Fork us on Github!
+                </a>
+            
+                <span>or </span>
+                
+                <a href="mailto://" class="btn btn-lg btn-default button-2">
+                    <span class="glyphicon glyphicon-envelope"></span>
+                    Mail Us!
+                </a>
+            
+            </div>
+        </div>
+    </div>
+    
 {% endblock %}

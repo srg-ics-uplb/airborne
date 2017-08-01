@@ -9,14 +9,20 @@ migrations/
 
 #Upload Folders for logs. Keep actual logs out, but retain the directory
 app/uploads/logs/original/*.bin
+app/uploads/logs/original/*.BIN
 app/uploads/logs/original/*.log
 app/uploads/logs/original/*.tlog
 app/uploads/logs/gps/*.map
 app/uploads/logs/gps/*.csv
 app/uploads/logs/processed_la/*.json
 
+#API key file
+api_key.py
+
+#VSCode settings
+.vscode/*
 
 
 
 #Folder for 3rd Party tools
-tools/
+tools/dronekit-la

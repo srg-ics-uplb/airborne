@@ -1,10 +1,18 @@
 {% extends "base.html" %}
 {% block content %}
-        <div class="jumbotron">
-           
-            <div class="container">
-                 <h3>Flights  ({{flight_count}}) <a href="/flight/add" class="btn btn-lg btn-success"><span class="glyphicon glyphicon-plus"></span> Add </a> </h3>
-                 
+        <div class="container-fluid">
+            <div class="jumbotron flights-header">
+                
+                <h2>
+                    <span class="glyphicon glyphicon-cloud"></span>
+                    Flights
+                <a href="/flight/add" class="btn btn-md"><span class="glyphicon glyphicon-plus"></span></a>
+                </h1>
+            
+            </div>
+        </div>
+        <div class="container-fluid" ng-app="flightApp">
+            <div class="well" ng-controller="FlightController">
                 <div class="row">
                     {% if flight_count!=0 %}
                         <div class="col-sm-12">
@@ -24,11 +32,11 @@
                                             <tr>
                                                 <td> <a href="/flight/view/{{flight.id}}"> {{flight.name}} </a></td>
                                                 <td> {{flight.notes}} </td>
-                                                <td <a href="/project/view/{{flight.project.id}}">{{flight.project.name}} </a></td>
+                                                <td> <a href="/project/view/{{flight.project.id}}">{{flight.project.name}} </a></td>
                                                 <td> <a href="/drone/view/{{flight.project.id}}">{{flight.drone.name}} </a> </td>
                                                 <td>
                                                     <a href="/flight/edit/{{flight.id}}" class="btn btn-sm btn-warning"><span class="glyphicon glyphicon-edit"></span> Edit </a>
-                                                    <a href="/flight/delete/{{flight.id}}" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-trash"></span> Delete </a>
+                                                    <a type="button" ng-click="set_delete_flight({{flight.id}}, '{{flight.name}}')" data-toggle="modal" data-target="#delete-flight" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-trash"></span> Delete </a>
                                                 </td>    
                                             </tr>   
                                         {% endfor %}
@@ -38,11 +46,57 @@
                         </div>
                     {% else %}
                         <div class="col-sm-12">
-                            <h3> You have no flights. Click the Add button above to start! </h3>
-                            <p> Is this an error? Contact the administrator. </p>
+                            <div class="no-flights">
+                                <h3 class="fade-50"> You have no flights. Click the Add button above to start! </h3>
+                                <p class="fade-50"> Is this an error? Contact the administrator. </p>
+                            </div>
                         </div>
                     {% endif %}
                 </div>
-            </div>
+
+
+
+<!-- Allow AngularJS to interfere here in order to pass flight_id to delete properly -->
+{% raw %}
+<div class="modal fade" id="delete-flight">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3 class="modal-title">Confirm Delete Flight</h3>
+			</div>
+			<div class="modal-body">
+				<p>Are you sure you want to delete this flight?</p>
+				<p id="flight-delete-name">Flight "{{flight_name}}" </p>
+			</div>
+			<div class="modal-footer">
+				<a href="/flight/delete/{{flight_id}}" class="btn btn-sm btn-danger" >Delete </a>
+				<button class="btn btn-sm btn-default" data-dismiss="modal">Cancel</button>
+				
+			</div>
+		</div>
+	</div>
+</div>
+{% endraw %} 
         </div>
+    </div>
+
+
+    <script type="text/javascript">
+        angular.module('flightApp', [])
+        .controller('FlightController', ['$scope', function($scope){
+            $scope.flight_id = undefined;
+            $scope.flight_name = undefined;
+            $scope.set_delete_flight = function(id, name){
+                console.log("why hello there "+ id);
+                console.log("why hello there "+ name);
+
+                $scope.flight_id = id;
+                $scope.flight_name = name;
+                console.log($scope.flight_id);
+                console.log($scope.flight_name);
+                
+            };
+        
+    }]);
+    </script> 
 {% endblock %}

@@ -1,48 +1,116 @@
 {% extends "base.html" %}
 
 {% block content %}
-	<div class="container">
+	<div class="container-fluid">
 		
-		
-		<form action="" method="post" name="{{name}}" >
-			{{ form.hidden_tag() }}
-			<div class="drone-form-body">
-				<h1>{{ form_title }}</h1>
-				<div class="form-group">
-				<label for="name">Drone Name:</label>
-				{{ form.name(class="form-control") }}
+		<div class="well drone-form-container">
+			<form action="" method="post" name="{{name}}" >
+				
+				{{ form.hidden_tag() }}
+				<div class="drone-form-header">
+					<div class="row">
+							<div class="col-sm-12">
+								<h1 class="center">{{ form_title }}</h1>
+							</div>
+					</div>
 				</div>
-				<div class="form-group">
-				<label for="weight">Weight:</label>
-				{{ form.weight(class="form-control") }}
+				<div class="drone-form-body">
+					
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="form-group">
+								<label for="name">Drone Name:</label>
+								{{ form.name(class="form-control") }}
+								{% for error in form.name.errors %}
+										<span style="color:red;"> {{error}}</span><br>
+								{% endfor %}
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-6">
+							<div class="form-group">
+								<label for="version_number">Version Number:</label>
+								{{ form.version_number(class="form-control") }}
+								{% for error in form.version_number.errors %}
+									<span style="color:red;"> {{error}}</span><br>
+								{% endfor %}
+							</div>
+						</div>
+						<div class="col-sm-6">
+							<div class="form-group">
+								<label for="weight">Weight:</label>
+								{{ form.weight(class="form-control") }}
+								{% for error in form.weight.errors %}
+										<span style="color:red;"> {{error}}</span><br>
+								{% endfor %}
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-6">
+							<div class="form-group">
+								<label for="brand">Brand:</label>
+								{{ form.brand(class="form-control") }}
+								{% for error in form.brand.errors %}
+										<span style="color:red;"> {{error}}</span><br>
+								{% endfor %}
+							</div>
+						</div>
+						<div class="col-sm-6">
+							<div class="form-group">
+								<label for="model">Model:</label>
+								{{ form.model(class="form-control") }}
+								{% for error in form.model.errors %}
+										<span style="color:red;"> {{error}}</span><br>
+								{% endfor %}
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-6">
+							<div class="form-group">
+								<label for="maximum_payload_capacity">Max. Payload Capacity:</label>
+								{{ form.max_payload_cap(class="form-control") }}
+								{% for error in form.max_payload_cap.errors %}
+										<span style="color:red;"> {{error}}</span><br>
+								{% endfor %}
+							</div>
+						</div>
+						<div class="col-sm-6">
+							<div class="form-group">
+								<label for="max_speed">Max. Speed:</label>
+								{{ form.max_speed(class="form-control") }}
+								{% for error in form.max_speed.errors %}
+										<span style="color:red;"> {{error}}</span><br>
+								{% endfor %}
+							</div>
+						</div>
+						
+						
+						
+					</div>
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="form-group">
+								<label for="notes">Notes:</label>
+								{{ form.notes(class="form-control") }}
+								{% for error in form.notes.errors %}
+										<span style="color:red;"> {{error}}</span><br>
+								{% endfor %}
+							</div>
+						</div>
+					</div>
+					
 				</div>
-				<div class="form-group">
-				<label for="version_number">Version Number:</label>
-				{{ form.version_number(class="form-control") }}
+				<div class="drone-form-footer">
+					<div class="row">
+						<div class="col-sm-12 center">
+							<input type="submit" value="{{ submit_value }}" class="btn btn-default drone-submit">
+						</div>	
+					</div>
 				</div>
-				<div class="form-group">
-				<label for="brand">Brand:</label>
-				{{ form.brand(class="form-control") }}
-				</div>
-				<div class="form-group">
-				<label for="model">Model:</label>
-				{{ form.model(class="form-control") }}
-				</div>
-				<div class="form-group">
-				<label for="notes">Notes:</label>
-				{{ form.notes(class="form-control") }}
-				</div>
-				<div class="form-group">
-				<label for="maximum_payload_capacity">Maximum Payload Capacity:</label>
-				{{ form.max_payload_cap(class="form-control") }}
-				</div>
-				<div class="form-group">
-				<label for="max_speed">Maximum Speed:</label>
-				{{ form.max_speed(class="form-control") }}
-				</div>
-			<input type="submit" value="{{ submit_value }}" class="btn btn-default">
-			</div>
-		</form>
+			</form>
 		</div>
 	</div>
 {% endblock %}

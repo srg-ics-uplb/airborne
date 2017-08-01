@@ -1,0 +1,121 @@
+.home{
+	background-color: #f28026;
+}
+
+.home h1{
+	color: white;
+}
+
+.home p{
+	color: white;
+}
+
+.feature-img{
+	height: 300px;
+	text-align: center;
+	margin:auto;
+}
+
+.custom-nav{
+	/* margin-bottom: 0px; */
+	background-color: #45453b ; 
+	font-size: 12px;
+	border:0;
+	border-radius: 0px;
+
+}
+
+.custom-nav li a, .navbar-brand{
+	color: #fff !important;
+}
+
+.custom-nav li a:hover{
+	color: #45453b !important;
+	background-color: #fff !important;
+}
+
+.button-1{
+	border: 1px solid #f28026;
+	color: #f28026;
+	background-color:white;	
+	text-decoration: none;
+}
+
+.button-1:hover{
+	border: 1px solid #f28026;
+	background-color: #ffaf70;
+	color:white;
+	text-decoration: none;
+}
+
+.button-2{
+	border: 1px solid #f28026;
+	color: #f28026;
+	background-color:white;	
+	text-decoration: none;
+}
+
+.button-2:hover{
+	border: 1px solid #f28026;
+	background-color: #f28026;
+	color:white;
+	text-decoration: none;
+}
+
+
+#footer {
+	border-top: 1px solid #f28026;
+}
+
+.footer-text{
+	margin:auto;
+	text-align: center !important;
+}
+
+.footer-text a{
+	color: #f28026;
+	text-decoration: none;
+}
+
+.center{
+	text-align: center;
+}
+
+.truncate{
+	text-overflow: ellipsis;
+}
+
+.right{
+	text-align: right;
+}
+
+.breadcrumb{
+	margin-bottom: 5px;
+	border: 2px solid #e57720;
+	border-radius: 4px;
+}
+
+.breadcrumb a{
+	text-decoration: none;
+	color: #e57720;
+
+}
+
+
+.responsive-table{
+	margin:auto;
+}
+
+td a:hover {
+	text-decoration: none;
+}
+
+ 
+body{
+	background-color: #f7f7f7;
+}
+
+button a{
+	text-decoration: none;
+}
+

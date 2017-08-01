@@ -1,0 +1,285 @@
+{% extends "base.html" %}
+
+{% block map_data %}
+	{% if maps %}
+		{% for map in maps %}
+			{{map.js}}
+		{% endfor %}
+		
+	{% endif %}
+{% endblock %}
+{% block content %}
+<div ng-app="flightApp">
+	<div ng-controller="LogController">
+		<div class="container-fluid">
+			<div class="breadcrumb">
+				<li><a href="/">Home</a></li>
+				<li><a href="/flights">Flights</a></li>
+				<li><a href="/flight/{{flight.id}}">{{flight.name}}</a></li>
+			</div>
+			<div class="jumbotron flight-header">
+				<h1>{{ flight.name }}</h1>
+			</div>
+        </div>
+		
+		<div class="container-fluid">                
+			<div class="row">
+				<div class="col-sm-4">
+					<div class="well flight-panel">
+						<div class="flight-panel-header">
+							<div class="row">
+								<div class="col-sm-12">
+									<h2> General Details </h2>
+								</div>
+							</div>
+						</div>
+						<div class="flight-panel-body">
+							<p> Location: {{flight.location}} </p>
+							<p> Notes: {{flight.notes}}</p>
+							<p> Project: <a href="/project/view/{{project.id}}">{{project.name}} </a></p>
+							<p> Drone: <a href="/drone/view/{{drone.id}}">{{drone.name}} </a></p>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-4">
+					<div class="well flight-panel">
+						<div class="flight-panel-header">
+							<div class="row">
+								<div class="col-sm-12">
+									<h2> Flight Type Details </h2>
+								</div>
+							</div>
+						</div>
+						<div class="flight-panel-body">
+							<p> Flight Type: {{flight.flight_type}} </p>
+							<p> Operation Type: {{flight.operation_type}} </p>
+							<p> Additional notes on flight type: {{flight.more_type_info}} </p>
+							<p> Was during night: {{flight.night_flight}} </p>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-4">
+					<div class="well flight-panel">
+						<div class="flight-panel-header">
+							<div class="row">
+								<div class="col-sm-12">
+									<h2> Flight Statistics </h2>
+								</div>
+							</div>
+						</div>
+						<div class="flight-panel-body">
+							<p> Duration: {{flight.duration//3600}} hour(s), {{ (flight.duration%3600)//60 }} minute(s), {{ flight.duration%60 }} second(s) </p>
+							<p> Number of landings: {{flight.landing_count}} </p>
+							<p> Distance travelled: {{flight.travelled_distance}} </p>
+							<p> Maximum AGL(above ground level) altitude: {{flight.max_agl_altitude}} </p>
+						</div>
+					</div>
+				</div>	
+			</div>
+			<div class="row" >
+				<div class="col-sm-12">
+				<div class="well flight-panel">
+					<div class="flight-panel-header">
+						<div class="row">
+							<div class="col-sm-12">
+								<h2> 
+									Log Statistics 
+									<button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#add-flight-log">
+										<span class="glyphicon glyphicon-plus"></span>
+										Add Flight Log
+									</button>
+									
+								</h2>
+							</div>
+						</div>
+					</div>
+					<div class="flight-panel-body">
+					{% if logs %}
+						{% for log in logs %}
+						<div class="row">
+							<div class="col-sm-12">
+								{# <p>Log # {{log.id}} </p> #}
+								<h3>Log file "{{log.filename}}" 
+									<div class="btn-group">
+										<button class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+											Download as...
+											<span class="caret"></span>
+										</button>
+										<ul class="dropdown-menu">
+											<li><a href="/log/download_gps/{{log.id}}">GPS CSV</a></li>
+											<li><a href="/log/download_la/{{log.id}}">Dronekit-la JSON Output</a></li>
+											<li><a href="/log/download/{{log.id}}">Raw log</a></li>
+										</ul>
+									</div>
+									<button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#delete-flight-log" ng-click="set_delete_flight({{log.id}})">
+										<span class="glyphicon glyphicon-trash"></span> 
+										Delete this log file</button>
+								</h3>
+								
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-4">
+								<div class="log-info">
+									<h4>Log Info</h4>
+									<ul>
+										<li>Bytes dropped: {{log.processed_content['bytes-dropped']}}</li>
+										<li>Duration: {{log.processed_content['duration']}}</li>
+										<li>Maximum Altitude(absolute): {{log.processed_content['maximum-altitude-absolute']}} {{log.processed_content['maximum-altitude-absolute-units']}}</li>
+										<li>Maximum Altitude(relative): {{log.processed_content['maximum-altitude-relative']}} {{log.processed_content['maximum-altitude-relative-units']}}</li>
+										<li>Maximum Distance from Origin: {{log.processed_content['maximum-distance-from-origin']}} {{log.processed_content['maximum-distance-from-origin-units']}}</li>
+										<li>Maximum Velocity: {{log.processed_content['maximum-velocity']}} {{log.processed_content['maximum-velocity-units']}}</li>
+										<li>Total Distance Travelled: {{log.processed_content['total-distance-travelled']}} {{log.processed_content['total-distance-travelled-units']}}</li>
+										<li>Total Flight Time: {{log.processed_content['total-flight-time']}} {{log.processed_content['total-flight-time-units']}}</li>
+										<li>Packet Count: {{log.processed_content['packet-count']}}</li>
+										<li>Evilness: {{log.processed_content['evilness']}}</li>
+										<li>Evilness is deprecated: {{log.processed_content['evilness-is-deprecated']}}</li>
+										<li>Severity score: {{log.processed_content['severity-score']}}</li>
+										<li>Timestamp: {{log.processed_content['timestamp']}}</li>
+										<li>Format Version: {{log.processed_content['format-version']}}</li>
+										<li>Git Version: {{log.processed_content['git_version']}}</li>
+										
+									</ul>
+									
+									<h4>Map</h4>
+									{{log.map.html}}
+								</div>
+							</div>
+							<div class="col-sm-8">
+								<h4>Tests</h4>
+								<ul class="nav nav-tabs log-test-tabs">
+									{% for name in log.processed_content['tests'].keys() %}
+										<li {% if loop.first %} class="active" {% endif %}><a data-toggle="tab" href="#{{name|replace(' ','_')}}{{log.id}}">{{name}}</a></li>
+									{% endfor %}
+								</ul>
+								<div class="tab-content">
+									{% for key, value in log.processed_content['tests'].items() %}
+										
+										<div id="{{key|replace(' ','_')}}{{log.id}}" class="tab-pane fade {% if loop.first %} in active {% endif %} test-body">
+											<ul class="test-content">
+											<li>
+												Status: 
+												<span class="label {%if value['status']=='PASS'%} label-success {% elif value['status']=='WARN'%} label-warning {%else%} label-danger {%endif%}">{{value['status']}}
+											</li>
+											<li>Description: {{value['description']}}</li>
+											<li>Results: 
+												{% if not value['results'] %}	
+													none 
+												{% else %}
+													<ul>
+													{% for result in value['results'] %}
+													
+													<li>
+														<ul>
+														{% for key, value in result.items()%}
+															<li> {{key}} : {{value}} </li>
+														{% endfor %}
+														</ul>
+													</li>
+													<br>
+													{% endfor %}
+													</ul>
+												{% endif %}
+												
+											</li>
+											<li>Severity score: {{value['severity-score']}}</li>
+											<li>Evilness: {{value['evilness']}}</li>
+											<li>Evilness is deprecated: {{value['evilness-is-deprecated']}}</li>
+											</ul>
+										</div>
+									{% endfor %}
+								</div>
+							</div>
+						</div>
+						<br>
+						{% endfor %}
+					{% else %}
+						<div class="row">
+							<div class="col-sm-12">
+								<p>No logs yet!</p>
+							</div>
+						</div>
+					{% endif %}
+					</div>
+				</div>	
+				</div>
+			</div>
+			</div>
+
+<!-- Allow AngularJS to interfere here in order to pass log_id to delete properly -->
+{% raw %}
+<div class="modal fade" id="delete-flight-log">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3 class="modal-title">Confirm Delete Flight Log</h3>
+			</div>
+			<div class="modal-body">
+				<p>Are you sure you want to delete this log file?</p>
+				<p>Log file # {{log_id}} </p>
+			</div>
+			<div class="modal-footer">
+				<a href="/log/delete/{{log_id}}" class="btn btn-sm btn-danger" >Delete </a>
+				<button class="btn btn-sm btn-default" data-dismiss="modal">Cancel</button>
+				
+			</div>
+		</div>
+	</div>
+</div>
+{% endraw %}
+		</div>
+
+</div>
+
+
+
+
+<!-- ng-non-bindable so that it doesn't interfere with WTForm -->
+<div class="modal fade" id="add-flight-log" ng-non-bindable>
+	<div class="modal-dialog">
+		
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3 class="modal-title"> Add Flight Log </h3>
+			</div>
+			<form method="post" enctype="multipart/form-data" name="add_flight_log">
+				<div class="modal-body">
+				
+
+					{{ form.csrf_token }}
+					{{ form.log_file(class="form-control") }}
+
+					{% for error in form.log_file.errors %}
+						<span style="color:red;"> {{error}}</span>
+					{% endfor %}
+					
+					
+				
+				</div>
+				<div class="modal-footer">
+					<input type="submit" value="Upload Log" class="btn btn-primary"/>
+				</div>
+			</form>
+		</div>	
+	</div>
+</div>	
+
+
+
+
+
+<!-- Mini script code just for log delete -->
+<script type="text/javascript">
+	angular.module('flightApp', [])
+	.controller('LogController', ['$scope', function($scope){
+		$scope.log_id = undefined;
+		$scope.set_delete_flight = function(id){
+			console.log("why hello there "+ id);
+
+			$scope.log_id = id;
+			console.log($scope.log_id)
+		};
+	
+}]);
+</script> 
+{% endblock %}

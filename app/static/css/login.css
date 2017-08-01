@@ -1,23 +1,105 @@
-.login-body{
+.login-panel{
 	max-width: 40%;
 	margin:auto;
+	padding: 0px;
+}
+
+.login-body{
+	padding: 20px;
+	
+}
+
+.login-body .form-control:focus{
+	border-color: #f28026;
+	box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(242, 128, 38, .6)
 }
 
 .login-header{
 	margin:auto;
+	background-color: #f28026;
+}
+
+.login-header h1{
 	text-align: center;
+	color: white;
+}
+
+.login-footer{
+	text-align: center;
+}
+
+.login-submit{
+	padding-left: 50px;
+	padding-right: 50px;
+	background-color: white;
+	color: #f28026;
+	border-color: #f28026;
+}
+.login-submit:hover{
+	padding-left: 50px;
+	padding-right: 50px;
+	background-color: #f28026;
+	border-color: #f28026;
+	color: white;
+}
+
+.login-submit:focus{
+	padding-left: 50px;
+	padding-right: 50px;
+	background-color: #f28026;
+	border-color: #f28026;
+	color: white;
+}
+
+.signup-container{
+	max-width: 50%;
+	margin:auto;
+	padding: 0px;
 }
 
 .signup-body{
-	max-width: 40%;
-	margin:auto;
+	padding: 20px;
+}
+
+.signup-body .form-control:focus{
+	border-color: #f28026;
+	box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(242, 128, 38, .6)
 }
 
 .signup-header{
-	text-align: center;
+
 	margin:auto;
+	background-color: #f28026;
+}
+.signup-header h1{
+	text-align: center;
+	color:white;
+}
+
+
+.signup-footer{
+	text-align: center;
 }
 
 .signup-submit{
-	margin:auto;
+	padding-left: 50px;
+	padding-right: 50px;
+	background-color: white;
+	color: #f28026;
+	border-color: #f28026;
+}
+.signup-submit:hover{
+	padding-left: 50px;
+	padding-right: 50px;
+	background-color: #f28026;
+	border-color: #f28026;
+	color: white;
+}
+
+.signup-submit:focus{
+	padding-left: 50px;
+	padding-right: 50px;
+	background-color: #f28026;
+	border-color: #f28026;
+	color: white;
 }

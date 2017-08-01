@@ -5,19 +5,19 @@
 		{% for map in maps %}
 			{{map.js}}
 		{% endfor %}
+		
 	{% endif %}
-	
 {% endblock %}
 {% block content %}
 <div ng-app="flightApp">
 <div ng-controller="LogController">
         <div class="jumbotron center">
-			<div class="container">
+			<div class="container-fluid">
 				<h1>{{ flight.name }}</h1>
 			</div>
         </div>
 		<div class="jumbotron">	
-			<div class="container">                
+			<div class="container-fluid">                
 				<hr>
 				<div class="row">
 					<div class="col-sm-4">
@@ -60,6 +60,7 @@
 								<div class="col-sm-12">
 									{# <p>Log # {{log.id}} </p> #}
 									<p>Log file "{{log.filename}}" <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#delete-flight-log" ng-click="set_delete_flight({{log.id}})"><span class="glyphicon glyphicon-trash"></span> Delete this log file</button></p>
+									
 
 										
 									
@@ -134,11 +135,7 @@
 								</div>
 							</div>
 							<br>
-							
-								
-								{{log.map.html}}
-								
-							
+							{{log.map.html}}
 							{% endfor %}
 						{% else %}
 

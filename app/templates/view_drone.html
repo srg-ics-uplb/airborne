@@ -1,47 +1,100 @@
 {% extends "base.html" %}
 {% block content %}
 	
-    <div class="jumbotron">
-		<div class="container">
-			<h1>{{drone.name}} </h1>
-			<div class="row">
-				<div class="col-sm-4">
-					<h2>Specifications</h2>
-					<p>Brand: {{drone.brand}} </p>
-					<p>Model: {{drone.model}} </p>
-					<p>Version Number: {{drone.version_number}}</p>
-					<p>Weight: {{drone.weight}}</p>
-					<p>Maximum Payload Capacity: {{drone.max_payload_cap}} </p>
-					<p>Maximum Speed: {{drone.max_speed}}</p>
-					<a href="/drone/edit/{{drone.id}}" class="btn btn-sm btn-warning"><span class="glyphicon glyphicon-edit"></span> Edit </a>
-					<a href="/drone/delete/{{drone.id}}" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-trash"></span> Delete </a>
-				</div>
-				<div class="col-sm-8">
-					<h2>Flight Involvement</h2>
-					{% if drone.flights.count()!=0 %}
+    <div class="container-fluid">
+		<div class="breadcrumb">
+			<li><a href="/">Home</a></li>
+			<li><a href="/drones">Drones</a></li>
+			<li><a href="/drone/{{drone.id}}">{{drone.name}}</a></li>
+		</div>
+		<div class="jumbotron drone-header">
+			<h1 class="center"><span class="drone-classify">drone:</span>{{drone.name}} </h1>
+		</div>
+	</div>
+	<div class="container-fluid">
+
+		<div class="row">	
+			<div class="col-sm-4">
+				<div class="well drone-panel">
+					<div class="drone-panel-header">
 						<div class="row">
-						{% for flight in drone.flights %}
 							<div class="col-sm-12">
-								<h3> <a href="/flight/view/{{flight.id}}"> {{flight.name}} </a></h3>
-								<p> {{ flight.date}} at {{ flight.location }} </p>
-								<p> Description: {{flight.notes}} </p>
-								<p> Duration: {{flight.duration//3600}} hour(s), {{ (flight.duration%3600)//60 }} minute(s), {{ flight.duration%60 }} second(s) </p>
+								<h2>Specifications
+								<a data-toggle="modal" data-target="#delete-drone" class="btn btn-sm drone-panel-header-btn"><span class="glyphicon glyphicon-trash"></span></a>
+								<a href="/drone/edit/{{drone.id}}" class="btn btn-sm drone-panel-header-btn"><span class="glyphicon glyphicon-edit"></span></a>
 								
+								</h2>
 							</div>
-						{% endfor %}
 						</div>
-					{% else %}
+					</div>
+					<div class="drone-panel-body">
+						<p>Brand: {{drone.brand}} </p>
+						<p>Model: {{drone.model}} </p>
+						<p>Version Number: {{drone.version_number}}</p>
+						<p>Weight: {{drone.weight}}</p>
+						<p>Maximum Payload Capacity: {{drone.max_payload_cap}} </p>
+						<p>Maximum Speed: {{drone.max_speed}}</p>
+						
+					</div>
+				</div>
+			</div>
+			
+			<div class="col-sm-8">
+				<div class="well drone-panel">
+					<div class="drone-panel-header">
 						<div class="row">
 							<div class="col-sm-12">
-								<h3> Currently not used in any flights. </h3> 
+								<h2>Flight Involvement</h2>
 							</div>
 						</div>
-					{% endif %}
+					</div>
+					<div class="drone-panel-body">
+					
+					
+						{% if drone.flights.count()!=0 %}
+							<div class="row">
+							{% for flight in drone.flights %}
+								<div class="col-sm-4 drone-flight">
+									<div class="drone-flight-header">
+										<h3> <a href="/flight/view/{{flight.id}}"> {{flight.name}} </a></h3>
+									</div>
+									<div class="drone-flight-body">
+										<p> {{ flight.date}} at {{ flight.location }} </p>
+										<p> Duration: {{flight.duration//3600}} hour(s), {{ (flight.duration%3600)//60 }} minute(s), {{ flight.duration%60 }} second(s) </p>
+									</div>
+									
+								</div>
+							{% endfor %}
+							</div>
+						{% else %}
+							<div class="row">
+								<div class="col-sm-12 no-flights">
+									<h3 class="fade-50"> Currently not used in any flights. </h3> 
+								</div>
+							</div>
+						{% endif %}
+					</div>
 				</div>	
-				</div>
-				
 			</div>
 		</div>
     </div>	
 
+	<div class="modal fade" id="delete-drone">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h3 class="modal-title">Confirm Delete Drone: {{drone.name}}</h3>
+				</div>
+				<div class="modal-body">
+					<p>Are you sure you want to delete this drone?</p>
+					<p>All flights in which this drone was used will be deleted as well.</p>
+				</div>
+				<div class="modal-footer">
+					<a href="/drone/delete/{{drone.id}}" class="btn btn-sm btn-danger" >Delete </a>
+					<button class="btn btn-sm btn-default" data-dismiss="modal">Cancel</button>
+					
+				</div>
+			</div>
+		</div>
+	</div>
 {% endblock %}

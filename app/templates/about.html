@@ -1,9 +1,197 @@
 {% extends "base.html" %}
 {% block content %}
-	<div class="container">
-		<div class="jumbotron">
+	<div class="container-fluid">
+		<div class="jumbotron about-header">
 			<h1> About Airborne </h1>
-			<p> Nothing here yet </p>
+			<p> The creators, technologies, the reasons behind the project's creation, (almost) everything you need to know about the project is here. </p>
+		</div>
+	</div>
+	<div class="container">
+		<div class="well about-panel">
+			<div class="about-panel-header">
+				<div class="row">
+					<div class="col-sm-12">
+						<h2> About the Project </h2>
+					</div>
+				</div>
+			</div>
+			<div class="about-panel-body">
+			<p> 
+				Sir Joseph Hermocilla called for practicumers that will build a web application for drone log analytics, similar to Dronelogbook.com.
+				I, Clark Almazan, after failing to qualify for different internships outside the campus, signed up for Sir Hermocilla's practicum program.
+			</p>
+			</div>
+		</div>
+		<div class="well about-panel">
+			<div class="about-panel-header">
+				<div class="row">
+					<div class="col-sm-12">
+						<h2> About the Developers </h2>
+					</div>
+				</div>
+			</div>
+					
+			<div class="about-panel-body">
+				<div class="row">
+					<div class="col-sm-6">
+						<!--- Image from https://commons.wikimedia.org/wiki/File:No_image_available_450_x_600.svg -->
+						<img src="/static/img/no-image-available.svg" class="about-img">
+						<h3> Clark Daniel P. Almazan </h3>
+						<p> Undergraduate student at the University of the Philippines Los Baños, studying BS Computer Science.</p>
+					</div>
+					<div class="col-sm-6">
+						<img src="/static/img/jac-formal.png" class="about-img">
+						<h3> Joseph Anthony C. Hermocilla </h3>
+						<p> Associate Professor at the Institute of Computer Science, University of the Philippines Los Baños </p>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="well about-panel">
+			<div class="about-panel-header">
+				<div class="row">
+					<div class="col-sm-12">
+						<h2> Technologies Used </h2>
+						<p> Descriptions taken from the frameworks' respective pages. </p>
+					</div>
+				</div>
+			</div>						
+			<div class="about-panel-body">
+				<div class="row">
+					<div class="col-sm-4">
+						<img src="/static/img/flask.svg" class="img-responsive about-img">
+					</div>
+					<div class="col-sm-8">
+						<h3> <a href="http://flask.pocoo.org/">Flask </a></h3>
+						<p> Flask is a web microframework for Python based on Werkzeug, Jinja2 and good intentions.
+							It is BSD licensed, comes with a built-in development server and debugger, uses RESTful 
+							request dispatching, and many more.
+						</p>
+					</div>
+				</div>
+				<br>
+				<div class="row">
+					<div class="col-sm-4">
+						<img src="/static/img/logo-mysql.png" class="img-responsive about-img">
+					</div>
+					<div class="col-sm-8">
+						<h3> <a href="https://www.mysql.com">MySQL</a> </h3>
+						<p> The MySQL Database powers the most demanding Web, E-commerce and Online Transaction Processing (OLTP) applications. It is a fully integrated transaction-safe, ACID compliant database with full commit, rollback, crash recovery and row level locking capabilities. MySQL delivers the ease of use, scalability, and performance that has made MySQL the world's most popular open source database. Some of the world's most trafficked websites like Facebook, Google, Twitter, Uber, and Booking.com rely on MySQL for their business critical applications.
+						</p>
+					</div>
+				</div>
+				<br>
+				<div class="row">
+					<div class="col-sm-4">
+						<img src="/static/img/dronekitlogo.svg" class="img-responsive about-img">
+					</div>
+					<div class="col-sm-8">
+						<h3> <a href="http://la.dronekit.io"> Dronekit Log Analyzer </a></h3>
+						<p>DroneKit Log Analyzer (DroneKit-LA) is a powerful open source static analyzer for ArduPilot logs.</p>
+						<p>It can read and analyze several log formats (*.tlog, *.log, *.bin), output detailed error and warning information in several formats (json, text, summary),
+							and is fast, memory efficient and extensible.
+						</p>
+					</div>
+				</div>
+				<br>
+				<div class="row">
+					<div class="col-sm-4">
+						<img src="/static/img/bootstrap-solid.svg" class="img-responsive about-img">
+					</div>
+					<div class="col-sm-8">
+						<h3> <a href="http://getbootstrap.com">Bootstrap 3  </a></h3>
+						<p> Bootstrap is the most popular HTML, CSS, and JS framework for developing responsive, mobile first projects on the web.
+							Designed for everyone, everywhere. Bootstrap makes front-end web development faster and easier. It's made for folks of all skill levels, devices of all shapes, and projects of all sizes.
+
+
+						</p>
+					</div>
+				</div>
+				<br>
+				<div class="row">
+					<div class="col-sm-4">
+						<img src="/static/img/angular.svg" class="img-responsive about-img">
+					</div>
+					<div class="col-sm-8">
+						<h3><a href="https://angularjs.org"> AngularJS </a> </h3>
+						<p>
+							Angular is a platform that makes it easy to build applications with the web. Angular combines declarative templates, dependency injection, end to end tooling, and integrated best practices to solve development challenges. 
+							Angular empowers developers to build applications that live on the web, mobile, or the desktop
+						 </p>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-4">
+						<img src="/static/img/no-image-available.svg" class="about-img"/>
+					</div>
+					<div class="col-sm-8">
+						<h3><a href="https://github.com/ArduPilot/pymavlink"> Pymavlink </a> </h3>
+						<p>
+							Pymavlink is the Python implementation of the MAVLink protocol.
+						</p>
+
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-4">
+						<img src="/static/img/gmaps.svg" class="about-img"/>
+					</div>
+					<div class="col-sm-8">
+						<h3><a href="https://maps.google.com"> Google Maps </a> </h3>
+						<p>
+							Google Maps is a web mapping service developed by Google. It offers satellite imagery, street maps, 360° panoramic views of streets (Street View), real-time traffic conditions (Google Traffic), and route planning for traveling by foot, car, bicycle (in beta), or public transportation.
+							Taken from <a href="https://en.wikipedia.org/wiki/Google_Maps"> Wikipedia </a>
+						</p>
+
+					</div>
+				</div>
+				
+			</div>
+
+		</div>
+		<div class="well about-panel">
+			<div class="about-panel-header">
+				<div class="row">
+					<div class="col-sm-12">
+						<h2> Possible things to improve </h2>
+
+						<p> There are many things that I didn't manage to do. Here are some of them.</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="about-panel-body">
+				<div class="row">
+					<div class="col-sm-3">
+						<h3> Single Page Application (SPA) </h3>
+						<p> As you may already know, Airborne's frontend and backend are both handled by Flask.
+							Thus, majority of the tasks are done server-side. By turning Airborne into an SPA,
+							some of the work can be taken off the server and it'll (probably) run faster.
+						</p>
+
+					</div>
+					<div class="col-sm-3">
+						<h3> RESTFul Backend </h3>
+						<p> If you read the first one, then you've probably seen this coming. Airborne doesn't have a RESTful
+							backend. By having a RESTful backend API, Airborne's functionality can be easily ported to other 
+							platforms and applications.
+						</p>
+					</div>
+					<div class="col-sm-3">
+						<h3> More equipment types </h3>
+						<p> So far, drones are the only equipment included in Airborne. By having more equipment types,
+							Airborne can handle more data for the users.
+						</p>
+					</div>
+					<div class="col-sm-3">
+						<h3> UI/UX </h3>
+						<p> I'm not good at UI. </p>
+					</div>
+					
+				</div>
+				And other than those mentioned above, additional features are welcome!
+			</div>
 		</div>
 	</div>	
 {% endblock %}

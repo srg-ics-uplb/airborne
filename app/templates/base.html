@@ -4,13 +4,19 @@
 		<link href="/static/css/bootstrap.css" rel="stylesheet" media="screen">
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.0/css/bootstrap-datepicker.css" rel="stylesheet">
 		<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
-		
+	
+		<link href="/static/css/base.css" rel="stylesheet">
+		<link href="/static/css/about.css" rel="stylesheet">
+		<link href="/static/css/project.css" rel="stylesheet">
+		<link href="/static/css/dashboard.css" rel="stylesheet">
 		<link href="/static/css/login.css" rel="stylesheet">
 		<link href="/static/css/drone.css" rel="stylesheet">
+		<link href="/static/css/flight.css" rel="stylesheet">
 		<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
 		<script src="/static/js/bootstrap.min.js"></script>
-		<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+		<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>	
+
     {% if title %}
         <title>{{title}} - Airborne</title>
     {% else %}
@@ -20,8 +26,7 @@
     </head>
     
     <body>
-		
-			<nav class="navbar navbar-inverse">
+			<nav class="navbar navbar-inverse custom-nav" id="top">
 				<div class="container=fluid">
 					<div class="navbar-header">
 						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#base-navbar">
@@ -32,27 +37,37 @@
 						<a class="navbar-brand" href="/">Airborne</a>
 					</div>
 				<div class="collapse navbar-collapse" id="base-navbar">
-
-				
-					
-					<ul class="nav navbar-nav">
-						
-						{% if current_user.is_anonymous %}
-							<li><a href="/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-							<li><a href="/signup"><span class="glyphicon glyphicon-pencil"></span> Sign Up</a></li>
-						{% else %}
+					{% if current_user.is_anonymous %}
+					<ul class="nav navbar-nav navbar-right">
+						<li><a href="/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+						<li><a href="/signup"><span class="glyphicon glyphicon-pencil"></span> Sign Up</a></li>
+						<li><a href="/about"><span class="glyphicon glyphicon-info-sign"></span> About</a></li>
+					</ul>
+					{% else %}
+					<ul class="nav navbar-nav navbar-center">
+								
 							<li><a href="/dashboard"><span class="glyphicon glyphicon-dashboard"></span> Dashboard</a></li>
 							<li><a href="/projects"><span class="glyphicon glyphicon-tasks"></span> Projects</a></li>
 							<li><a href="/drones"><span class="glyphicon glyphicon-plane"></span> Drones</a></li>
 							<li><a href="/flights"><span class="glyphicon glyphicon-cloud"></span> Flights</a></li>
-							<li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
-						{% endif %}	
-						<li><a href="/about"><span class="glyphicon glyphicon-info-sign"></span> About</a></li>
+							<li><a href="/about"><span class="glyphicon glyphicon-info-sign"></span> About</a></li>
 					</ul>
+					<ul class="nav navbar-nav navbar-right">		
+							<li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+					</ul>
+					{% endif %}	
+						
+					
 				</div>	
 			</div>
 		</nav>	
 	
 		{% block content %}{% endblock %}
+		<br>
+		<div id="footer">
+			<div class="footer-text"> 
+				<a href="http://srg.ics.uplb.edu.ph">Systems Research Group</a> - <a href="http://ics.uplb.edu.ph" >Institute of Computer Science</a> - <a href="http://uplb.edu.ph">University of the Philippines Los Baños  </a>
+			</div>
+		</div>
     </body>
 </html>
